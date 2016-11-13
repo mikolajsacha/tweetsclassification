@@ -1,0 +1,5 @@
+{
+	"Title": "A set of tweets classified as having positive, neutral or negative attitude.",
+	"Categories": ["Negative", "Neutral", "Positive"],
+	"Size": 1000
+}

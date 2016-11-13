@@ -1,0 +1,5 @@
+{
+	"Title": "A set of tweets containing movie reviews classified as having positive or negative attitude.",
+	"Categories": ["Negative", "Positive"],
+	"Size": 1000
+}
