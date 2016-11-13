@@ -1,12 +1,30 @@
+"""
+Contains methods for preprocessing given dataset so they can be translated into more accurate model.
+Data sets are taken from folder "data/datasetname/external".
+After processing, data sets are saved in folder "data/datasetname/processed".
+
+As of now, processing involves only filtering words longer than one character
+and trimming/extending word vectors to given length.
+"""
+
 import re
 import os
 
 
 def get_external_data_path(data_folder):
+    """
+    :param data_folder: name of data folder, e.g. 'dataset1'
+    :return: relative path to external data set file for this folder name
+    """
     return '../../data/{0}/external/training_set.txt'.format(data_folder)
 
 
 def get_processed_data_path(data_folder):
+    """
+    This method also assures that returned path exists so file can be created without error.
+    :param data_folder: name of data folder, e.g. 'dataset1'
+    :return: relative path to processed data set file for this folder name
+    """
     directory = '../../data/{0}/processed'.format(data_folder)
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -44,6 +62,9 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     print "Processed data written to " + output_file_path
 
 if __name__ == "__main__":
+    """
+    Main method allows to generate processed data sets in interactive mode.
+    """
     while True:
         command = raw_input("Type data set folder name to generate data set or 'quit' to quit script: ")
         if command.lower() == "quit" or command.lower() == "exit":
