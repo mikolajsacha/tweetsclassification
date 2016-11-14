@@ -50,7 +50,7 @@ def make_dataset(data_file_path, output_file_path, vector_length):
             category = line.split(' ', 1)[0]
             keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
             keywords = filter(lambda word: len(word) > 1, keywords)  # filter out 1 character words
-            keywords = keywords[:vector_length] # trim keywords length
+            keywords = keywords[:vector_length]  # trim keywords length
             keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
 
             #  if vector is too short, fill with empty words
@@ -60,6 +60,7 @@ def make_dataset(data_file_path, output_file_path, vector_length):
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path
+
 
 if __name__ == "__main__":
     """
