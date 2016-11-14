@@ -21,14 +21,10 @@ def get_external_data_path(data_folder):
 
 def get_processed_data_path(data_folder):
     """
-    This method also assures that returned path exists so file can be created without error.
     :param data_folder: name of data folder, e.g. 'dataset1'
     :return: relative path to processed data set file for this folder name
     """
-    directory = '../../data/{0}/processed'.format(data_folder)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    return directory + "/training_set.txt"
+    return '../../data/{0}/processed/training_set.txt'.format(data_folder)
 
 
 def make_dataset(data_file_path, output_file_path, vector_length):
@@ -44,6 +40,9 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     :type arg1: string (path to data file)
     :type arg2: int (non-negative)
     """
+
+    if not os.path.exists(os.path.dirname(output_file_path)):
+        os.makedirs(os.path.dirname(output_file_path))
 
     with open(output_file_path, 'w') as output_data_file:
         for line in open(data_file_path, 'r'):
