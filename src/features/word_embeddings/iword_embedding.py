@@ -8,7 +8,7 @@ import os
 
 class IWordEmbedding(object):
     """
-    Abstract base class word word embeddings
+    Abstract base class for word embeddings
     """
     __metaclass__ = ABCMeta
 
