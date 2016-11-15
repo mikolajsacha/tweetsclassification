@@ -16,7 +16,7 @@ def get_external_data_path(data_folder):
     :param data_folder: name of data folder, e.g. 'dataset1'
     :return: relative path to external data set file for this folder name
     """
-    return '../../data/{0}/external/training_set.txt'.format(data_folder)
+    return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\external\\training_set.txt'.format(data_folder))
 
 
 def get_processed_data_path(data_folder):
@@ -25,7 +25,7 @@ def get_processed_data_path(data_folder):
     :type data_folder: string (path to a folder)
     :return: relative path to processed data set file for this folder name
     """
-    return '../../data/{0}/processed/training_set.txt'.format(data_folder)
+    return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\processed\\training_set.txt'.format(data_folder))
 
 
 def filter_words(sentence):

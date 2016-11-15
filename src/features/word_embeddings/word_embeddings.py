@@ -57,7 +57,7 @@ class Word2VecEmbedding(IWordEmbedding):
         return self.model[word]
 
     def get_model_data_path(self, data_folder):
-        return IWordEmbedding.get_model_data_path(data_folder) + '/word2vec'
+        return IWordEmbedding.get_model_data_path(data_folder) + '\\word2vec'
 
 
 if __name__ == "__main__":
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     while True:
         command = raw_input("Type data set folder name to build Word2Vec embedding: ")
-        input_file_path = "../" + get_processed_data_path(command)
+        input_file_path = get_processed_data_path(command)
 
         if not path.isfile(input_file_path):
             print "Path {0} does not exist".format(input_file_path)

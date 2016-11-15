@@ -3,6 +3,7 @@ Contains basic interface (abstract base class) for word embeddings.
 """
 from abc import ABCMeta, abstractmethod
 from src.data.make_dataset import get_processed_data_path
+import os
 
 
 class IWordEmbedding(object):
@@ -57,7 +58,7 @@ class IWordEmbedding(object):
         :type data_folder: string (folder name)
         :return: path to folder containing saved word embedding model
         """
-        return '../../../models/word_embeddings/' + data_folder
+        return os.path.join(os.path.dirname(__file__), '..\\..\\..\\models\\word_embeddings\\' + data_folder)
 
     @staticmethod
     def data_file_to_sentences(data_file_path):
@@ -79,6 +80,6 @@ class IWordEmbedding(object):
         :type data_folder: string (folder name)
         :type vector_length: non-negative integer
         """
-        data_file_path = "../" + get_processed_data_path(data_folder)
+        data_file_path = get_processed_data_path(data_folder)
         sentences = list(self.data_file_to_sentences(data_file_path))
         self.build(sentences, vector_length)
