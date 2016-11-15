@@ -62,6 +62,19 @@ def get_max_sentence_length(data_folder):
     return reduce(lambda acc, x: max(acc, x), (sentence_length(line) for line in open(data_file_path, 'r')), 0)
 
 
+def sentence_to_word_vector(sentence, vector_length):
+    keywords = re.compile('[a-zA-Z]+').findall(sentence)  # get all words as a list
+    keywords = filter_words(keywords)  # filter out unnecessary words
+    keywords = keywords[:vector_length]  # trim keywords length
+    keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
+
+    #  if vector is too short, fill with empty words
+    for i in xrange(len(keywords), vector_length):
+        keywords.append('')
+
+    return keywords
+
+
 def make_dataset(data_file_path, output_file_path, vector_length):
     """
     Generates files with data represented as vectors of words of fixed length.
@@ -82,15 +95,7 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     with open(output_file_path, 'w') as output_data_file:
         for line in open(data_file_path, 'r'):
             category = line.split(' ', 1)[0]
-            keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
-            keywords = filter_words(keywords)  # filter out unnecessary words
-            keywords = keywords[:vector_length]  # trim keywords length
-            keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
-
-            #  if vector is too short, fill with empty words
-            for i in xrange(len(keywords), vector_length):
-                keywords.append('')
-
+            keywords = sentence_to_word_vector(line, vector_length)
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path
