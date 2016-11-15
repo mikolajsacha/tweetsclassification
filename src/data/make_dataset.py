@@ -11,10 +11,18 @@ import re
 import os
 
 
+def get_data_set_info_path(data_folder):
+    """
+    :param data_folder: name of data folder, e.g. 'dataset1'
+    :return: absolute path to JSON file containing information about data set
+    """
+    return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\external\\data_info.json'.format(data_folder))
+
+
 def get_external_data_path(data_folder):
     """
     :param data_folder: name of data folder, e.g. 'dataset1'
-    :return: relative path to external data set file for this folder name
+    :return: absolute path to external data set file for this folder name
     """
     return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\external\\training_set.txt'.format(data_folder))
 
@@ -23,7 +31,7 @@ def get_processed_data_path(data_folder):
     """
     :param data_folder: name of data folder, e.g. 'dataset1'
     :type data_folder: string (path to a folder)
-    :return: relative path to processed data set file for this folder name
+    :return: absolute path to processed data set file for this folder name
     """
     return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\processed\\training_set.txt'.format(data_folder))
 

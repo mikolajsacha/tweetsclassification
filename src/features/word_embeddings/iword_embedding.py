@@ -56,7 +56,7 @@ class IWordEmbedding(object):
         """
         :param data_folder: name of folder of data set (e. g. 'dataset1')
         :type data_folder: string (folder name)
-        :return: path to folder containing saved word embedding model
+        :return: absolute path to folder containing saved word embedding model
         """
         return os.path.join(os.path.dirname(__file__), '..\\..\\..\\models\\word_embeddings\\' + data_folder)
 
