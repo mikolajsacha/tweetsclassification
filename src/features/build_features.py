@@ -49,14 +49,14 @@ class FeatureBuilder(object):
         # apply some preprocessing to features
         self.features = preprocessing.apply_pca(self.features, components=FeatureBuilder.target_vector_length)
 
-    def get_model_path(self):
-        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\{0}_model.txt'.format(self.data_folder))
+    def get_features_path(self):
+        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(self.data_folder))
 
     def save(self):
         """
         Saves features set in human-readable format in "models" folder
         """
-        output_path = self.get_model_path()
+        output_path = self.get_features_path()
         if not os.path.exists(os.path.dirname(output_path)):
             os.makedirs(os.path.dirname(output_path))
 
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     fb = FeatureBuilder("dataset1", Word2VecEmbedding())
     fb.save()
-    print "Model saved to " + fb.get_model_path()
+    print "Model saved to " + fb.get_features_path()
     print "{0} Labeled sentences".format(len(fb.labels))
     print "Labels: " + str(fb.labels)
     print "Features matrix shape: " + str(fb.features.shape)
