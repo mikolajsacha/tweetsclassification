@@ -22,9 +22,36 @@ def get_external_data_path(data_folder):
 def get_processed_data_path(data_folder):
     """
     :param data_folder: name of data folder, e.g. 'dataset1'
+    :type data_folder: string (path to a folder)
     :return: relative path to processed data set file for this folder name
     """
     return '../../data/{0}/processed/training_set.txt'.format(data_folder)
+
+
+def filter_words(sentence):
+    """
+    Filters unnecessary words from given sentence and return new sentence
+    :param sentence: a list of words
+    :type sentence: list of strings
+    :return sentence with unnecessary words filtered out
+    """
+    # More filtering can be implemented in the future
+    return filter(lambda word: len(word) > 1, sentence)  # filter out 1 character words
+
+
+def get_max_sentence_length(data_folder):
+    """
+    :param data_folder: name of data folder, e.g. 'dataset1'
+    :type data_folder: string (path to a folder)
+    :return length (in words count) of the longest sentence from data set
+    """
+    data_file_path = get_external_data_path(data_folder)
+
+    def sentence_length(line):
+        keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
+        return len(filter_words(keywords))  # filter out unnecessary words and count them
+
+    return reduce(lambda acc, x: max(acc, x), (sentence_length(line) for line in open(data_file_path, 'r')), 0)
 
 
 def make_dataset(data_file_path, output_file_path, vector_length):
@@ -37,8 +64,8 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     :param data_file_path: relative path to file with data set
     :param output_file_path: relative path to which processed data should be written
     :param vector_length: desired length of each data set entry (e.g. 5)
-    :type arg1: string (path to data file)
-    :type arg2: int (non-negative)
+    :type data_file_path: string (path to data file)
+    :type output_file_path: int (non-negative)
     """
 
     if not os.path.exists(os.path.dirname(output_file_path)):
@@ -48,7 +75,7 @@ def make_dataset(data_file_path, output_file_path, vector_length):
         for line in open(data_file_path, 'r'):
             category = line.split(' ', 1)[0]
             keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
-            keywords = filter(lambda word: len(word) > 1, keywords)  # filter out 1 character words
+            keywords = filter_words(keywords)  # filter out unnecessary words
             keywords = keywords[:vector_length]  # trim keywords length
             keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
 
@@ -78,7 +105,14 @@ if __name__ == "__main__":
         else:
             length = 0
             while length < 1:
-                length_input = raw_input("Type desired vector length (integer greater than zero): ")
+                length_input = raw_input("Type desired vector length (integer greater than zero) or 'auto' " +
+                                         "to use the length of the longest sentence: ")
+                if length_input.lower() == "auto":
+                    length = get_max_sentence_length(command)
+                    print("Use {0} as the vector length".format(length))
+                    make_dataset(input_file_path, get_processed_data_path(command), length)
+                    break;
+
                 try:
                     length = int(length_input)
                 except ValueError:

@@ -16,11 +16,18 @@ class Word2VecEmbedding(IWordEmbedding):
         self.model = Word2Vec.load(file_path)
         self.model.init_sims(replace=True)  # trim unneeded model memory
 
-    def safe(self, data_folder):
+    def save(self, data_folder):
+        # save in word2vec format
         output_path = self.get_model_data_path(data_folder)
         if not path.exists(path.dirname(output_path)):
             makedirs(path.dirname(output_path))
         self.model.save(output_path)
+
+        # save in human-readable format
+        with open(output_path + ".txt", 'w') as f:
+            for word in self.model.vocab:
+                vector = ','.join(map(lambda val: str(val), self.model[word]))
+                f.write("{0} {1}\n".format(word.rstrip(), vector))
 
     def build(self, sentences, vector_length):
         self.model = Word2Vec(sentences, size=vector_length, min_count=1)
@@ -31,6 +38,7 @@ class Word2VecEmbedding(IWordEmbedding):
 
     def get_model_data_path(self, data_folder):
         return IWordEmbedding.get_model_data_path(data_folder) + '/word2vec'
+
 
 if __name__ == "__main__":
     """
@@ -61,7 +69,7 @@ if __name__ == "__main__":
 
     model = Word2VecEmbedding()
     model.build_from_data_set(command, length)
-    model.safe(command)
+    model.save(command)
     print "Model built and saved to " + model.get_model_data_path(command)
     while True:
         command = raw_input("Type words to test embedding or 'quit' to exit: ")

@@ -32,7 +32,7 @@ class IWordEmbedding(object):
         raise NotImplementedError
 
     @abstractmethod
-    def safe(self, data_folder):
+    def save(self, data_folder):
         """
         Saves current model to a file located in proper direcotry
         :param data_folder: name of folder of data set (e. g. 'dataset1')
@@ -69,7 +69,7 @@ class IWordEmbedding(object):
         with open(data_file_path, 'r') as f:
             for line in f:
                 sentence = line.split(' ')[1]
-                yield sentence.split(',')
+                yield map(lambda word: word.rstrip(), sentence.split(','))
 
     def build_from_data_set(self, data_folder, vector_length):
         """
