@@ -5,9 +5,14 @@ from iword_embedding import IWordEmbedding
 from gensim.models import Word2Vec
 from src.data.make_dataset import get_processed_data_path
 from os import path, makedirs
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 
 
 class Word2VecEmbedding(IWordEmbedding):
+    visualization_sample_size = 100
+
     def __init__(self):
         # for start build an empty model
         self.model = Word2Vec([['']], size=0, min_count=1)
@@ -28,6 +33,21 @@ class Word2VecEmbedding(IWordEmbedding):
             for word in self.model.vocab:
                 vector = ','.join(map(lambda val: str(val), self.model[word]))
                 f.write("{0} {1}\n".format(word.rstrip(), vector))
+
+    def show_visualization(self):
+        words_by_count = [(k, v) for k, v in self.model.vocab.iteritems()]
+        words_by_count.sort(key=lambda (_, vocab): -vocab.count)
+        vocabulary = map(lambda (k, v): k, words_by_count[:Word2VecEmbedding.visualization_sample_size])
+        vectors = [self.model[word] for word in vocabulary]
+
+        tsne = TSNE(n_components=2, random_state=0)
+        np.set_printoptions(suppress=True)
+        y = tsne.fit_transform(vectors)
+
+        plt.scatter(y[:, 0], y[:, 1])
+        for label, x, y in zip(vocabulary, y[:, 0], y[:, 1]):
+            plt.annotate(label, xy=(x, y), xytext=(0, 0), textcoords='offset points')
+        plt.show()
 
     def build(self, sentences, vector_length):
         self.model = Word2Vec(sentences, size=vector_length, min_count=1)
@@ -71,6 +91,8 @@ if __name__ == "__main__":
     model.build_from_data_set(command, length)
     model.save(command)
     print "Model built and saved to " + model.get_model_data_path(command)
+    print "Preparing visualization..."
+    model.show_visualization()
     while True:
         command = raw_input("Type words to test embedding or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":

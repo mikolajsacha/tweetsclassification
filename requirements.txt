@@ -1,3 +1,5 @@
+matplotlib
+sklearn
 dotenv
 click
 Sphinx
