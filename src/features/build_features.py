@@ -2,9 +2,9 @@
 Contains class FeatureBuilder for building feature set from given data set and word embedding
 """
 
-from src.data.make_dataset import *
 import numpy as np
-import preprocessing
+from src.data.make_dataset import *
+from src.features.word_embeddings.iword_embedding import IWordEmbedding
 
 
 class FeatureBuilder(object):
@@ -13,9 +13,6 @@ class FeatureBuilder(object):
     Field "labels" is a list of categories of sentences
     Field "features" is a features matrix of shape (training set sixe, target_vector_length)
     """
-    embedding_vector_length = 100  # vector length used in embedding
-    target_vector_length = 100  # vector length after preprocessing of embedding
-
     def __init__(self, data_folder, embedding):
         """
         :param data_folder: name of folder with processed data (e.g. "dataset1")
@@ -32,11 +29,11 @@ class FeatureBuilder(object):
         make_dataset(input_file_path, data_file_path, max_length)
 
         # build embedding on processed data se
-        embedding.build_from_data_set(data_folder, FeatureBuilder.embedding_vector_length)
+        embedding.build_from_data_set(data_folder, IWordEmbedding.initial_vector_length)
 
         training_set_size = sum(1 for _ in open(data_file_path, 'r'))
         self.labels = [None] * training_set_size
-        self.features = np.empty((training_set_size, max_length * FeatureBuilder.embedding_vector_length))
+        self.features = np.empty((training_set_size, max_length * IWordEmbedding.target_vector_length))
 
         # safe features using word embedding
         with open(data_file_path, 'r') as f:
@@ -45,9 +42,6 @@ class FeatureBuilder(object):
                 words = sentence.rstrip().split(',')
                 self.features[i] = np.concatenate(map(lambda w: embedding[w], words))
                 self.labels[i] = label
-
-        # apply some preprocessing to features
-        self.features = preprocessing.apply_pca(self.features, components=FeatureBuilder.target_vector_length)
 
     def get_features_path(self):
         return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(self.data_folder))

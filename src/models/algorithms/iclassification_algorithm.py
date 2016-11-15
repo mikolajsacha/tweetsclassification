@@ -12,14 +12,16 @@ class IClassificationAlgorithm(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self, labels, features, data_set_info_path):
+    def __init__(self, labels, features, embedding, data_set_info_path):
         """
         Generates model for predicting categories using specific method
         :param labels: list of labels (categories) of sentences
         :param features: matrix of features as real values
+        :param embedding: embedding used in model
         :param data_set_info_path: path to JSON file containing information about data set
         :type labels: list of non-negative integers
-        :type features:
+        :type features: numpy matrix of floats
+        :param embedding: instance of class deriving IWordEmbedding
         :param data_set_info_path: string (path to JSON file)
         """
         raise NotImplementedError

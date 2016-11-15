@@ -1,44 +1,52 @@
 """
 Contains class representing Word2Vec embedding, implementing IWordEmbedding interface
 """
-from iword_embedding import IWordEmbedding
 from gensim.models import Word2Vec
-from src.data.make_dataset import get_processed_data_path
 from os import path, makedirs
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
+from iword_embedding import IWordEmbedding
+from src.data.make_dataset import get_processed_data_path
+import preprocessing
 
 
 class Word2VecEmbedding(IWordEmbedding):
     visualization_sample_size = 100
 
     def __init__(self):
-        # for start build an empty model
-        self.model = Word2Vec([['']], size=0, min_count=1)
+        self.words_list = []
+        self.words = {}
+        self.vectors = []
+
+    def from_model(self, model):
+        for word in model.vocab:
+            self.words_list.append(word)
+            self.words[word] = model[word]
+            self.vectors.append(model[word])
+
+        self.vectors = preprocessing.apply_pca(self.vectors, components=IWordEmbedding.target_vector_length)
+        for i, word in enumerate(self.words_list):
+            self.words[word] = self.vectors[i]
 
     def load(self, file_path):
-        self.model = Word2Vec.load(file_path)
-        self.model.init_sims(replace=True)  # trim unneeded model memory
+        model = Word2Vec.load(file_path)
+        model.init_sims(replace=True)  # trim unneeded model memory
+        self.from_model(model)
 
     def save(self, data_folder):
-        # save in word2vec format
         output_path = self.get_model_data_path(data_folder)
         if not path.exists(path.dirname(output_path)):
             makedirs(path.dirname(output_path))
-        self.model.save(output_path)
 
-        # save in human-readable format
         with open(output_path + ".txt", 'w') as f:
-            for word in self.model.vocab:
-                vector = ','.join(map(lambda val: str(val), self.model[word]))
+            for word in self.words:
+                vector = ','.join(map(lambda val: str(val), self.words[word]))
                 f.write("{0} {1}\n".format(word.rstrip(), vector))
 
     def show_visualization(self):
-        words_by_count = [(k, v) for k, v in self.model.vocab.iteritems()]
-        words_by_count.sort(key=lambda (_, vocab): -vocab.count)
-        vocabulary = map(lambda (k, v): k, words_by_count[:Word2VecEmbedding.visualization_sample_size])
-        vectors = [self.model[word] for word in vocabulary]
+        vocabulary = self.words_list[:Word2VecEmbedding.visualization_sample_size]
+        vectors = [self.words[word] for word in vocabulary]
 
         tsne = TSNE(n_components=2, random_state=0)
         np.set_printoptions(suppress=True)
@@ -50,11 +58,14 @@ class Word2VecEmbedding(IWordEmbedding):
         plt.show()
 
     def build(self, sentences, vector_length):
-        self.model = Word2Vec(sentences, size=vector_length, min_count=1)
-        self.model.init_sims(replace=True)  # trim unneeded model memory
+        model = Word2Vec(sentences, size=vector_length, min_count=1)
+        model.init_sims(replace=True)  # trim unneeded model memory
+        self.from_model(model)
 
     def __getitem__(self, word):
-        return self.model[word]
+        if word not in self.words:
+            return self.words['']
+        return self.words[word]
 
     def get_model_data_path(self, data_folder):
         return IWordEmbedding.get_model_data_path(data_folder) + '\\word2vec'

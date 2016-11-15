@@ -4,6 +4,7 @@ Contains basic interface (abstract base class) for word embeddings.
 from abc import ABCMeta, abstractmethod
 from src.data.make_dataset import get_processed_data_path
 import os
+import numpy as np
 
 
 class IWordEmbedding(object):
@@ -11,6 +12,8 @@ class IWordEmbedding(object):
     Abstract base class for word embeddings
     """
     __metaclass__ = ABCMeta
+    initial_vector_length = 100  # vector length through embedding process
+    target_vector_length = 10  # vector length after preprocessing of embedding
 
     @abstractmethod
     def build(self, sentences, vector_length):
@@ -83,3 +86,12 @@ class IWordEmbedding(object):
         data_file_path = get_processed_data_path(data_folder)
         sentences = list(self.data_file_to_sentences(data_file_path))
         self.build(sentences, vector_length)
+
+    def sentence_to_vector(self, sentence):
+        """
+        :param sentence: a sentence (list of words)
+        :type sentence: list of strings (words)
+        :return: numpy vector build as concatenation of vectors representing sentence
+        """
+        return np.concatenate(map(lambda word: self[word], sentence))
+
