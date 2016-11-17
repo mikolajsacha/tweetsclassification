@@ -1,3 +1,4 @@
+nltk
 matplotlib
 sklearn
 dotenv
