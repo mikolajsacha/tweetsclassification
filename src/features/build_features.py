@@ -59,15 +59,15 @@ if __name__ == '__main__':
 
     if embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")
-        sentences = IWordEmbedding.data_file_to_sentences(data_file_path)
         embedding.load(data_folder, sentences)
     else:
         print ("Building word embedding...")
         embedding.build(sentences)
+        embedding.save(data_folder)
 
     fb = FeatureBuilder(embedding, labels, sentences )
     fb.save(data_folder)
     print "Processed features saved to " + fb.get_features_path(data_folder)
     print "{0} Labeled sentences".format(len(fb.labels))
     print "Labels: " + str(fb.labels)
-    print "Features matrix shape: " + str(fb.features.shape)
+    print "Features matrix shape: {0} * {1}".format(len(fb.features), len(fb.features[0]))

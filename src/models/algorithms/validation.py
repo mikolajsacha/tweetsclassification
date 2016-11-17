@@ -38,7 +38,7 @@ def test_cross_validation(data_folder, embedding_class, features_builder_class, 
         successes = 0
         for i, label in enumerate(test_labels):
             sentence = test_sentences[0]
-            prediction = 1 - classifier.predict(sentence)
+            prediction = classifier.predict(sentence)
             if prediction == label:
                 successes += 1
 
@@ -56,7 +56,7 @@ def test_cross_validation(data_folder, embedding_class, features_builder_class, 
 
 
 if __name__ == "__main__":
-    data_folder = "dataset1"
+    data_folder = "dataset2"
     folds_count = 5
 
     test_cross_validation(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, folds_count)
