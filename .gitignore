@@ -68,3 +68,7 @@ target/
 
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
+
+# Generated data and models
+data/*/processed/*
+models/*
