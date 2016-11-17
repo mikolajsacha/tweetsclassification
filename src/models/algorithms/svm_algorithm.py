@@ -29,7 +29,7 @@ if __name__ == '__main__':
     Main method is for testing SVM algorithm
     """
 
-    from src.features.word_embeddings.word_embeddings import Word2VecEmbedding
+    from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 
     embedding = Word2VecEmbedding()
     fb = FeatureBuilder("dataset1", embedding)

@@ -28,8 +28,14 @@ class FeatureBuilder(object):
         # process data set
         make_dataset(input_file_path, data_file_path, max_length)
 
-        # build embedding on processed data se
-        embedding.build_from_data_set(data_folder, IWordEmbedding.initial_vector_length)
+        # load existing embedding or build new on processed data set
+        if embedding.saved_embedding_exists(data_folder):
+            print ("Using existing word embedding.")
+            sentences = IWordEmbedding.data_file_to_sentences(data_file_path)
+            embedding.load(data_folder, sentences)
+        else:
+            print ("Building word embedding...")
+            embedding.build_from_data_set(data_folder, IWordEmbedding.initial_vector_length)
 
         training_set_size = sum(1 for _ in open(data_file_path, 'r'))
         self.labels = [None] * training_set_size
@@ -40,7 +46,8 @@ class FeatureBuilder(object):
             for i, line in enumerate(f):
                 label, sentence = line.split(' ', 1)
                 words = sentence.rstrip().split(',')
-                self.features[i] = np.concatenate(map(lambda w: embedding[w], words))
+                embedded_words = map(lambda w: embedding[w], words)
+                self.features[i] = np.concatenate(embedded_words)
                 self.labels[i] = label
 
     def get_features_path(self):
@@ -64,7 +71,7 @@ if __name__ == '__main__':
     Main method will be for testing if FeatureBuilder works properly
     """
 
-    from src.features.word_embeddings.word_embeddings import Word2VecEmbedding
+    from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 
     fb = FeatureBuilder("dataset1", Word2VecEmbedding())
     fb.save()

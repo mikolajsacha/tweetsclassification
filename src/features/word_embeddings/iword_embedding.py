@@ -27,11 +27,11 @@ class IWordEmbedding(object):
         raise NotImplementedError
 
     @abstractmethod
-    def load(self, file_path):
+    def saved_embedding_exists(self, data_folder):
         """
-        Loads model from a given file
-        :param file_path: path to file containing saved model
-        :type file_path: string (file path)
+        :param data_folder: name of folder of data set (e. g. 'dataset1')
+        :type data_folder: string (folder name)
+        :return: True/False indicating if there exists saved file with this embedding
         """
         raise NotImplementedError
 
@@ -41,6 +41,17 @@ class IWordEmbedding(object):
         Saves current model to a file located in proper direcotry
         :param data_folder: name of folder of data set (e. g. 'dataset1')
         :type data_folder: string (folder name)
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def load(self, data_folder, sentences):
+        """
+        Loads model from a file locaten in a proper directory for data_folder name
+        :param data_folder: name of folder of data set (e. g. 'dataset1')
+        :param sentences: list of training set sentences (to build preprocessing transformation)
+        :type data_folder: string (folder name)
+        :type sentences: list of lists of strings (words)
         """
         raise NotImplementedError
 
@@ -55,7 +66,7 @@ class IWordEmbedding(object):
         raise NotImplementedError
 
     @staticmethod
-    def get_model_data_path(data_folder):
+    def get_embedding_model_path(data_folder):
         """
         :param data_folder: name of folder of data set (e. g. 'dataset1')
         :type data_folder: string (folder name)
