@@ -14,9 +14,9 @@ class SvmAlgorithm(IClassificationAlgorithm):
     Class for building model using Support Vector Machine method
     """
 
-    def __init__(self, labels, features, embedding, sentence_length):
+    def __init__(self, labels, features, embedding, sentence_length, **kwargs):
         self.embedding = embedding
-        self.clf = svm.SVC()
+        self.clf = svm.SVC(**kwargs)
         self.clf.fit(features, labels)
         self.sentence_length = sentence_length
 

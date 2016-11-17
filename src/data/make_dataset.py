@@ -111,7 +111,7 @@ def read_dataset(data_folder):
     sentences = []
     for line in open(data_file_path, 'r'):
         label, rest = line.split(' ', 1)
-        labels.append(label)
+        labels.append(int(label))
         sentences.append(sentence_to_word_vector(rest, vector_length))
     return labels, sentences
 
