@@ -13,51 +13,30 @@ class FeatureBuilder(object):
     Field "labels" is a list of categories of sentences
     Field "features" is a features matrix of shape (training set sixe, target_vector_length)
     """
-    def __init__(self, data_folder, embedding):
+    def __init__(self, embedding, labels, sentences):
         """
-        :param data_folder: name of folder with processed data (e.g. "dataset1")
         :param embedding: instance of word embedding class implementing IWordEmbedding interface
+        :param labels: list of labels of sentences
+        :param sentences: list of sentences (as lists of words)
         """
-        self.data_folder = data_folder
-        input_file_path = get_external_data_path(data_folder)
-        data_file_path = get_processed_data_path(data_folder)
 
-        # extend all sentences to the length of the longest sentence
-        max_length = get_max_sentence_length(data_folder)
+        print ("Building features...")
+        training_set_size = len(labels)
+        self.labels = labels
+        self.features = []
 
-        # process data set
-        make_dataset(input_file_path, data_file_path, max_length)
+        for i in xrange(training_set_size):
+            self.features.append(embedding.sentence_to_vector(sentences[i]))
 
-        # load existing embedding or build new on processed data set
-        if embedding.saved_embedding_exists(data_folder):
-            print ("Using existing word embedding.")
-            sentences = IWordEmbedding.data_file_to_sentences(data_file_path)
-            embedding.load(data_folder, sentences)
-        else:
-            print ("Building word embedding...")
-            embedding.build_from_data_set(data_folder, IWordEmbedding.initial_vector_length)
+    @staticmethod
+    def get_features_path(data_folder):
+        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(data_folder))
 
-        training_set_size = sum(1 for _ in open(data_file_path, 'r'))
-        self.labels = [None] * training_set_size
-        self.features = np.empty((training_set_size, max_length * IWordEmbedding.target_vector_length))
-
-        # safe features using word embedding
-        with open(data_file_path, 'r') as f:
-            for i, line in enumerate(f):
-                label, sentence = line.split(' ', 1)
-                words = sentence.rstrip().split(',')
-                embedded_words = map(lambda w: embedding[w], words)
-                self.features[i] = np.concatenate(embedded_words)
-                self.labels[i] = label
-
-    def get_features_path(self):
-        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(self.data_folder))
-
-    def save(self):
+    def save(self, data_folder):
         """
         Saves features set in human-readable format in "models" folder
         """
-        output_path = self.get_features_path()
+        output_path = self.get_features_path(data_folder)
         if not os.path.exists(os.path.dirname(output_path)):
             os.makedirs(os.path.dirname(output_path))
 
@@ -73,9 +52,22 @@ if __name__ == '__main__':
 
     from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 
-    fb = FeatureBuilder("dataset1", Word2VecEmbedding())
-    fb.save()
-    print "Model saved to " + fb.get_features_path()
+    data_folder = "dataset1"
+    data_file_path = get_external_data_path(data_folder)
+    labels, sentences = read_dataset(data_folder)
+    embedding = Word2VecEmbedding()
+
+    if embedding.saved_embedding_exists(data_folder):
+        print ("Using existing word embedding.")
+        sentences = IWordEmbedding.data_file_to_sentences(data_file_path)
+        embedding.load(data_folder, sentences)
+    else:
+        print ("Building word embedding...")
+        embedding.build(sentences)
+
+    fb = FeatureBuilder(embedding, labels, sentences )
+    fb.save(data_folder)
+    print "Processed features saved to " + fb.get_features_path(data_folder)
     print "{0} Labeled sentences".format(len(fb.labels))
     print "Labels: " + str(fb.labels)
     print "Features matrix shape: " + str(fb.features.shape)

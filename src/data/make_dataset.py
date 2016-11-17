@@ -13,6 +13,7 @@ from nltk.corpus import stopwords
 
 cached_stopwords = set(stopwords.words("english"))
 
+
 def get_data_set_info_path(data_folder):
     """
     :param data_folder: name of data folder, e.g. 'dataset1'
@@ -101,6 +102,18 @@ def make_dataset(data_file_path, output_file_path, vector_length):
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path
+
+
+def read_dataset(data_folder):
+    data_file_path = get_external_data_path(data_folder)
+    vector_length = get_max_sentence_length(data_folder)
+    labels = []
+    sentences = []
+    for line in open(data_file_path, 'r'):
+        label, rest = line.split(' ', 1)
+        labels.append(label)
+        sentences.append(sentence_to_word_vector(rest, vector_length))
+    return labels, sentences
 
 
 if __name__ == "__main__":

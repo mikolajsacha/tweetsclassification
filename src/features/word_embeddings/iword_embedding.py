@@ -16,13 +16,11 @@ class IWordEmbedding(object):
     target_vector_length = 10  # vector length after preprocessing of embedding
 
     @abstractmethod
-    def build(self, sentences, vector_length):
+    def build(self, sentences):
         """
         Generates word embedding for given list of sentences
         :param sentences: list of sentences in data set, formatted as lists of words
-        :param vector_length: length of vector in word embedding
         :type sentences: list of list of strings
-        :type vector_length: non-negative integer
         """
         raise NotImplementedError
 
@@ -86,17 +84,15 @@ class IWordEmbedding(object):
                 sentence = line.split(' ')[1]
                 yield map(lambda word: word.rstrip(), sentence.split(','))
 
-    def build_from_data_set(self, data_folder, vector_length):
+    def build_from_data_set(self, data_folder):
         """
         Loads model from a processed data set in given data folder
         :param data_folder: name of folder of data set (e. g. 'dataset1')
-        :param vector_length: length of vector in word embedding
         :type data_folder: string (folder name)
-        :type vector_length: non-negative integer
         """
         data_file_path = get_processed_data_path(data_folder)
         sentences = list(self.data_file_to_sentences(data_file_path))
-        self.build(sentences, vector_length)
+        self.build(sentences)
 
     def sentence_to_vector(self, sentence):
         """

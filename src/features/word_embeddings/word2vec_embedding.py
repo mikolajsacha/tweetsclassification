@@ -45,8 +45,9 @@ class Word2VecEmbedding(IWordEmbedding):
         self.pca.fit(training_set_vectors)
         self.preprocess = lambda vector: self.pca.transform(vector)
 
-    def build(self, sentences, vector_length):
+    def build(self, sentences):
         text_corpus = iter(brown.sents())
+        vector_length = IWordEmbedding.initial_vector_length
         self.model = Word2Vec(itertools.chain(text_corpus, sentences), size=vector_length, min_count=1)
         self.model.init_sims(replace=True)  # finalize the model
         self.build_preprocess_transformation(sentences)
@@ -74,22 +75,9 @@ if __name__ == "__main__":
         else:
             break
 
-    length = 0
-    while length < 1:
-        length_input = raw_input("Type desired vector length (integer greater than zero): ")
-        try:
-            length = int(length_input)
-        except ValueError:
-            print "Vector length must be an integer"
-            continue
-
-        if length < 1:
-            print "Vector length must be greather than zero"
-            continue
-
     print("Building model...")
     model = Word2VecEmbedding()
-    model.build_from_data_set(command, length)
+    model.build_from_data_set(command)
     print("Saving model to a file...")
     model.save(command)
     print "Model built and saved to " + model.get_embedding_model_path(command)
