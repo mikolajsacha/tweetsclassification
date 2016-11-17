@@ -20,26 +20,29 @@ def test_cross_validation(data_folder, embedding_class, features_builder_class,
 
     # test accuracy for all folds combination
     total_successes = 0
+    print("." * 20)
+    print("Testing with {0} - fold cross-validation...".format(folds_count))
     for fold in xrange(folds_count):
-        print("." * 20)
-        print("Testing fold {0}/{1}".format(fold + 1, folds_count))
+        # print("." * 20)
+        print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
 
-        print("Slicing data set...")
+        # uncomment prints if more verbose comments are preffered
+        # print("Slicing data set...")
         training_labels = list(itertools.chain(*[folded_labels[i] for i in xrange(folds_count) if i != fold]))
         training_sentences = list(itertools.chain(*[folded_sentences[i] for i in xrange(folds_count) if i != fold]))
 
         test_labels = folded_labels[fold]
         test_sentences = folded_sentences[fold]
-        print("Building embedding...")
+        # print("Building embedding...")
 
         embedding = embedding_class()
         embedding.build(training_sentences)
 
         fb = features_builder_class(embedding, training_labels, training_sentences)
-        print("Building classifier model...")
+        # print("Building classifier model...")
         classifier = classification_class(fb.labels, fb.features, embedding, s_length, **kwargs)
 
-        print("Making predictions...")
+        # print("Making predictions...")
         successes = 0
         for i, label in enumerate(test_labels):
             prediction = classifier.predict(test_sentences[i])
@@ -69,15 +72,16 @@ def test_with_self(data_folder, embedding_class, features_builder_class, classif
     print("." * 20)
     print("Testing predictions on the training set...")
 
-    print("Building embedding...")
+    # uncomment prints if more verbose comments are preffered
+    # print("Building embedding...")
     embedding = embedding_class()
     embedding.build(sentences)
 
     feature_builder = features_builder_class(embedding, labels, sentences)
-    print("Building classifier model...")
+    # print("Building classifier model...")
     classifier = classification_class(feature_builder.labels, feature_builder.features, embedding, s_length, **kwargs)
 
-    print("Making predictions...")
+    # print("Making predictions...")
     successes = 0
     for i, label in enumerate(labels):
         prediction = classifier.predict(sentences[i])
@@ -85,8 +89,10 @@ def test_with_self(data_folder, embedding_class, features_builder_class, classif
             successes += 1
 
     set_length = len(labels)
+    mean_result = successes / (1.0 * set_length) * 100
     print("Results when testing on training set: {0}/{1} successes ({2}%)" \
-          .format(successes, set_length, successes / (1.0 * set_length) * 100))
+          .format(successes, set_length, mean_result))
+    return mean_result
 
 
 if __name__ == "__main__":
@@ -98,6 +104,7 @@ if __name__ == "__main__":
 
     tested_c_params = [10 ** i for i in xrange(-2, 6)]
     cross_results = []
+    self_results = []
 
     # test for various C parameters:
     for c in tested_c_params:
@@ -106,16 +113,17 @@ if __name__ == "__main__":
         print("." * 20)
 
         # train on the whole training set and test on the training set (just for curiosity)
-        test_with_self(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, C=c)
+        self_result = test_with_self(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, C=c)
 
         cross_result = test_cross_validation(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, folds_count, \
                                              C=c)
+        self_results.append(self_result)
         cross_results.append(cross_result)
         if cross_result > best_cross_result:
             best_cross_result = cross_result
             best_c_param = c
 
-    print ("Mean cross-validation results: ")
-    for c in tested_c_params:
-        print ("C={0}: {1}%".format(c, cross_result))
+    print ("Results of testing training set on itself and mean cross-validation results: ")
+    for i, c in enumerate(tested_c_params):
+        print ("C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
     print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))
