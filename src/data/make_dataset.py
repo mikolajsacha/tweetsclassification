@@ -9,7 +9,9 @@ and trimming/extending word vectors to given length.
 
 import re
 import os
+from nltk.corpus import stopwords
 
+cached_stopwords = set(stopwords.words("english"))
 
 def get_data_set_info_path(data_folder):
     """
@@ -44,7 +46,7 @@ def filter_words(sentence):
     :return sentence with unnecessary words filtered out
     """
     # More filtering can be implemented in the future
-    return filter(lambda word: len(word) > 1, sentence)  # filter out 1 character words
+    return filter(lambda word: word not in cached_stopwords, sentence)  # filter out stop words
 
 
 def get_max_sentence_length(data_folder):
