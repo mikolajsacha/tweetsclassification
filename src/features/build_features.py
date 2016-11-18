@@ -2,11 +2,10 @@
 Contains class FeatureBuilder for building feature set from given data set and word embedding
 """
 
-from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
-import src.data.make_dataset as make_dataset
 import os
 import numpy as np
-
+from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
+import src.data.make_dataset as make_dataset
 from src.features.word_embeddings import word2vec_embedding
 
 

@@ -9,9 +9,9 @@ and trimming/extending word vectors to given length.
 
 import re
 import os
-from nltk.corpus import stopwords
 import json
 import numpy as np
+from nltk.corpus import stopwords
 
 cached_stopwords = set(stopwords.words("english"))
 

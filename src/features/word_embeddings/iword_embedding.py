@@ -1,10 +1,9 @@
 """
 Contains basic interface (abstract base class) for word embeddings.
 """
-from abc import ABCMeta, abstractmethod
-from src.data.make_dataset import get_processed_data_path
 import os
 import numpy as np
+from abc import ABCMeta, abstractmethod
 
 
 class IWordEmbedding(object):
@@ -13,7 +12,7 @@ class IWordEmbedding(object):
     """
     __metaclass__ = ABCMeta
     initial_vector_length = 100  # vector length through embedding process
-    target_vector_length = 10  # vector length after preprocessing of embedding
+    target_vector_length = 50  # vector length after preprocessing of embedding
 
     @abstractmethod
     def build(self, sentences):

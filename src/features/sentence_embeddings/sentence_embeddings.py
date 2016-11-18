@@ -1,11 +1,9 @@
 """
 Contains classes for creating sentece embeddings based on given word embeddings
 """
-
 from src.features.sentence_embeddings.isentence_embedding import ISentenceEmbedding
-import numpy as np
-
 from src.features.word_embeddings.iword_embedding import IWordEmbedding
+import numpy as np
 
 
 class ConcatenationEmbedding(ISentenceEmbedding):

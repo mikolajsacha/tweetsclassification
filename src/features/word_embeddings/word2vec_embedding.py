@@ -1,16 +1,16 @@
 """
 Contains class representing Word2Vec embedding, implementing IWordEmbedding interface
 """
-from os import path, makedirs
-
+import os
 import itertools
+import multiprocessing
+import nltk
 from gensim.models import Word2Vec
 from sklearn.decomposition import PCA
 from iword_embedding import IWordEmbedding
-from src.data.make_dataset import get_processed_data_path
-from nltk.corpus import brown
+from src.data import make_dataset
 
-brown_text_corpus = iter(brown.sents())
+brown_text_corpus = iter(nltk.corpus.brown.sents())
 
 
 class Word2VecEmbedding(IWordEmbedding):
@@ -24,11 +24,11 @@ class Word2VecEmbedding(IWordEmbedding):
 
     def saved_embedding_exists(self, data_folder):
         embedding_file_path = self.get_embedding_model_path(data_folder)
-        return path.isfile(embedding_file_path)
+        return os.path.isfile(embedding_file_path)
 
     def save(self, output_path):
-        if not path.exists(path.dirname(output_path)):
-            makedirs(path.dirname(output_path))
+        if not os.path.exists(os.path.dirname(output_path)):
+            os.makedirs(os.path.dirname(output_path))
         self.model.save(output_path)
 
     def load(self, data_path, sentences):
@@ -48,8 +48,10 @@ class Word2VecEmbedding(IWordEmbedding):
         self.preprocess = lambda vector: self.pca.transform(vector)
 
     def build(self, sentences):
-        vector_length = IWordEmbedding.initial_vector_length
-        self.model = Word2Vec(itertools.chain(self.text_corpus, sentences), size=vector_length, min_count=1)
+        vec_length = IWordEmbedding.initial_vector_length
+        total_corpus = itertools.chain(self.text_corpus, sentences)
+        cpu_count = multiprocessing.cpu_count()
+        self.model = Word2Vec(total_corpus, size=vec_length, min_count=1, workers=cpu_count)
         self.model.init_sims(replace=True)  # finalize the model
         self.build_preprocess_transformation(sentences)
 
@@ -69,16 +71,16 @@ if __name__ == "__main__":
 
     while True:
         command = raw_input("Type data set folder name to build Word2Vec embedding: ")
-        input_file_path = get_processed_data_path(command)
+        input_file_path = make_dataset.get_processed_data_path(command)
 
-        if not path.isfile(input_file_path):
+        if not os.path.isfile(input_file_path):
             print "Path {0} does not exist".format(input_file_path)
         else:
             break
 
     print("Building embedding...")
     model = Word2VecEmbedding(brown_text_corpus)
-    model.build_from_data_set(get_processed_data_path(command))
+    model.build_from_data_set(make_dataset.get_processed_data_path(command))
     print("Saving model to a file...")
     model.save(model.get_embedding_model_path(command))
     print "Model built and saved to " + model.get_embedding_model_path(command)

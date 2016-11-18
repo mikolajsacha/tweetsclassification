@@ -3,7 +3,7 @@ Contains class for usage of SVM algorithm
 """
 from sklearn import svm
 
-import src.features.build_features as build_features
+from src.features import build_features
 from src.data import make_dataset
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
 from src.features.word_embeddings import word2vec_embedding
