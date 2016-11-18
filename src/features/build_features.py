@@ -4,6 +4,7 @@ Contains class FeatureBuilder for building feature set from given data set and w
 
 import numpy as np
 from src.data.make_dataset import *
+from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
 
 
 class FeatureBuilder(object):
@@ -17,9 +18,9 @@ class FeatureBuilder(object):
         self.labels = []
         self.features = []
 
-    def build(self, embedding, labels, sentences):
+    def build(self, sentence_embedding, labels, sentences):
         """
-        :param embedding: instance of word embedding class implementing IWordEmbedding interface
+        :param sentence_embedding: instance of sentence embedding class implementing ISentenceEmbedding interface
         :param labels: list of labels of sentences
         :param sentences: list of sentences (as lists of words)
         """
@@ -28,7 +29,7 @@ class FeatureBuilder(object):
         self.features = []
 
         for i in xrange(training_set_size):
-            self.features.append(embedding.sentence_to_vector(sentences[i]))
+            self.features.append(sentence_embedding[sentences[i]])
 
     def save(self, data_folder):
         """
@@ -58,18 +59,23 @@ if __name__ == '__main__':
     data_folder = "dataset1"
     data_file_path = get_external_data_path(data_folder)
     labels, sentences = read_dataset(data_folder)
-    embedding = Word2VecEmbedding()
+    word_embedding = Word2VecEmbedding()
 
-    if embedding.saved_embedding_exists(data_folder):
+    if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")
-        embedding.load(data_folder, sentences)
+        word_embedding.load(data_folder, sentences)
     else:
         print ("Building word embedding...")
-        embedding.build(sentences)
-        embedding.save(data_folder)
+        word_embedding.build(sentences)
+        word_embedding.save(data_folder)
 
+    print ("Building sentence embedding...")
+    sentence_embedding = ConcatenationEmbedding()
+    sentence_embedding.build(word_embedding)
+
+    print ("Building features...")
     fb = FeatureBuilder()
-    fb.build(embedding, labels, sentences)
+    fb.build(sentence_embedding, labels, sentences)
     fb.save(data_folder)
     print "Processed features saved to " + fb.get_features_path(data_folder)
     print "{0} Labeled sentences".format(len(fb.labels))

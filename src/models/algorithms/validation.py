@@ -6,11 +6,12 @@ import numpy as np
 
 from src.data import make_dataset
 from src.features.build_features import FeatureBuilder, read_dataset
+from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 
-def test_cross_validation(data_folder, embedding, feature_builder,
+def test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
                           classifier, folds_count, **kwargs):
     labels, sentences = read_dataset(data_folder)
     folded_labels = np.array_split(np.array(labels, dtype=int), folds_count)
@@ -32,14 +33,17 @@ def test_cross_validation(data_folder, embedding, feature_builder,
         test_labels = folded_labels[fold]
         test_sentences = folded_sentences[fold]
 
-        # print("Building embedding...")
-        embedding.build(training_sentences)
+        # print("Building word embedding...")
+        word_embedding.build(training_sentences)
+
+        # print("Building sentence embedding...")
+        sentence_embedding.build(word_embedding)
 
         # print("Building featuers...")
-        feature_builder.build(embedding, training_labels, training_sentences)
+        feature_builder.build(sentence_embedding, training_labels, training_sentences)
 
         # print("Building classifier model...")
-        classifier.train(feature_builder.labels, feature_builder.features, embedding, **kwargs)
+        classifier.train(feature_builder.labels, feature_builder.features, sentence_embedding, **kwargs)
 
         # print("Making predictions...")
         successes = 0
@@ -63,22 +67,26 @@ def test_cross_validation(data_folder, embedding, feature_builder,
     return total_mean_result
 
 
-def test_with_self(data_folder, embedding, feature_builder, classifier, **kwargs):
+def test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, **kwargs):
     # train for whole training set and check accuracy of prediction on it
     labels, sentences = read_dataset(data_folder)
 
     print("." * 20)
     print("Testing predictions on the training set...")
 
-    # uncomment prints if more verbose comments are preffered
-    # print("Building embedding...")
-    embedding.build(sentences)
+    # uncomment prints if more verbose comments are preferred
+
+    # print("Building word embedding...")
+    word_embedding.build(sentences)
+
+    # print("Building sentence embedding...")
+    sentence_embedding.build(word_embedding)
 
     # print("Building features...")
-    feature_builder.build(embedding, labels, sentences)
+    feature_builder.build(sentence_embedding, labels, sentences)
 
     # print("Building classifier model...")
-    classifier.train(feature_builder.labels, feature_builder.features, embedding, **kwargs)
+    classifier.train(feature_builder.labels, feature_builder.features, sentence_embedding, **kwargs)
 
     # print("Making predictions...")
     successes = 0
@@ -98,7 +106,9 @@ if __name__ == "__main__":
     data_folder = "dataset1"
     folds_count = 5
 
-    embedding = Word2VecEmbedding()
+    word_embedding = Word2VecEmbedding()
+    sentence_embedding = ConcatenationEmbedding()
+
     feature_builder = FeatureBuilder()
     classifier = SvmAlgorithm()
 
@@ -116,8 +126,8 @@ if __name__ == "__main__":
         print("." * 20)
 
         # train on the whole training set and test on the training set (just for curiosity)
-        self_result = test_with_self(data_folder, embedding, feature_builder, classifier, C=c)
-        cross_result = test_cross_validation(data_folder, embedding, feature_builder, classifier, folds_count, C=c)
+        self_result = test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, C=c)
+        cross_result = test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, folds_count, C=c)
         self_results.append(self_result)
         cross_results.append(cross_result)
         if cross_result > best_cross_result:
