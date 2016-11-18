@@ -2,9 +2,10 @@
 Contains class FeatureBuilder for building feature set from given data set and word embedding
 """
 
-import numpy as np
-from src.data.make_dataset import *
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
+import src.data.make_dataset as make_dataset
+import os
+import numpy as np
 
 
 class FeatureBuilder(object):
@@ -15,21 +16,26 @@ class FeatureBuilder(object):
     """
 
     def __init__(self):
-        self.labels = []
-        self.features = []
+        self.labels = np.empty(0, dtype=np.uint8)
+        self.features = np.empty(0, dtype=float)
+        self.labels.flags.writeable = False
+        self.features.flags.writeable = False
 
     def build(self, sentence_embedding, labels, sentences):
         """
         :param sentence_embedding: instance of sentence embedding class implementing ISentenceEmbedding interface
-        :param labels: list of labels of sentences
-        :param sentences: list of sentences (as lists of words)
+        :param labels: a numpy vector of labels of sentences
+        :param sentences: a numpy matrix of sentences (rows = sentences, columns = words)
         """
-        training_set_size = len(labels)
         self.labels = labels
-        self.features = []
+        sentences_vectors_length = sentence_embedding.get_vector_length(sentences.shape[1])
+        self.features = np.empty((sentences.shape[0], sentences_vectors_length), dtype=float)
 
-        for i in xrange(training_set_size):
-            self.features.append(sentence_embedding[sentences[i]])
+        for i in xrange(sentences.shape[0]):
+            self.features[i] = sentence_embedding[sentences[i]]
+
+        self.labels.flags.writeable = False
+        self.features.flags.writeable = False
 
     def save(self, data_folder):
         """
@@ -56,10 +62,10 @@ if __name__ == '__main__':
     from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 
     data_folder = "dataset1"
-    data_file_path = get_processed_data_path(data_folder)
-    data_info = read_data_info(get_data_set_info_path(data_folder))
+    data_file_path = make_dataset.get_processed_data_path(data_folder)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 
-    labels, sentences = read_dataset(data_file_path, data_info)
+    labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
     word_embedding = Word2VecEmbedding()
 
     if word_embedding.saved_embedding_exists(data_folder):

@@ -66,7 +66,22 @@ def get_max_sentence_length(data_file_path):
     return reduce(lambda acc, x: max(acc, x), (sentence_length(line) for line in open(data_file_path, 'r')), 0)
 
 
-def sentence_to_word_vector(sentence, vector_length):
+def get_max_word_length(data_file_path):
+    """
+    Returns length of the longest word in file. Used to optimize arrays of strings.
+    :param data_file_path: absolute path to data file
+    :type data_file_path: string (path to a file)
+    :return length of the longest word in data set
+    """
+
+    def max_word_length(line):
+        keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
+        return reduce(lambda acc, word: max(acc, len(word)), keywords, 0)
+
+    return reduce(lambda acc, x: max(acc, x), (max_word_length(line) for line in open(data_file_path, 'r')), 0)
+
+
+def string_to_words_list(sentence, vector_length):
     keywords = re.compile('[a-zA-Z]+').findall(sentence)  # get all words as a list
     keywords = filter_words(keywords)  # filter out unnecessary words
     keywords = keywords[:vector_length]  # trim keywords length
@@ -99,7 +114,7 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     with open(output_file_path, 'w') as output_data_file:
         for line in open(data_file_path, 'r'):
             category = line.split(' ', 1)[0]
-            keywords = sentence_to_word_vector(line, vector_length)
+            keywords = string_to_words_list(line, vector_length)
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path
@@ -107,13 +122,20 @@ def make_dataset(data_file_path, output_file_path, vector_length):
 
 def read_dataset(data_file_path, data_info):
     vector_length = get_max_sentence_length(data_file_path)
+    max_word_length = get_max_word_length(data_file_path)
     data_set_size = data_info["Size"]
-    labels = []
-    sentences = []
-    for line in open(data_file_path, 'r'):
+
+    labels = np.empty(data_set_size, dtype=np.uint8)
+    sentences = np.empty((data_set_size, vector_length), dtype='|S{:d}'.format(max_word_length))
+
+    for i, line in enumerate(open(data_file_path, 'r')):
         label, rest = line.split(' ', 1)
-        labels.append(int(label))
-        sentences.append(sentence_to_word_vector(rest, vector_length))
+        labels[i] = int(label)
+        sentences[i] = string_to_words_list(rest, vector_length)
+
+    labels.flags.writeable = False
+    sentences.flags.writeable = False
+
     return labels, sentences
 
 

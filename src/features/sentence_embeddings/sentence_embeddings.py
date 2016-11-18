@@ -5,20 +5,25 @@ Contains classes for creating sentece embeddings based on given word embeddings
 from src.features.sentence_embeddings.isentence_embedding import ISentenceEmbedding
 import numpy as np
 
+from src.features.word_embeddings.iword_embedding import IWordEmbedding
+
 
 class ConcatenationEmbedding(ISentenceEmbedding):
     """
     Creates vector representation for senteces by simply concatenating word vectors from a given word embedding
     """
-
     def __init__(self):
         self.word_embedding = None
+        self.vector_length = 0
 
     def build(self, word_embedding):
         self.word_embedding = word_embedding
 
     def __getitem__(self, sentence):
         return np.concatenate(map(lambda word: self.word_embedding[word], sentence))
+
+    def get_vector_length(self, sentences_length):
+        return IWordEmbedding.target_vector_length * sentences_length
 
 
 class AverageEmbedding(ISentenceEmbedding):
@@ -40,3 +45,6 @@ class AverageEmbedding(ISentenceEmbedding):
         for i in xrange(vector_size):
             result[i] = sum(map(lambda w: w[i], word_vectors)) / words_count
         return result
+
+    def get_vector_length(self, sentences_length):
+        return IWordEmbedding.target_vector_length

@@ -29,3 +29,11 @@ class ISentenceEmbedding(object):
         :return: vector representation of the sentence, formatted as numpy vector of doubles
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def get_vector_length(self, sentences_length):
+        """
+        :param sentences_length: length of sentences in data set
+        :return: length of the vector representing embedded sentence
+        """
+        raise NotImplementedError

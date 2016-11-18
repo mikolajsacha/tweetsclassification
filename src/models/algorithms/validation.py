@@ -5,20 +5,27 @@ import itertools
 import numpy as np
 
 from src.data import make_dataset
-from src.features.build_features import FeatureBuilder, read_dataset
+from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
+
+
+def split(a, n):
+    """ Splits list a into n parts"""
+    k, m = len(a) / n, len(a) % n
+    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in xrange(n))
 
 
 def test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
                           classifier, folds_count, **kwargs):
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    labels, sentences = read_dataset(data_file_path, data_info)
 
-    folded_labels = np.array_split(np.array(labels, dtype=int), folds_count)
-    folded_sentences = np.array_split(np.array(sentences, dtype=object), folds_count)
+    labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
+
+    folded_labels = np.array_split(labels, folds_count)
+    folded_sentences = np.array_split(sentences, folds_count)
 
     # test accuracy for all folds combination
     total_successes = 0
@@ -30,8 +37,9 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
 
         # uncomment prints if more verbose comments are preffered
         # print("Slicing data set...")
-        training_labels = list(itertools.chain(*[folded_labels[i] for i in xrange(folds_count) if i != fold]))
-        training_sentences = list(itertools.chain(*[folded_sentences[i] for i in xrange(folds_count) if i != fold]))
+        training_labels = np.array(list(itertools.chain(*[folded_labels[i] for i in xrange(folds_count) if i != fold])))
+        training_sentences = np.array(
+            list(itertools.chain(*[folded_sentences[i] for i in xrange(folds_count) if i != fold])))
 
         test_labels = folded_labels[fold]
         test_sentences = folded_sentences[fold]
@@ -74,7 +82,7 @@ def test_with_self(data_folder, word_embedding, sentence_embedding, feature_buil
     # train for whole training set and check accuracy of prediction on it
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    labels, sentences = read_dataset(data_file_path, data_info)
+    labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
 
     print("." * 20)
     print("Testing predictions on the training set...")
@@ -143,5 +151,5 @@ if __name__ == "__main__":
     print ("Results of testing training set on itself and mean cross-validation results: ")
     for i, c in enumerate(tested_c_params):
         print (
-        "C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
+            "C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
     print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))
