@@ -7,6 +7,8 @@ import src.data.make_dataset as make_dataset
 import os
 import numpy as np
 
+from src.features.word_embeddings import word2vec_embedding
+
 
 class FeatureBuilder(object):
     """
@@ -66,7 +68,7 @@ if __name__ == '__main__':
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 
     labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
-    word_embedding = Word2VecEmbedding()
+    word_embedding = Word2VecEmbedding(word2vec_embedding.brown_text_corpus)
 
     if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")

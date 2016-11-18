@@ -7,6 +7,7 @@ import numpy as np
 from src.data import make_dataset
 from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
+from src.features.word_embeddings import word2vec_embedding
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
@@ -35,7 +36,7 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
         # print("." * 20)
         print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
 
-        # uncomment prints if more verbose comments are preffered
+        # uncomment prints if more verbose comments are preferred
         # print("Slicing data set...")
         training_labels = np.array(list(itertools.chain(*[folded_labels[i] for i in xrange(folds_count) if i != fold])))
         training_sentences = np.array(
@@ -64,7 +65,7 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
                 successes += 1
 
         set_length = len(test_labels)
-        print("Results in fold {0}: {1}/{2} successes ({3}%)" \
+        print("Results in fold {0}: {1}/{2} successes ({3}%)"
               .format(fold + 1, successes, set_length, successes / (1.0 * set_length) * 100))
 
         total_successes += successes
@@ -110,7 +111,7 @@ def test_with_self(data_folder, word_embedding, sentence_embedding, feature_buil
 
     set_length = len(labels)
     mean_result = successes / (1.0 * set_length) * 100
-    print("Results when testing on training set: {0}/{1} successes ({2}%)" \
+    print("Results when testing on training set: {0}/{1} successes ({2}%)"
           .format(successes, set_length, mean_result))
     return mean_result
 
@@ -119,7 +120,7 @@ if __name__ == "__main__":
     data_folder = "dataset1"
     folds_count = 5
 
-    word_embedding = Word2VecEmbedding()
+    word_embedding = Word2VecEmbedding(word2vec_embedding.brown_text_corpus)
     sentence_embedding = ConcatenationEmbedding()
 
     feature_builder = FeatureBuilder()
@@ -150,6 +151,6 @@ if __name__ == "__main__":
 
     print ("Results of testing training set on itself and mean cross-validation results: ")
     for i, c in enumerate(tested_c_params):
-        print (
-            "C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
+        print ("C = {:10.2f}: with self: {:4.2f}%, cross-validation: {:4.2f}%"
+               .format(c, self_results[i], cross_results[i]))
     print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))

@@ -10,11 +10,14 @@ from iword_embedding import IWordEmbedding
 from src.data.make_dataset import get_processed_data_path
 from nltk.corpus import brown
 
+brown_text_corpus = iter(brown.sents())
+
 
 class Word2VecEmbedding(IWordEmbedding):
     visualization_sample_size = 100
 
-    def __init__(self):
+    def __init__(self, text_corpus):
+        self.text_corpus = text_corpus
         self.model = {}
         self.preprocess = lambda x: x
         self.pca = PCA(n_components=IWordEmbedding.target_vector_length)
@@ -45,9 +48,8 @@ class Word2VecEmbedding(IWordEmbedding):
         self.preprocess = lambda vector: self.pca.transform(vector)
 
     def build(self, sentences):
-        text_corpus = iter(brown.sents())
         vector_length = IWordEmbedding.initial_vector_length
-        self.model = Word2Vec(itertools.chain(text_corpus, sentences), size=vector_length, min_count=1)
+        self.model = Word2Vec(itertools.chain(self.text_corpus, sentences), size=vector_length, min_count=1)
         self.model.init_sims(replace=True)  # finalize the model
         self.build_preprocess_transformation(sentences)
 
@@ -75,7 +77,7 @@ if __name__ == "__main__":
             break
 
     print("Building embedding...")
-    model = Word2VecEmbedding()
+    model = Word2VecEmbedding(brown_text_corpus)
     model.build_from_data_set(get_processed_data_path(command))
     print("Saving model to a file...")
     model.save(model.get_embedding_model_path(command))
