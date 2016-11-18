@@ -103,20 +103,3 @@ class IWordEmbedding(object):
             for line in f:
                 sentence = line.split(' ')[1]
                 yield map(lambda word: word.rstrip(), sentence.split(','))
-
-    def build_from_data_set(self, data_file_path):
-        """
-        Loads model from a processed data set
-        :param data_file_path: absolute path to processed data
-        :type data_file_path: string (file path)
-        """
-        sentences = list(self.data_file_to_sentences(data_file_path))
-        self.build(sentences)
-
-    def sentence_to_vector(self, sentence):
-        """
-        :param sentence: a sentence (list of words)
-        :type sentence: list of strings (words)
-        :return: numpy vector build as concatenation of vectors representing sentence
-        """
-        return np.concatenate(map(lambda word: self[word], sentence))

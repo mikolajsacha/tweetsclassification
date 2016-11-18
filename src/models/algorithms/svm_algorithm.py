@@ -46,13 +46,11 @@ if __name__ == '__main__':
 
     print ("Building sentence embedding...")
     sentence_embedding = ConcatenationEmbedding()
-    sentence_embedding.build(word_embedding)
+    sentence_embedding.build(word_embedding, sentences)
 
     print ("Building features...")
     fb = build_features.FeatureBuilder()
     fb.build(sentence_embedding, labels, sentences)
-
-    sentence_length = make_dataset.get_max_sentence_length(data_path)
 
     svmAlg = SvmAlgorithm()
     svmAlg.train(fb.labels, fb.features, sentence_embedding)
@@ -60,5 +58,5 @@ if __name__ == '__main__':
         command = raw_input("Type sentence to test model or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":
             break
-        sentence = make_dataset.string_to_words_list(command, sentence_length)
+        sentence = make_dataset.string_to_words_list(command)
         print svmAlg.predict(sentence)

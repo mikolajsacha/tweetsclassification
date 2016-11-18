@@ -12,11 +12,13 @@ class ISentenceEmbedding(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def build(self, word_embedding):
+    def build(self, word_embedding, sentences):
         """
         Generates sentence embedding for a given word embedding
+        :param sentences: a vector of sentences
         :param word_embedding: word embedding, for which sentence embedding will be built
         :type word_embedding: an instance of class implementing IWordEmbedding interface
+        :type sentences: a numpy object vector (vector of lists)
         """
         raise NotImplementedError
 
@@ -31,9 +33,5 @@ class ISentenceEmbedding(object):
         raise NotImplementedError
 
     @abstractmethod
-    def get_vector_length(self, sentences_length):
-        """
-        :param sentences_length: length of sentences in data set
-        :return: length of the vector representing embedded sentence
-        """
+    def get_vector_length(self):
         raise NotImplementedError

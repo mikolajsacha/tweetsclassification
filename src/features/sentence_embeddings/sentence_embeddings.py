@@ -13,15 +13,20 @@ class ConcatenationEmbedding(ISentenceEmbedding):
     def __init__(self):
         self.word_embedding = None
         self.vector_length = 0
+        self.sentences_length = 0
+        self.max_sentence_length = 0
 
-    def build(self, word_embedding):
+    def build(self, word_embedding, sentences):
         self.word_embedding = word_embedding
+        self.max_sentence_length = reduce(lambda acc, x: max(acc, len(x)), sentences, 0)
+        self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
 
     def __getitem__(self, sentence):
-        return np.concatenate(map(lambda word: self.word_embedding[word], sentence))
+        empty_vectors = self.max_sentence_length - len(sentence)
+        return np.concatenate(map(lambda word: self.word_embedding[word], np.append(sentence, ([''] * empty_vectors))))
 
-    def get_vector_length(self, sentences_length):
-        return IWordEmbedding.target_vector_length * sentences_length
+    def get_vector_length(self):
+        return self.vector_length
 
 
 class AverageEmbedding(ISentenceEmbedding):
@@ -32,7 +37,7 @@ class AverageEmbedding(ISentenceEmbedding):
     def __init__(self):
         self.word_embedding = None
 
-    def build(self, word_embedding):
+    def build(self, word_embedding, sentences):
         self.word_embedding = word_embedding
 
     def __getitem__(self, sentence):
@@ -44,5 +49,5 @@ class AverageEmbedding(ISentenceEmbedding):
             result[i] = sum(map(lambda w: w[i], word_vectors)) / words_count
         return result
 
-    def get_vector_length(self, sentences_length):
+    def get_vector_length(self):
         return IWordEmbedding.target_vector_length

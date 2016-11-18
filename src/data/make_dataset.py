@@ -10,10 +10,16 @@ and trimming/extending word vectors to given length.
 import re
 import os
 import json
+import nltk
 import numpy as np
-from nltk.corpus import stopwords
 
-cached_stopwords = set(stopwords.words("english"))
+while True:
+    try:
+        cached_stopwords = set(nltk.corpus.stopwords.words("english"))
+        break
+    except LookupError:
+        print ("Please download 'stopwords' using NTLK download manager")
+        nltk.download()
 
 
 def get_data_set_info_path(data_folder):
@@ -52,49 +58,14 @@ def filter_words(sentence):
     return filter(lambda word: word not in cached_stopwords, sentence)  # filter out stop words
 
 
-def get_max_sentence_length(data_file_path):
-    """
-    :param data_file_path: absolute path to data file
-    :type data_file_path: string (path to a file)
-    :return length (in words count) of the longest sentence from data set
-    """
-
-    def sentence_length(line):
-        keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
-        return len(filter_words(keywords))  # filter out unnecessary words and count them
-
-    return reduce(lambda acc, x: max(acc, x), (sentence_length(line) for line in open(data_file_path, 'r')), 0)
-
-
-def get_max_word_length(data_file_path):
-    """
-    Returns length of the longest word in file. Used to optimize arrays of strings.
-    :param data_file_path: absolute path to data file
-    :type data_file_path: string (path to a file)
-    :return length of the longest word in data set
-    """
-
-    def max_word_length(line):
-        keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
-        return reduce(lambda acc, word: max(acc, len(word)), keywords, 0)
-
-    return reduce(lambda acc, x: max(acc, x), (max_word_length(line) for line in open(data_file_path, 'r')), 0)
-
-
-def string_to_words_list(sentence, vector_length):
+def string_to_words_list(sentence):
     keywords = re.compile('[a-zA-Z]+').findall(sentence)  # get all words as a list
     keywords = filter_words(keywords)  # filter out unnecessary words
-    keywords = keywords[:vector_length]  # trim keywords length
     keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
-
-    #  if vector is too short, fill with empty words
-    for i in xrange(len(keywords), vector_length):
-        keywords.append('')
-
     return keywords
 
 
-def make_dataset(data_file_path, output_file_path, vector_length):
+def make_dataset(data_file_path, output_file_path):
     """
     Generates files with data represented as vectors of words of fixed length.
 
@@ -103,7 +74,6 @@ def make_dataset(data_file_path, output_file_path, vector_length):
 
     :param data_file_path: relative path to file with data set
     :param output_file_path: relative path to which processed data should be written
-    :param vector_length: desired length of each data set entry (e.g. 5)
     :type data_file_path: string (path to data file)
     :type output_file_path: int (non-negative)
     """
@@ -114,24 +84,22 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     with open(output_file_path, 'w') as output_data_file:
         for line in open(data_file_path, 'r'):
             category = line.split(' ', 1)[0]
-            keywords = string_to_words_list(line, vector_length)
+            keywords = string_to_words_list(line)
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path
 
 
 def read_dataset(data_file_path, data_info):
-    vector_length = get_max_sentence_length(data_file_path)
-    max_word_length = get_max_word_length(data_file_path)
     data_set_size = data_info["Size"]
 
     labels = np.empty(data_set_size, dtype=np.uint8)
-    sentences = np.empty((data_set_size, vector_length), dtype='|S{:d}'.format(max_word_length))
+    sentences = np.empty(data_set_size, dtype=object)
 
     for i, line in enumerate(open(data_file_path, 'r')):
         label, rest = line.split(' ', 1)
         labels[i] = int(label)
-        sentences[i] = string_to_words_list(rest, vector_length)
+        sentences[i] = string_to_words_list(rest)
 
     labels.flags.writeable = False
     sentences.flags.writeable = False
@@ -160,24 +128,4 @@ if __name__ == "__main__":
             print "Path {0} does not exist".format(input_file_path)
 
         else:
-            length = 0
-            while length < 1:
-                length_input = raw_input("Type desired vector length (integer greater than zero) or 'auto' " +
-                                         "to use the length of the longest sentence: ")
-                if length_input.lower() == "auto":
-                    length = get_max_sentence_length(input_file_path)
-                    print("Use {0} as the vector length".format(length))
-                    make_dataset(input_file_path, output_file_path, length)
-                    break;
-
-                try:
-                    length = int(length_input)
-                except ValueError:
-                    print "Vector length must be an integer"
-                    continue
-
-                if length < 1:
-                    print "Vector length must be greather than zero"
-                    continue
-
-                make_dataset(input_file_path, get_processed_data_path(command), length)
+            make_dataset(input_file_path, get_processed_data_path(command))

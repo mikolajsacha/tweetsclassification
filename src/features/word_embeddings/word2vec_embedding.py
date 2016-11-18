@@ -53,9 +53,9 @@ class Word2VecEmbedding(IWordEmbedding):
         self.build_preprocess_transformation(sentences)
 
     def __getitem__(self, word):
-        if word in self.model:
-            return self.preprocess(self.model[[word]])[0]
-        return self.preprocess(self.model[['']])[0]
+        if word not in self.model or word == '':
+            return [0.0] * IWordEmbedding.target_vector_length
+        return self.preprocess(self.model[[word]])[0]
 
     def get_embedding_model_path(self, data_folder):
         return IWordEmbedding.get_embedding_model_path(data_folder) + '\\word2vec'
@@ -75,9 +75,12 @@ if __name__ == "__main__":
         else:
             break
 
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(command))
+    labels, sentences = make_dataset.read_dataset(input_file_path, data_info)
+
     print("Building embedding...")
     model = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
-    model.build_from_data_set(make_dataset.get_processed_data_path(command))
+    model.build(sentences)
     print("Saving model to a file...")
     model.save(model.get_embedding_model_path(command))
     print "Model built and saved to " + model.get_embedding_model_path(command)

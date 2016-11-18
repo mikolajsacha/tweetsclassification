@@ -30,7 +30,7 @@ class FeatureBuilder(object):
         :param sentences: a numpy matrix of sentences (rows = sentences, columns = words)
         """
         self.labels = labels
-        sentences_vectors_length = sentence_embedding.get_vector_length(sentences.shape[1])
+        sentences_vectors_length = sentence_embedding.get_vector_length()
         self.features = np.empty((sentences.shape[0], sentences_vectors_length), dtype=float)
 
         for i in xrange(sentences.shape[0]):
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     print ("Building sentence embedding...")
     sentence_embedding = ConcatenationEmbedding()
-    sentence_embedding.build(word_embedding)
+    sentence_embedding.build(word_embedding, sentences)
 
     print ("Building features...")
     fb = FeatureBuilder()
