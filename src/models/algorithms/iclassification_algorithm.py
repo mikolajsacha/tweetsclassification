@@ -12,7 +12,7 @@ class IClassificationAlgorithm(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def __init__(self, labels, features, embedding, sentence_length):
+    def train(self, labels, features, embedding, sentence_length):
         """
         Generates model for predicting categories using specific method
         :param labels: list of labels (categories) of sentences

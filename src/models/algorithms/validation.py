@@ -10,13 +10,11 @@ from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 
-def test_cross_validation(data_folder, embedding_class, features_builder_class,
-                          classification_class, folds_count, **kwargs):
+def test_cross_validation(data_folder, embedding, feature_builder,
+                          classifier, folds_count, **kwargs):
     labels, sentences = read_dataset(data_folder)
     folded_labels = np.array_split(np.array(labels, dtype=int), folds_count)
     folded_sentences = np.array_split(np.array(sentences, dtype=object), folds_count)
-
-    s_length = make_dataset.get_max_sentence_length(data_folder)
 
     # test accuracy for all folds combination
     total_successes = 0
@@ -33,14 +31,15 @@ def test_cross_validation(data_folder, embedding_class, features_builder_class,
 
         test_labels = folded_labels[fold]
         test_sentences = folded_sentences[fold]
-        # print("Building embedding...")
 
-        embedding = embedding_class()
+        # print("Building embedding...")
         embedding.build(training_sentences)
 
-        fb = features_builder_class(embedding, training_labels, training_sentences)
+        # print("Building featuers...")
+        feature_builder.build(embedding, training_labels, training_sentences)
+
         # print("Building classifier model...")
-        classifier = classification_class(fb.labels, fb.features, embedding, s_length, **kwargs)
+        classifier.train(feature_builder.labels, feature_builder.features, embedding, **kwargs)
 
         # print("Making predictions...")
         successes = 0
@@ -64,22 +63,22 @@ def test_cross_validation(data_folder, embedding_class, features_builder_class,
     return total_mean_result
 
 
-def test_with_self(data_folder, embedding_class, features_builder_class, classification_class, **kwargs):
+def test_with_self(data_folder, embedding, feature_builder, classifier, **kwargs):
     # train for whole training set and check accuracy of prediction on it
     labels, sentences = read_dataset(data_folder)
-    s_length = make_dataset.get_max_sentence_length(data_folder)
 
     print("." * 20)
     print("Testing predictions on the training set...")
 
     # uncomment prints if more verbose comments are preffered
     # print("Building embedding...")
-    embedding = embedding_class()
     embedding.build(sentences)
 
-    feature_builder = features_builder_class(embedding, labels, sentences)
+    # print("Building features...")
+    feature_builder.build(embedding, labels, sentences)
+
     # print("Building classifier model...")
-    classifier = classification_class(feature_builder.labels, feature_builder.features, embedding, s_length, **kwargs)
+    classifier.train(feature_builder.labels, feature_builder.features, embedding, **kwargs)
 
     # print("Making predictions...")
     successes = 0
@@ -99,6 +98,10 @@ if __name__ == "__main__":
     data_folder = "dataset1"
     folds_count = 5
 
+    embedding = Word2VecEmbedding()
+    feature_builder = FeatureBuilder()
+    classifier = SvmAlgorithm()
+
     best_cross_result = 0.0
     best_c_param = None
 
@@ -113,10 +116,8 @@ if __name__ == "__main__":
         print("." * 20)
 
         # train on the whole training set and test on the training set (just for curiosity)
-        self_result = test_with_self(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, C=c)
-
-        cross_result = test_cross_validation(data_folder, Word2VecEmbedding, FeatureBuilder, SvmAlgorithm, folds_count, \
-                                             C=c)
+        self_result = test_with_self(data_folder, embedding, feature_builder, classifier, C=c)
+        cross_result = test_cross_validation(data_folder, embedding, feature_builder, classifier, folds_count, C=c)
         self_results.append(self_result)
         cross_results.append(cross_result)
         if cross_result > best_cross_result:

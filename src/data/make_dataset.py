@@ -10,6 +10,7 @@ and trimming/extending word vectors to given length.
 import re
 import os
 from nltk.corpus import stopwords
+import nltk
 
 cached_stopwords = set(stopwords.words("english"))
 

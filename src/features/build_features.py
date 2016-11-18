@@ -4,7 +4,6 @@ Contains class FeatureBuilder for building feature set from given data set and w
 
 import numpy as np
 from src.data.make_dataset import *
-from src.features.word_embeddings.iword_embedding import IWordEmbedding
 
 
 class FeatureBuilder(object):
@@ -13,14 +12,17 @@ class FeatureBuilder(object):
     Field "labels" is a list of categories of sentences
     Field "features" is a features matrix of shape (training set sixe, target_vector_length)
     """
-    def __init__(self, embedding, labels, sentences):
+
+    def __init__(self):
+        self.labels = []
+        self.features = []
+
+    def build(self, embedding, labels, sentences):
         """
         :param embedding: instance of word embedding class implementing IWordEmbedding interface
         :param labels: list of labels of sentences
         :param sentences: list of sentences (as lists of words)
         """
-
-        print ("Building features...")
         training_set_size = len(labels)
         self.labels = labels
         self.features = []
@@ -28,21 +30,22 @@ class FeatureBuilder(object):
         for i in xrange(training_set_size):
             self.features.append(embedding.sentence_to_vector(sentences[i]))
 
-    @staticmethod
-    def get_features_path(data_folder):
-        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(data_folder))
-
     def save(self, data_folder):
         """
         Saves features set in human-readable format in "models" folder
         """
-        output_path = self.get_features_path(data_folder)
+        output_path = FeatureBuilder.get_features_path(data_folder)
         if not os.path.exists(os.path.dirname(output_path)):
             os.makedirs(os.path.dirname(output_path))
 
         with open(output_path, 'w') as f:
             for i, label in enumerate(self.labels):
                 f.write("{0} {1}\n".format(label, ','.join(map(lambda val: str(val), self.features[i]))))
+
+    @staticmethod
+    def get_features_path(data_folder):
+        return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(data_folder))
+
 
 
 if __name__ == '__main__':
@@ -65,7 +68,8 @@ if __name__ == '__main__':
         embedding.build(sentences)
         embedding.save(data_folder)
 
-    fb = FeatureBuilder(embedding, labels, sentences )
+    fb = FeatureBuilder()
+    fb.build(embedding, labels, sentences)
     fb.save(data_folder)
     print "Processed features saved to " + fb.get_features_path(data_folder)
     print "{0} Labeled sentences".format(len(fb.labels))

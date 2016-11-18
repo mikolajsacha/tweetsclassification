@@ -14,11 +14,10 @@ class SvmAlgorithm(IClassificationAlgorithm):
     Class for building model using Support Vector Machine method
     """
 
-    def __init__(self, labels, features, embedding, sentence_length, **kwargs):
+    def train(self, labels, features, embedding, **kwargs):
         self.embedding = embedding
         self.clf = svm.SVC(**kwargs)
         self.clf.fit(features, labels)
-        self.sentence_length = sentence_length
 
     def predict(self, sentence):
         return int(self.clf.predict([self.embedding.sentence_to_vector(sentence)])[0])
@@ -41,12 +40,14 @@ if __name__ == '__main__':
         embedding.build(sentences)
         embedding.save(data_folder)
 
-    fb = build_features.FeatureBuilder(embedding, labels, sentences)
-    sentence_length = build_features.get_max_sentence_length("dataset1")
-    svmAlg = SvmAlgorithm(fb.labels, fb.features, embedding, sentence_length)
+    fb = build_features.FeatureBuilder()
+    fb.build(embedding, labels, sentences)
+    sentence_length = build_features.get_max_sentence_length(data_folder)
+    svmAlg = SvmAlgorithm()
+    svmAlg.train(fb.labels, fb.features, embedding)
     while True:
         command = raw_input("Type sentence to test model or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":
             break
-        sentence = build_features.sentence_to_word_vector(command, svmAlg.sentence_length)
+        sentence = build_features.sentence_to_word_vector(command, sentence_length)
         print svmAlg.predict(sentence)
