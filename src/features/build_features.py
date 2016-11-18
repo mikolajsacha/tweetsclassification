@@ -4,9 +4,10 @@ Contains class FeatureBuilder for building feature set from given data set and w
 
 import os
 import numpy as np
+from src.data import make_dataset
+from src.features.word_embeddings.iword_embedding import TextCorpora
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
-import src.data.make_dataset as make_dataset
-from src.features.word_embeddings import word2vec_embedding
 
 
 class FeatureBuilder(object):
@@ -60,14 +61,12 @@ if __name__ == '__main__':
     Main method will be for testing if FeatureBuilder works properly
     """
 
-    from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
-
     data_folder = "dataset1"
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 
     labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
-    word_embedding = Word2VecEmbedding(word2vec_embedding.brown_text_corpus)
+    word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
 
     if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")

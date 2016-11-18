@@ -4,13 +4,10 @@ Contains class representing Word2Vec embedding, implementing IWordEmbedding inte
 import os
 import itertools
 import multiprocessing
-import nltk
 from gensim.models import Word2Vec
 from sklearn.decomposition import PCA
-from iword_embedding import IWordEmbedding
 from src.data import make_dataset
-
-brown_text_corpus = iter(nltk.corpus.brown.sents())
+from iword_embedding import IWordEmbedding, TextCorpora
 
 
 class Word2VecEmbedding(IWordEmbedding):
@@ -79,7 +76,7 @@ if __name__ == "__main__":
             break
 
     print("Building embedding...")
-    model = Word2VecEmbedding(brown_text_corpus)
+    model = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
     model.build_from_data_set(make_dataset.get_processed_data_path(command))
     print("Saving model to a file...")
     model.save(model.get_embedding_model_path(command))

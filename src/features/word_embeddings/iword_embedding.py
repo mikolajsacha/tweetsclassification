@@ -3,7 +3,28 @@ Contains basic interface (abstract base class) for word embeddings.
 """
 import os
 import numpy as np
+import nltk
 from abc import ABCMeta, abstractmethod
+
+
+class TextCorpora(object):
+    """ Utility class for downloading text corpora using NLTK download manager and storing them in one place """
+    corpuses = {}
+
+    @staticmethod
+    def get_corpus(key):
+        if key not in TextCorpora.corpuses:
+            text_corpus_downloaded = False
+            while not text_corpus_downloaded:
+                try:
+                    TextCorpora.corpuses[key] = iter(eval("nltk.corpus.{0}.sents()".format(key)))
+                    text_corpus_downloaded = True
+                except LookupError:
+                    print ("Please use NLTK manager to download text corpus \"{0}\"".format(key))
+                    nltk.download()
+                except AttributeError:
+                    raise KeyError("There is no NLTK text corpus keyed \"{0}\"".format(key))
+        return TextCorpora.corpuses[key]
 
 
 class IWordEmbedding(object):
@@ -99,4 +120,3 @@ class IWordEmbedding(object):
         :return: numpy vector build as concatenation of vectors representing sentence
         """
         return np.concatenate(map(lambda word: self[word], sentence))
-

@@ -5,7 +5,7 @@ import itertools
 import numpy as np
 
 from src.data import make_dataset
-from src.features.word_embeddings import word2vec_embedding
+from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.build_features import FeatureBuilder
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     data_folder = "dataset1"
     folds_count = 5
 
-    word_embedding = Word2VecEmbedding(word2vec_embedding.brown_text_corpus)
+    word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
     sentence_embedding = sentence_embeddings.AverageEmbedding()
 
     feature_builder = FeatureBuilder()

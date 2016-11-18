@@ -6,7 +6,7 @@ from sklearn import svm
 from src.features import build_features
 from src.data import make_dataset
 from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
-from src.features.word_embeddings import word2vec_embedding
+from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.iclassification_algorithm import IClassificationAlgorithm
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
     labels, sentences = make_dataset.read_dataset(data_path, data_info)
-    word_embedding = Word2VecEmbedding(word2vec_embedding.brown_text_corpus)
+    word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
 
     if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")
