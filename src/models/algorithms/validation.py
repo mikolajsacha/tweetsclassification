@@ -12,12 +12,6 @@ from src.features.build_features import FeatureBuilder
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 
-def split(a, n):
-    """ Splits list a into n parts"""
-    k, m = len(a) / n, len(a) % n
-    return (a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in xrange(n))
-
-
 def test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
                           classifier, folds_count, **kwargs):
     data_file_path = make_dataset.get_processed_data_path(data_folder)
