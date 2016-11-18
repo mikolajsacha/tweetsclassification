@@ -48,7 +48,6 @@ class FeatureBuilder(object):
         return os.path.join(os.path.dirname(__file__), '..\\..\\models\\features\\{0}_features.txt'.format(data_folder))
 
 
-
 if __name__ == '__main__':
     """
     Main method will be for testing if FeatureBuilder works properly
@@ -57,17 +56,20 @@ if __name__ == '__main__':
     from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 
     data_folder = "dataset1"
-    data_file_path = get_external_data_path(data_folder)
-    labels, sentences = read_dataset(data_folder)
+    data_file_path = get_processed_data_path(data_folder)
+    data_info = read_data_info(get_data_set_info_path(data_folder))
+
+    labels, sentences = read_dataset(data_file_path, data_info)
     word_embedding = Word2VecEmbedding()
 
     if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")
-        word_embedding.load(data_folder, sentences)
+        word_embedding.load(word_embedding.get_embedding_model_path(data_folder), sentences)
     else:
         print ("Building word embedding...")
         word_embedding.build(sentences)
-        word_embedding.save(data_folder)
+        print ("Saving word embedding...")
+        word_embedding.save(word_embedding.get_embedding_model_path(data_folder))
 
     print ("Building sentence embedding...")
     sentence_embedding = ConcatenationEmbedding()
@@ -79,5 +81,4 @@ if __name__ == '__main__':
     fb.save(data_folder)
     print "Processed features saved to " + fb.get_features_path(data_folder)
     print "{0} Labeled sentences".format(len(fb.labels))
-    print "Labels: " + str(fb.labels)
     print "Features matrix shape: {0} * {1}".format(len(fb.features), len(fb.features[0]))

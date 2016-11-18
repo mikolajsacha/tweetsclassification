@@ -30,16 +30,18 @@ if __name__ == '__main__':
     """
 
     data_folder = "dataset1"
-    labels, sentences = make_dataset.read_dataset(data_folder)
+    data_path = make_dataset.get_processed_data_path(data_folder)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    labels, sentences = make_dataset.read_dataset(data_path, data_info)
     word_embedding = Word2VecEmbedding()
 
     if word_embedding.saved_embedding_exists(data_folder):
         print ("Using existing word embedding.")
-        word_embedding.load(data_folder, sentences)
+        word_embedding.load(word_embedding.get_embedding_model_path(data_folder), sentences)
     else:
         print ("Building word embedding...")
         word_embedding.build(sentences)
-        word_embedding.save(data_folder)
+        word_embedding.save(word_embedding.get_embedding_model_path(data_folder))
 
     print ("Building sentence embedding...")
     sentence_embedding = ConcatenationEmbedding()
@@ -49,7 +51,7 @@ if __name__ == '__main__':
     fb = build_features.FeatureBuilder()
     fb.build(sentence_embedding, labels, sentences)
 
-    sentence_length = build_features.get_max_sentence_length(data_folder)
+    sentence_length = build_features.get_max_sentence_length(data_path)
 
     svmAlg = SvmAlgorithm()
     svmAlg.train(fb.labels, fb.features, sentence_embedding)

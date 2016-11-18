@@ -23,14 +23,13 @@ class Word2VecEmbedding(IWordEmbedding):
         embedding_file_path = self.get_embedding_model_path(data_folder)
         return path.isfile(embedding_file_path)
 
-    def save(self, data_folder):
-        output_path = self.get_embedding_model_path(data_folder)
+    def save(self, output_path):
         if not path.exists(path.dirname(output_path)):
             makedirs(path.dirname(output_path))
         self.model.save(output_path)
 
-    def load(self, data_folder, sentences):
-        self.model = Word2Vec.load(self.get_embedding_model_path(data_folder))
+    def load(self, data_path, sentences):
+        self.model = Word2Vec.load(data_path)
         self.build_preprocess_transformation(sentences)
 
     def build_preprocess_transformation(self, training_set_sentences):
@@ -75,11 +74,11 @@ if __name__ == "__main__":
         else:
             break
 
-    print("Building model...")
+    print("Building embedding...")
     model = Word2VecEmbedding()
-    model.build_from_data_set(command)
+    model.build_from_data_set(get_processed_data_path(command))
     print("Saving model to a file...")
-    model.save(command)
+    model.save(model.get_embedding_model_path(command))
     print "Model built and saved to " + model.get_embedding_model_path(command)
     while True:
         command = raw_input("Type words to test embedding or 'quit' to exit: ")

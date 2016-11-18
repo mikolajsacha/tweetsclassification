@@ -13,7 +13,10 @@ from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 def test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
                           classifier, folds_count, **kwargs):
-    labels, sentences = read_dataset(data_folder)
+    data_file_path = make_dataset.get_processed_data_path(data_folder)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    labels, sentences = read_dataset(data_file_path, data_info)
+
     folded_labels = np.array_split(np.array(labels, dtype=int), folds_count)
     folded_sentences = np.array_split(np.array(sentences, dtype=object), folds_count)
 
@@ -69,7 +72,9 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
 
 def test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, **kwargs):
     # train for whole training set and check accuracy of prediction on it
-    labels, sentences = read_dataset(data_folder)
+    data_file_path = make_dataset.get_processed_data_path(data_folder)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    labels, sentences = read_dataset(data_file_path, data_info)
 
     print("." * 20)
     print("Testing predictions on the training set...")
@@ -127,7 +132,8 @@ if __name__ == "__main__":
 
         # train on the whole training set and test on the training set (just for curiosity)
         self_result = test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, C=c)
-        cross_result = test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, folds_count, C=c)
+        cross_result = test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
+                                             classifier, folds_count, C=c)
         self_results.append(self_result)
         cross_results.append(cross_result)
         if cross_result > best_cross_result:
@@ -136,5 +142,6 @@ if __name__ == "__main__":
 
     print ("Results of testing training set on itself and mean cross-validation results: ")
     for i, c in enumerate(tested_c_params):
-        print ("C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
+        print (
+        "C = {:8d}: with self: {:4.2f}%, cross-validation: {:4.2f}%".format(c, self_results[i], cross_results[i]))
     print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))

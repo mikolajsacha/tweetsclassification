@@ -2,7 +2,6 @@
 Contains basic interface (abstract base class) for classification algorithms
 """
 from abc import ABCMeta, abstractmethod
-import json
 
 
 class IClassificationAlgorithm(object):
@@ -35,9 +34,3 @@ class IClassificationAlgorithm(object):
         :return: list of pairs (category, probability)
         """
         raise NotImplementedError
-
-    @staticmethod
-    def read_data_info(data_set_info_path):
-        with open(data_set_info_path) as data_file:
-            return json.load(data_file)
-

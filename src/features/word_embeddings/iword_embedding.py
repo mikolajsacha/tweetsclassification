@@ -34,21 +34,21 @@ class IWordEmbedding(object):
         raise NotImplementedError
 
     @abstractmethod
-    def save(self, data_folder):
+    def save(self, output_path):
         """
-        Saves current model to a file located in proper direcotry
-        :param data_folder: name of folder of data set (e. g. 'dataset1')
-        :type data_folder: string (folder name)
+        Saves current embedding to a file located in proper direcotry
+        :param output_path: absolute path to file where embedding should be saved
+        :type output_path: string (file path)
         """
         raise NotImplementedError
 
     @abstractmethod
-    def load(self, data_folder, sentences):
+    def load(self, data_path, sentences):
         """
         Loads model from a file locaten in a proper directory for data_folder name
-        :param data_folder: name of folder of data set (e. g. 'dataset1')
+        :param data_path: absolute path to a file with saved embedding
         :param sentences: list of training set sentences (to build preprocessing transformation)
-        :type data_folder: string (folder name)
+        :type data_path: string (file path)
         :type sentences: list of lists of strings (words)
         """
         raise NotImplementedError
@@ -84,13 +84,12 @@ class IWordEmbedding(object):
                 sentence = line.split(' ')[1]
                 yield map(lambda word: word.rstrip(), sentence.split(','))
 
-    def build_from_data_set(self, data_folder):
+    def build_from_data_set(self, data_file_path):
         """
-        Loads model from a processed data set in given data folder
-        :param data_folder: name of folder of data set (e. g. 'dataset1')
-        :type data_folder: string (folder name)
+        Loads model from a processed data set
+        :param data_file_path: absolute path to processed data
+        :type data_file_path: string (file path)
         """
-        data_file_path = get_processed_data_path(data_folder)
         sentences = list(self.data_file_to_sentences(data_file_path))
         self.build(sentences)
 

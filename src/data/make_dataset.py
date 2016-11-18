@@ -10,6 +10,7 @@ and trimming/extending word vectors to given length.
 import re
 import os
 from nltk.corpus import stopwords
+import json
 import numpy as np
 
 cached_stopwords = set(stopwords.words("english"))
@@ -51,13 +52,12 @@ def filter_words(sentence):
     return filter(lambda word: word not in cached_stopwords, sentence)  # filter out stop words
 
 
-def get_max_sentence_length(data_folder):
+def get_max_sentence_length(data_file_path):
     """
-    :param data_folder: name of data folder, e.g. 'dataset1'
-    :type data_folder: string (path to a folder)
+    :param data_file_path: absolute path to data file
+    :type data_file_path: string (path to a file)
     :return length (in words count) of the longest sentence from data set
     """
-    data_file_path = get_external_data_path(data_folder)
 
     def sentence_length(line):
         keywords = re.compile('[a-zA-Z]+').findall(line)  # get all words as a list
@@ -105,9 +105,9 @@ def make_dataset(data_file_path, output_file_path, vector_length):
     print "Processed data written to " + output_file_path
 
 
-def read_dataset(data_folder):
-    data_file_path = get_external_data_path(data_folder)
-    vector_length = get_max_sentence_length(data_folder)
+def read_dataset(data_file_path, data_info):
+    vector_length = get_max_sentence_length(data_file_path)
+    data_set_size = data_info["Size"]
     labels = []
     sentences = []
     for line in open(data_file_path, 'r'):
@@ -115,6 +115,11 @@ def read_dataset(data_folder):
         labels.append(int(label))
         sentences.append(sentence_to_word_vector(rest, vector_length))
     return labels, sentences
+
+
+def read_data_info(data_set_info_path):
+    with open(data_set_info_path) as data_file:
+        return json.load(data_file)
 
 
 if __name__ == "__main__":
@@ -127,6 +132,7 @@ if __name__ == "__main__":
             break
 
         input_file_path = get_external_data_path(command)
+        output_file_path = get_processed_data_path(command)
 
         if not os.path.isfile(input_file_path):
             print "Path {0} does not exist".format(input_file_path)
@@ -137,9 +143,9 @@ if __name__ == "__main__":
                 length_input = raw_input("Type desired vector length (integer greater than zero) or 'auto' " +
                                          "to use the length of the longest sentence: ")
                 if length_input.lower() == "auto":
-                    length = get_max_sentence_length(command)
+                    length = get_max_sentence_length(input_file_path)
                     print("Use {0} as the vector length".format(length))
-                    make_dataset(input_file_path, get_processed_data_path(command), length)
+                    make_dataset(input_file_path, output_file_path, length)
                     break;
 
                 try:
