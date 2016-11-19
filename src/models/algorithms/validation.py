@@ -115,7 +115,7 @@ if __name__ == "__main__":
     folds_count = 5
 
     word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
-    sentence_embedding = sentence_embeddings.AverageEmbedding()
+    sentence_embedding = sentence_embeddings.TermFrequencyAverageEmbedding()
 
     feature_builder = FeatureBuilder()
     classifier = SvmAlgorithm()
