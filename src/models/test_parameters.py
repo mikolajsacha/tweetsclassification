@@ -58,7 +58,7 @@ def test_parameters(data_folder, folds_count, **kwargs):
                 results_descriptions.append(params_desc + ", " + results_desc)
                 if result > best_result:
                     best_result = result
-                    best_results_descriptions = [params_desc]
+                    best_results_descriptions = [params_desc + ", C={:10.2f}".format(best_c)]
                 elif result == best_result:
                     best_results_descriptions.append(params_desc + ", C={:10.2f}".format(best_c))
 
