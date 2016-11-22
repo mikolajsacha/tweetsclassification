@@ -115,7 +115,7 @@ if __name__ == "__main__":
     folds_count = 5
 
     word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
-    sentence_embedding = sentence_embeddings.TermFrequencyAverageEmbedding()
+    sentence_embedding = sentence_embeddings.ConcatenationEmbedding()
 
     feature_builder = FeatureBuilder()
     classifier = SvmAlgorithm()
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     best_cross_result = 0.0
     best_c_param = None
 
-    tested_c_params = [10 ** i for i in xrange(-2, 6)]
+    tested_c_params = [10 ** i for i in xrange(2, 4)]
     cross_results = []
     self_results = []
 
