@@ -57,6 +57,44 @@ class AverageEmbedding(ISentenceEmbedding):
 
 class TermFrequencyAverageEmbedding(ISentenceEmbedding):
     """
+    Creates vector representation for sentences by averaging word vectors, where more frequent have higher weights
+    """
+
+    def __init__(self):
+        self.word_embedding = None
+        self.weights = {}
+        self.min_weight = 0
+
+    def build(self, word_embedding, sentences):
+        self.word_embedding = word_embedding
+        word_counter = Counter(word for sentence in sentences for word in sentence)
+        total_words_count = float(reduce(lambda acc, x: acc + len(x), sentences, 0))
+        for word, occurrences in word_counter.iteritems():
+            self.weights[word] = occurrences / total_words_count
+        self.min_weight = 1.0 / total_words_count
+
+    def get_weight(self, word):
+        if word not in self.weights:
+            return self.min_weight
+        return self.weights[word]
+
+    def __getitem__(self, sentence):
+        vector_size = self.word_embedding.target_vector_length
+        words_count = float(len(sentence))
+        word_vectors = map(lambda word: self.word_embedding[word], sentence)
+        result = np.zeros(vector_size, dtype=float)
+        for i in xrange(vector_size):
+            for j, word in enumerate(sentence):
+                result[i] += self.get_weight(word) * word_vectors[j][i]
+            result[i] /= words_count
+        return result
+
+    def get_vector_length(self):
+        return IWordEmbedding.target_vector_length
+
+
+class ReverseTermFrequencyAverageEmbedding(ISentenceEmbedding):
+    """
     Creates vector representation for sentences by averaging word vectors, where more frequent have lower weights
     """
 
