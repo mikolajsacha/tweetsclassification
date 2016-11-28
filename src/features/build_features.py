@@ -7,7 +7,7 @@ import numpy as np
 from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
-from src.features.sentence_embeddings.sentence_embeddings import ConcatenationEmbedding
+from src.features.sentence_embeddings import sentence_embeddings
 
 
 class FeatureBuilder(object):
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     Main method will be for testing if FeatureBuilder works properly
     """
 
-    data_folder = "dataset1"
+    data_folder = "dataset3_reduced"
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 
@@ -78,8 +78,8 @@ if __name__ == '__main__':
         word_embedding.save(word_embedding.get_embedding_model_path(data_folder))
 
     print ("Building sentence embedding...")
-    sentence_embedding = ConcatenationEmbedding()
-    sentence_embedding.build(word_embedding, sentences)
+    sentence_embedding = sentence_embeddings.TermCategoryVarianceEmbedding()
+    sentence_embedding.build(word_embedding, labels, sentences)
 
     print ("Building features...")
     fb = FeatureBuilder()

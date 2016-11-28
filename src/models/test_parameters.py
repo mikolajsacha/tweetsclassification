@@ -81,7 +81,7 @@ def test_parameters(data_folder, folds_count, **kwargs):
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    c_powers_range = 3, 8
+    c_powers_range = 8, 9
 
     input_file_path = make_dataset.get_external_data_path(data_folder)
     output_file_path = make_dataset.get_processed_data_path(data_folder)
@@ -93,10 +93,12 @@ if __name__ == "__main__":
         make_dataset.make_dataset(input_file_path, output_file_path)
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
-    sentence_embeddings = [sentence_embeddings.ConcatenationEmbedding(),
+    sentence_embeddings = [#sentence_embeddings.ConcatenationEmbedding(),
                            sentence_embeddings.AverageEmbedding(),
+                           sentence_embeddings.TermCategoryVarianceEmbedding(),
                            sentence_embeddings.TermFrequencyAverageEmbedding(),
                            sentence_embeddings.ReverseTermFrequencyAverageEmbedding()]
+
     classifiers = [SvmAlgorithm()]
 
     test_parameters(data_folder, folds_count, word_embeddings=word_embeddings, sentence_embeddings=sentence_embeddings,

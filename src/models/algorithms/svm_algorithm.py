@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     print ("Building sentence embedding...")
     sentence_embedding = ConcatenationEmbedding()
-    sentence_embedding.build(word_embedding, sentences)
+    sentence_embedding.build(word_embedding, labels, sentences)
 
     print ("Building features...")
     fb = build_features.FeatureBuilder()
