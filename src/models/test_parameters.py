@@ -4,6 +4,8 @@ from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings import sentence_embeddings
 from src.models.algorithms import validation
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
+from src.data import make_dataset
+import os
 
 
 def test_c_parameters(data_folder, classifier, sentence_embedding, word_embedding, min_c_power, max_c_power):
@@ -77,9 +79,18 @@ def test_parameters(data_folder, folds_count, **kwargs):
 
 
 if __name__ == "__main__":
-    data_folder = "dataset1"
+    data_folder = "dataset3_reduced"
     folds_count = 5
     c_powers_range = 3, 8
+
+    input_file_path = make_dataset.get_external_data_path(data_folder)
+    output_file_path = make_dataset.get_processed_data_path(data_folder)
+
+    if not os.path.isfile(input_file_path):
+        print "Path {0} does not exist".format(input_file_path)
+        exit(-1)
+    else:
+        make_dataset.make_dataset(input_file_path, output_file_path)
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [sentence_embeddings.ConcatenationEmbedding(),

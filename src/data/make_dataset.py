@@ -128,4 +128,4 @@ if __name__ == "__main__":
             print "Path {0} does not exist".format(input_file_path)
 
         else:
-            make_dataset(input_file_path, get_processed_data_path(command))
+            make_dataset(input_file_path, output_file_path)
