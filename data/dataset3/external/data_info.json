@@ -1,0 +1,5 @@
+{
+	"Title": "A set of tweets belonging to one of the following categories: Weather, Technology, Politics, Movies",
+	"Categories": ["Weather", "Technology", "Politics", "Movies"],
+	"Size": 7184
+}
