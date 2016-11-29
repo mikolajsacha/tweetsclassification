@@ -54,8 +54,14 @@ def filter_words(sentence):
     :type sentence: list of strings
     :return sentence with unnecessary words filtered out
     """
+
+    def is_filtered_out(word):
+        return (word in cached_stopwords or  # filter out stop words
+                word.startswith('http') or  # remove links
+                word.startswith('www'))
+
     # More filtering can be implemented in the future
-    return filter(lambda word: word not in cached_stopwords, sentence)  # filter out stop words
+    return filter(lambda word: not is_filtered_out(word), sentence)  # filter out stop words
 
 
 def string_to_words_list(sentence):
@@ -96,10 +102,17 @@ def read_dataset(data_file_path, data_info):
     labels = np.empty(data_set_size, dtype=np.uint8)
     sentences = np.empty(data_set_size, dtype=object)
 
-    for i, line in enumerate(open(data_file_path, 'r')):
+    count = 0
+    for line in open(data_file_path, 'r'):
         label, rest = line.split(' ', 1)
-        labels[i] = int(label)
-        sentences[i] = string_to_words_list(rest)
+        sentence = string_to_words_list(rest)
+        if len(sentence) > 0:
+            sentences[count] = sentence
+            labels[count] = int(label)
+            count += 1
+
+    labels = labels[:count]
+    sentences = sentences[:count]
 
     labels.flags.writeable = False
     sentences.flags.writeable = False

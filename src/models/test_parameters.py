@@ -95,7 +95,7 @@ if __name__ == "__main__":
         make_dataset.make_dataset(input_file_path, output_file_path)
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
-    sentence_embeddings = [#sentence_embeddings.ConcatenationEmbedding(),
+    sentence_embeddings = [sentence_embeddings.ConcatenationEmbedding(),
                            sentence_embeddings.SumEmbedding(),
                            sentence_embeddings.TermCategoryVarianceEmbedding(),
                            sentence_embeddings.TermFrequencyAverageEmbedding(),

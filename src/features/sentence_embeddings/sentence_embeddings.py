@@ -154,7 +154,7 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
 
             avg = sum(counts) / len(counts)
             sqr_avg = sum(map(lambda x: x * x, counts)) / len(counts)
-            variance = max(sqr_avg - avg ** 2, 1)
-            self.weights[word] = variance
+            deviation = max(sqr_avg - avg ** 2, 1) ** 0.5
+            self.weights[word] = deviation ** 0.5
 
         self.sorted_words = sorted(self.weights.iteritems(), key=operator.itemgetter(1))
