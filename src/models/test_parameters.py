@@ -83,7 +83,7 @@ def test_parameters(data_folder, folds_count, **kwargs):
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    c_powers_range = 8, 9
+    c_powers_range = 7, 10
 
     input_file_path = make_dataset.get_external_data_path(data_folder)
     output_file_path = make_dataset.get_processed_data_path(data_folder)
@@ -99,8 +99,7 @@ if __name__ == "__main__":
                            sentence_embeddings.SumEmbedding(),
                            sentence_embeddings.TermCategoryVarianceEmbedding(),
                            sentence_embeddings.TermFrequencyAverageEmbedding(),
-                           sentence_embeddings.ReverseTermFrequencyAverageEmbedding()
-                          ]
+                           sentence_embeddings.ReverseTermFrequencyAverageEmbedding()]
 
     classifiers = [SvmAlgorithm()]
 

@@ -27,7 +27,11 @@ class ConcatenationEmbedding(ISentenceEmbedding):
 
     def __getitem__(self, sentence):
         empty_vectors = self.max_sentence_length - len(sentence)
-        return np.concatenate(map(lambda word: self.word_embedding[word], np.append(sentence, ([''] * empty_vectors))))
+        if empty_vectors >= 0:
+            return np.concatenate(map(lambda word: self.word_embedding[word],
+                                      np.append(sentence, ([''] * empty_vectors))))
+        else:
+            return np.concatenate(map(lambda word: self.word_embedding[word], sentence[:empty_vectors]))
 
     def get_vector_length(self):
         return self.vector_length
