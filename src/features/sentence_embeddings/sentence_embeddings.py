@@ -33,9 +33,9 @@ class ConcatenationEmbedding(ISentenceEmbedding):
         return self.vector_length
 
 
-class AverageEmbedding(ISentenceEmbedding):
+class SumEmbedding(ISentenceEmbedding):
     """
-    Creates vector representation for sentences by adding word vectors coordinates and averaging them
+    Creates vector representation for sentences by adding word vectors coordinates
     """
 
     def __init__(self):
@@ -46,11 +46,10 @@ class AverageEmbedding(ISentenceEmbedding):
 
     def __getitem__(self, sentence):
         vector_size = self.word_embedding.target_vector_length
-        words_count = float(len(sentence))
         word_vectors = map(lambda word: self.word_embedding[word], sentence)
         result = np.empty(vector_size, dtype=float)
         for i in xrange(vector_size):
-            result[i] = sum(map(lambda w: w[i], word_vectors)) / words_count
+            result[i] = sum(map(lambda w: w[i], word_vectors))
         return result
 
     def get_vector_length(self):
@@ -66,7 +65,7 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
     def __init__(self):
         self.word_embedding = None
         self.weights = {}
-        self.min_weight = 0
+        self.min_weight = 1.0
 
     @abstractmethod
     def build(self, word_embedding, labels, sentences):
@@ -102,11 +101,10 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
 
     def build(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
+        self.weights = {}
         word_counter = Counter(word for sentence in sentences for word in sentence)
-        total_words_count = float(reduce(lambda acc, x: acc + len(x), sentences, 0))
         for word, occurrences in word_counter.iteritems():
-            self.weights[word] = occurrences / total_words_count
-        self.min_weight = 1.0 / total_words_count
+            self.weights[word] = occurrences
 
 
 class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
@@ -119,11 +117,11 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
 
     def build(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
+        self.weights = {}
         word_counter = Counter(word for sentence in sentences for word in sentence)
         total_words_count = float(reduce(lambda acc, x: acc + len(x), sentences, 0))
         for word, occurrences in word_counter.iteritems():
             self.weights[word] = (total_words_count - occurrences) / total_words_count
-        self.min_weight = 1.0 / total_words_count
 
 
 class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
@@ -139,6 +137,7 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
 
     def build(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
+        self.weights = {}
         words_in_categories = {}
 
         for i, label in enumerate(labels):
@@ -151,12 +150,11 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
                     words_in_categories[word][label] += 1
 
         for word, wordDict in words_in_categories.iteritems():
-            counts = []
-            for count in wordDict.itervalues():
-                counts.append(count)
+            counts = list(wordDict.itervalues())
+
             avg = sum(counts) / len(counts)
             sqr_avg = sum(map(lambda x: x * x, counts)) / len(counts)
-            variance = sqr_avg - avg ** 2
+            variance = max(sqr_avg - avg ** 2, 1)
             self.weights[word] = variance
 
         self.sorted_words = sorted(self.weights.iteritems(), key=operator.itemgetter(1))

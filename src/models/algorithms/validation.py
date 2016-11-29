@@ -43,7 +43,7 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
         word_embedding.build(training_sentences)
 
         # print("Building sentence embedding...")
-        sentence_embedding.build(word_embedding, labels, sentences)
+        sentence_embedding.build(word_embedding, training_labels, training_sentences)
 
         # print("Building featuers...")
         feature_builder.build(sentence_embedding, training_labels, training_sentences)

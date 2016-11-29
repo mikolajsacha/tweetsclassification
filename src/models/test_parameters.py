@@ -8,7 +8,8 @@ from src.data import make_dataset
 import os
 
 
-def test_c_parameters(data_folder, classifier, sentence_embedding, word_embedding, min_c_power, max_c_power):
+def test_c_parameters(data_folder, folds_count,  classifier, sentence_embedding,
+                      word_embedding, min_c_power, max_c_power):
     best_cross_result = 0.0
     best_c_param = None
 
@@ -55,7 +56,8 @@ def test_parameters(data_folder, folds_count, **kwargs):
                               .format(type(classifier).__name__, type(word_emb).__name__, type(sen_emb).__name__)
                 print("." * 20)
                 print("Testing " + params_desc)
-                result, best_c = test_c_parameters(data_folder, classifier, sen_emb, word_emb, min_c_power, max_c_power)
+                result, best_c = test_c_parameters(data_folder, folds_count, classifier,
+                                                   sen_emb, word_emb, min_c_power, max_c_power)
                 results_desc = "Best C: {:10.2f} with result: {:4.2f}%".format(best_c, result)
                 results_descriptions.append(params_desc + ", " + results_desc)
                 if result > best_result:
@@ -94,10 +96,11 @@ if __name__ == "__main__":
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [#sentence_embeddings.ConcatenationEmbedding(),
-                           sentence_embeddings.AverageEmbedding(),
+                           sentence_embeddings.SumEmbedding(),
                            sentence_embeddings.TermCategoryVarianceEmbedding(),
                            sentence_embeddings.TermFrequencyAverageEmbedding(),
-                           sentence_embeddings.ReverseTermFrequencyAverageEmbedding()]
+                           sentence_embeddings.ReverseTermFrequencyAverageEmbedding()
+                          ]
 
     classifiers = [SvmAlgorithm()]
 
