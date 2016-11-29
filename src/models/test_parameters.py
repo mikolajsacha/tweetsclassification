@@ -8,73 +8,70 @@ from src.data import make_dataset
 import os
 
 
-def test_c_parameters(data_folder, folds_count,  classifier, sentence_embedding,
-                      word_embedding, min_c_power, max_c_power):
-    best_cross_result = 0.0
-    best_c_param = None
-
+def test_parameters(data_folder, folds_count, classifier, sentence_embedding, word_embedding, **kwargs):
     feature_builder = FeatureBuilder()
 
-    tested_c_params = [10 ** i for i in xrange(min_c_power, max_c_power)]
-    cross_results = []
+    print("Testing parameters: {0}".format(str(kwargs)))
 
-    # test for various C parameters:
-    for c in tested_c_params:
-        print("." * 20)
-        print("Testing parameter C={0}...".format(c))
-
-        cross_result = validation.test_cross_validation(data_folder, word_embedding, sentence_embedding,
-                                                        feature_builder, classifier, folds_count, C=c)
-        cross_results.append(cross_result)
-        if cross_result > best_cross_result:
-            best_cross_result = cross_result
-            best_c_param = c
-
-    print ("Mean cross-validation results: ")
-    for i, c in enumerate(tested_c_params):
-        print ("C = {:10.2f}: cross-validation result: {:4.2f}%"
-               .format(c, cross_results[i]))
-    print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))
-    return best_cross_result, best_c_param
+    return validation.test_cross_validation(data_folder, word_embedding, sentence_embedding,
+                                            feature_builder, classifier, folds_count, **kwargs)
 
 
-def test_parameters(data_folder, folds_count, **kwargs):
+def test_all_params_combinations(param_name, data_folder, folds_count, **kwargs):
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
     classifiers = kwargs['classifiers']
-    min_c_power = kwargs['min_c_power']
-    max_c_power = kwargs['max_c_power']
+    min_param_power = kwargs['min_param_power']
+    max_param_power = kwargs['max_param_power']
+    tested_params = kwargs['params']
 
-    results_descriptions = []
     best_result = 0.0
-    best_results_descriptions = ""
+    best_results_descriptions = None
+
+    classifiers_results = []
+    classifiers_params = []
+    classifiers_descriptions = []
 
     for classifier in classifiers:
         for word_emb in word_embeddings:
             for sen_emb in sentence_embeddings:
-                params_desc = "{:10s}, {:10s}, {:10s}" \
-                              .format(type(classifier).__name__, type(word_emb).__name__, type(sen_emb).__name__)
-                print("." * 20)
-                print("Testing " + params_desc)
-                result, best_c = test_c_parameters(data_folder, folds_count, classifier,
-                                                   sen_emb, word_emb, min_c_power, max_c_power)
-                results_desc = "Best C: {:10.2f} with result: {:4.2f}%".format(best_c, result)
-                results_descriptions.append(params_desc + ", " + results_desc)
-                if result > best_result:
-                    best_result = result
-                    best_results_descriptions = [params_desc + ", C={:10.2f}".format(best_c)]
-                elif result == best_result:
-                    best_results_descriptions.append(params_desc + ", C={:10.2f}".format(best_c))
+                best_for_classifier_result = 0.0
+                best_for_classifier_params = None
+                classifier_desc = ','.join(map(lambda n: type(n).__name__, [classifier, word_emb, sen_emb]))
+                classifiers_descriptions.append(classifier_desc)
+                for params in []: # TODO: znajdz sposob na wszystkie kombinacje parametrow jako lista/generator
+                    print("." * 20)
+                    print("Testing " + classifier_desc)
+                    result = test_parameters(param_name, data_folder, folds_count, classifier,
+                                             sen_emb, word_emb, min_param_power, max_param_power, **params)
+                    if result > best_for_classifier_result:
+                        best_for_classifier_result = result
+                        best_for_classifier_params = [params]
+                    elif result == best_for_classifier_result:
+                        best_for_classifier_params.append(params)
+
+                    result_desc = classifier_desc + ", params = " + params
+                    if result > best_result:
+                        best_result = result
+                        best_results_descriptions = [result_desc]
+                    elif result == best_result:
+                        best_results_descriptions.append(result_desc)
+
+                classifiers_results.append(best_for_classifier_result)
+                classifiers_params.append(best_for_classifier_params)
 
     print("." * 20)
     print("Overall results:")
     print("." * 20)
-    for desc in results_descriptions:
-        print desc
+    for i in xrange(len(classifiers_results)):
+        print "Best result for classifier: {:s} is {:4.2f}% is for parameterss: " \
+            .format(classifiers_descriptions[i], classifiers_results[i])
+        for params in xrange(len(classifiers_params[i])):
+            print str(params)
 
     print("." * 20)
     print("." * 20)
-    print ("Best cross-validation result is {:4.2f}% for following cases:".format(best_result))
+    print ("Best cross-validation result is {:4.2f}% for the following cases:".format(best_result))
     print("." * 20)
     for desc in best_results_descriptions:
         print desc
@@ -83,7 +80,7 @@ def test_parameters(data_folder, folds_count, **kwargs):
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    c_powers_range = 3, 6
+    gamma_powers_range = -3, -1
 
     input_file_path = make_dataset.get_external_data_path(data_folder)
     output_file_path = make_dataset.get_processed_data_path(data_folder)
@@ -103,6 +100,7 @@ if __name__ == "__main__":
 
     classifiers = [SvmAlgorithm()]
 
-    test_parameters(data_folder, folds_count, word_embeddings=word_embeddings, sentence_embeddings=sentence_embeddings,
-                    classifiers=classifiers, min_c_power=c_powers_range[0], max_c_power=c_powers_range[1])
-
+    test_all_params_combinations("gamma", data_folder, folds_count, word_embeddings=word_embeddings,
+                                 sentence_embeddings=sentence_embeddings, classifiers=classifiers,
+                                 min_param_power=gamma_powers_range[0], max_param_power=gamma_powers_range[1],
+                                 other_params={"C": 100})

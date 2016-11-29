@@ -145,6 +145,6 @@ if __name__ == "__main__":
 
     print ("Results of testing training set on itself and mean cross-validation results: ")
     for i, c in enumerate(tested_c_params):
-        print ("C = {:10.2f}: with self: {:4.2f}%, cross-validation: {:4.2f}%"
+        print ("C = {10.2f}: with self: {:4.2f}%, cross-validation: {:4.2f}%"
                .format(c, self_results[i], cross_results[i]))
     print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))
