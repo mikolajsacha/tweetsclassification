@@ -50,7 +50,7 @@ class Word2VecEmbedding(IWordEmbedding):
         cpu_count = multiprocessing.cpu_count()
         self.model = Word2Vec(total_corpus, size=vec_length, min_count=1, workers=cpu_count)
         self.model.init_sims(replace=True)  # finalize the model
-        self.build_preprocess_transformation(sentences)
+        # self.build_preprocess_transformation(sentences) uncomment to fit PCA on single words
 
     def __getitem__(self, word):
         if word not in self.model or word == '':

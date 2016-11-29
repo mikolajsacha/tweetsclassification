@@ -30,7 +30,7 @@ def test_c_parameters(data_folder, folds_count,  classifier, sentence_embedding,
             best_cross_result = cross_result
             best_c_param = c
 
-    print ("Results of testing training set on itself and mean cross-validation results: ")
+    print ("Mean cross-validation results: ")
     for i, c in enumerate(tested_c_params):
         print ("C = {:10.2f}: cross-validation result: {:4.2f}%"
                .format(c, cross_results[i]))
@@ -83,7 +83,7 @@ def test_parameters(data_folder, folds_count, **kwargs):
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    c_powers_range = 7, 10
+    c_powers_range = 3, 6
 
     input_file_path = make_dataset.get_external_data_path(data_folder)
     output_file_path = make_dataset.get_processed_data_path(data_folder)

@@ -32,8 +32,9 @@ class IWordEmbedding(object):
     Abstract base class for word embeddings
     """
     __metaclass__ = ABCMeta
+    # change 'target_vector_length' only if applying PCA on words
     initial_vector_length = 100  # vector length through embedding process
-    target_vector_length = 50  # vector length after preprocessing of embedding
+    target_vector_length = initial_vector_length  # vector length after preprocessing of embedding
 
     @abstractmethod
     def build(self, sentences):
