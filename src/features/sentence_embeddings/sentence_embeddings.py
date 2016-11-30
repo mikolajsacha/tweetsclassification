@@ -25,7 +25,7 @@ class ConcatenationEmbedding(ISentenceEmbedding):
         self.max_sentence_length = reduce(lambda acc, x: max(acc, len(x)), sentences, 0)
         self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
 
-    def __getitem__(self, sentence):
+    def get_raw_vector(self, sentence):
         empty_vectors = self.max_sentence_length - len(sentence)
         if empty_vectors >= 0:
             return np.concatenate(map(lambda word: self.word_embedding[word],
@@ -48,12 +48,12 @@ class SumEmbedding(ISentenceEmbedding):
     def build(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
 
-    def __getitem__(self, sentence):
+    def get_raw_vector(self, sentence):
         vector_size = self.word_embedding.target_vector_length
         word_vectors = map(lambda word: self.word_embedding[word], sentence)
         result = np.empty(vector_size, dtype=float)
         for i in xrange(vector_size):
-            result[i] = sum(map(lambda w: w[i], word_vectors))
+            result[i] = sum(w[i] for w in word_vectors)
         return result
 
     def get_vector_length(self):
@@ -80,21 +80,13 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
             return self.min_weight
         return self.weights[word]
 
-    def __getitem__(self, sentence):
+    def get_raw_vector(self, sentence):
         vector_size = self.word_embedding.target_vector_length
-        word_vectors = map(lambda word: self.word_embedding[word], sentence)
         result = np.zeros(vector_size, dtype=float)
-        for i in xrange(vector_size):
-            for j, word in enumerate(sentence):
-                result[i] += self.get_weight(word) * word_vectors[j][i]
-            result[i]
-
-        # normalize result vector
-        result_sum = float(sum(result))
-        if result_sum != 0:
-            for i in xrange(result.shape[0]):
-                result[i] /= result_sum
-
+        for word, vector in ((w, self.word_embedding[w]) for w in sentence):
+            weight = self.get_weight(word)
+            for i in xrange(vector_size):
+                result[i] += weight * vector[i]
         return result
 
     def get_vector_length(self):
@@ -129,7 +121,7 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
         self.word_embedding = word_embedding
         self.weights = {}
         word_counter = Counter(word for sentence in sentences for word in sentence)
-        total_words_count = float(reduce(lambda acc, x: acc + len(x), sentences, 0))
+        total_words_count = sum(len(sen) for sen in sentences)
         for word, occurrences in word_counter.iteritems():
             self.weights[word] = (total_words_count - occurrences) / total_words_count
 
@@ -163,8 +155,8 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
             counts = list(wordDict.itervalues())
 
             avg = sum(counts) / len(counts)
-            sqr_avg = sum(map(lambda x: x * x, counts)) / len(counts)
+            sqr_avg = sum(i**2 for i in counts) / len(counts)
             deviation = max(sqr_avg - avg ** 2, 1) ** 0.5
-            self.weights[word] = deviation ** 0.5
+            self.weights[word] = deviation
 
         self.sorted_words = sorted(self.weights.iteritems(), key=operator.itemgetter(1))

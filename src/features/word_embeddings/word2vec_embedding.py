@@ -30,7 +30,7 @@ class Word2VecEmbedding(IWordEmbedding):
 
     def load(self, data_path, sentences):
         self.model = Word2Vec.load(data_path)
-        self.build_preprocess_transformation(sentences)
+        # self.build_preprocess_transformation(sentences)
 
     def build_preprocess_transformation(self, training_set_sentences):
         # preprocessing is built only by words from our training set
