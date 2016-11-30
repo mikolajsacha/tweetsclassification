@@ -97,13 +97,14 @@ if __name__ == "__main__":
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [  # sentence_embeddings.ConcatenationEmbedding(),  as of now test only best embedding
-        # sentence_embeddings.SumEmbedding(),
-        # sentence_embeddings.TermCategoryVarianceEmbedding(),
-        # sentence_embeddings.ReverseTermFrequencyAverageEmbedding(),
-        sentence_embeddings.TermFrequencyAverageEmbedding()]
+        sentence_embeddings.SumEmbedding(),
+        sentence_embeddings.TermCategoryVarianceEmbedding(),
+        sentence_embeddings.ReverseTermFrequencyAverageEmbedding(),
+        sentence_embeddings.TermFrequencyAverageEmbedding()
+        ]
 
     classifiers = [SvmAlgorithm()]
 
     test_all_params_combinations(data_folder, folds_count, word_embeddings=word_embeddings,
                                  sentence_embeddings=sentence_embeddings, classifiers=classifiers,
-                                 params={"C": log_range(2, 3), "gamma": log_range(-2, 0), "degree": xrange(4, 6)})
+                                 params={"C": log_range(2, 3), "gamma": log_range(-1, 0)})

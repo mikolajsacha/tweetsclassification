@@ -82,13 +82,19 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
 
     def __getitem__(self, sentence):
         vector_size = self.word_embedding.target_vector_length
-        words_count = float(len(sentence))
         word_vectors = map(lambda word: self.word_embedding[word], sentence)
         result = np.zeros(vector_size, dtype=float)
         for i in xrange(vector_size):
             for j, word in enumerate(sentence):
                 result[i] += self.get_weight(word) * word_vectors[j][i]
-            result[i] /= words_count
+            result[i]
+
+        # normalize result vector
+        result_sum = float(sum(result))
+        if result_sum != 0:
+            for i in xrange(result.shape[0]):
+                result[i] /= result_sum
+
         return result
 
     def get_vector_length(self):
