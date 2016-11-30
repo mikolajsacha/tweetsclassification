@@ -107,4 +107,4 @@ if __name__ == "__main__":
 
     test_all_params_combinations(data_folder, folds_count, word_embeddings=word_embeddings,
                                  sentence_embeddings=sentence_embeddings, classifiers=classifiers,
-                                 params={"C": log_range(1, 3), "gamma": log_range(-2, -1)})
+                                 params={"C": log_range(2, 3), "gamma": log_range(-2, -1)})

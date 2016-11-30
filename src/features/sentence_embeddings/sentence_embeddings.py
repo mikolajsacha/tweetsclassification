@@ -15,12 +15,13 @@ class ConcatenationEmbedding(ISentenceEmbedding):
     """
 
     def __init__(self):
+        ISentenceEmbedding.__init__(self)
         self.word_embedding = None
         self.vector_length = 0
         self.sentences_length = 0
         self.max_sentence_length = 0
 
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
         self.max_sentence_length = reduce(lambda acc, x: max(acc, len(x)), sentences, 0)
         self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
@@ -33,9 +34,6 @@ class ConcatenationEmbedding(ISentenceEmbedding):
         else:
             return np.concatenate(map(lambda word: self.word_embedding[word], sentence[:empty_vectors]))
 
-    def get_vector_length(self):
-        return self.vector_length
-
 
 class SumEmbedding(ISentenceEmbedding):
     """
@@ -43,9 +41,10 @@ class SumEmbedding(ISentenceEmbedding):
     """
 
     def __init__(self):
+        ISentenceEmbedding.__init__(self)
         self.word_embedding = None
 
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
 
     def get_raw_vector(self, sentence):
@@ -56,9 +55,6 @@ class SumEmbedding(ISentenceEmbedding):
             result[i] = sum(w[i] for w in word_vectors)
         return result
 
-    def get_vector_length(self):
-        return IWordEmbedding.target_vector_length
-
 
 class IWeightedWordEmbedding(ISentenceEmbedding):
     """
@@ -67,12 +63,13 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
     __metaclass__ = ABCMeta
 
     def __init__(self):
+        ISentenceEmbedding.__init__(self)
         self.word_embedding = None
         self.weights = {}
         self.min_weight = 1.0
 
     @abstractmethod
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         raise NotImplementedError
 
     def get_weight(self, word):
@@ -89,9 +86,6 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
                 result[i] += weight * vector[i]
         return result
 
-    def get_vector_length(self):
-        return IWordEmbedding.target_vector_length
-
 
 class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     """
@@ -101,7 +95,7 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     def __init__(self):
         IWeightedWordEmbedding.__init__(self)
 
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
         self.weights = {}
         word_counter = Counter(word for sentence in sentences for word in sentence)
@@ -117,7 +111,7 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     def __init__(self):
         IWeightedWordEmbedding.__init__(self)
 
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
         self.weights = {}
         word_counter = Counter(word for sentence in sentences for word in sentence)
@@ -137,7 +131,7 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
         IWeightedWordEmbedding.__init__(self)
         self.sorted_words = []  # for analysis
 
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
         self.weights = {}
         words_in_categories = {}

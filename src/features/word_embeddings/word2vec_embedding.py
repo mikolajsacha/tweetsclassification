@@ -16,8 +16,8 @@ class Word2VecEmbedding(IWordEmbedding):
     def __init__(self, text_corpus):
         self.text_corpus = text_corpus
         self.model = {}
-        self.preprocess = lambda x: x
-        self.pca = PCA(n_components=IWordEmbedding.target_vector_length)
+        # self.preprocess = lambda x: x
+        # self.pca = PCA(n_components=IWordEmbedding.target_vector_length)
 
     def saved_embedding_exists(self, data_folder):
         embedding_file_path = self.get_embedding_model_path(data_folder)
@@ -55,7 +55,8 @@ class Word2VecEmbedding(IWordEmbedding):
     def __getitem__(self, word):
         if word not in self.model or word == '':
             return [0.0] * IWordEmbedding.target_vector_length
-        return self.preprocess(self.model[[word]])[0]
+        return self.model[[word]][0]
+        # return self.preprocess(self.model[[word]])[0]
 
     def get_embedding_model_path(self, data_folder):
         return IWordEmbedding.get_embedding_model_path(data_folder) + '\\word2vec'

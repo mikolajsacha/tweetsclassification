@@ -2,6 +2,7 @@
 Contains basic interface (abstract base class) for sentence embeddings.
 """
 from abc import ABCMeta, abstractmethod
+from sklearn.decomposition import PCA
 
 
 class ISentenceEmbedding(object):
@@ -10,9 +11,20 @@ class ISentenceEmbedding(object):
     Sentence embedding creates vectors representing sentences (word lists) using a specified word embedding.
     """
     __metaclass__ = ABCMeta
+    target_sentence_vector_length = 100
+
+    def __init__(self):
+        self.pca = PCA(n_components=ISentenceEmbedding.target_sentence_vector_length)
+
+    def build(self, word_embedding, labels, sentences):
+        """
+        A wrapper for build_raw which performs further preprocessing on embedding
+        """
+        self.build_raw(word_embedding, labels, sentences)
+        self.pca.fit([self.get_normalized(sentence) for sentence in sentences])
 
     @abstractmethod
-    def build(self, word_embedding, labels, sentences):
+    def build_raw(self, word_embedding, labels, sentences):
         """
         Generates sentence embedding for a given word embedding
         :param labels: a vector of labels of sentences
@@ -24,18 +36,21 @@ class ISentenceEmbedding(object):
         """
         raise NotImplementedError
 
-    def __getitem__(self, sentence):
-        """
-        A wrapper for get_raw_vector which returns vector after actuall preprocessing
-        """
-        raw_vector = self.get_raw_vector(sentence)
+    def get_normalized(self, sentence):
+        vector = self.get_raw_vector(sentence)
 
         # normalize result vector
-        result_norm = (sum(map(lambda x: x**2, raw_vector))) ** 0.5
+        result_norm = (sum(map(lambda x: x**2, vector))) ** 0.5
         if result_norm != 0:
-            for i in xrange(raw_vector.shape[0]):
-                raw_vector[i] /= result_norm
-        return raw_vector
+            for i in xrange(vector.shape[0]):
+                vector[i] /= result_norm
+        return vector
+
+    def __getitem__(self, sentence):
+        """
+        A wrapper for get_raw_vector which returns vector after preprocessing
+        """
+        return self.pca.transform([self.get_normalized(sentence)])[0]
 
     @abstractmethod
     def get_raw_vector(self, sentence):
@@ -45,8 +60,4 @@ class ISentenceEmbedding(object):
         :type sentence: list of strings (words)
         :return: vector representation of the sentence, formatted as numpy vector of doubles
         """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_vector_length(self):
         raise NotImplementedError
