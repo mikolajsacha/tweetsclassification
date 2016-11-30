@@ -24,7 +24,7 @@ def test_all_params_combinations(data_folder, folds_count, **kwargs):
     classifiers = kwargs['classifiers']
     tested_params = kwargs['params']
 
-    params_values = ([(param, 10**i) for i in xrange(*bounds)] for param, bounds in tested_params.iteritems())
+    params_values = ([(param, val) for val in values] for param, values in tested_params.iteritems())
     all_combinations = map(lambda tuple_list: dict(tuple_list), itertools.product(*params_values))
 
     best_result = 0.0
@@ -78,6 +78,10 @@ def test_all_params_combinations(data_folder, folds_count, **kwargs):
         print desc
 
 
+def log_range(min_ten_power, max_ten_power):
+    return (10 ** i for i in xrange(min_ten_power, max_ten_power))
+
+
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
@@ -92,14 +96,14 @@ if __name__ == "__main__":
         make_dataset.make_dataset(input_file_path, output_file_path)
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
-    sentence_embeddings = [sentence_embeddings.ConcatenationEmbedding(),
-                           sentence_embeddings.SumEmbedding(),
-                           sentence_embeddings.TermCategoryVarianceEmbedding(),
-                           sentence_embeddings.TermFrequencyAverageEmbedding(),
-                           sentence_embeddings.ReverseTermFrequencyAverageEmbedding()]
+    sentence_embeddings = [  # sentence_embeddings.ConcatenationEmbedding(),  as of now test only best embedding
+        # sentence_embeddings.SumEmbedding(),
+        # sentence_embeddings.TermCategoryVarianceEmbedding(),
+        # sentence_embeddings.ReverseTermFrequencyAverageEmbedding(),
+        sentence_embeddings.TermFrequencyAverageEmbedding()]
 
     classifiers = [SvmAlgorithm()]
 
     test_all_params_combinations(data_folder, folds_count, word_embeddings=word_embeddings,
                                  sentence_embeddings=sentence_embeddings, classifiers=classifiers,
-                                 params={"C": (1, 3), "gamma": (-3, -1)})
+                                 params={"C": log_range(2, 3), "gamma": log_range(-2, 0), "degree": xrange(4, 6)})
