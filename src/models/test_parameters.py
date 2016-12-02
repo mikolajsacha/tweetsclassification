@@ -1,12 +1,12 @@
 from src.features.build_features import FeatureBuilder
-from src.features.word_embeddings.iword_embedding import TextCorpora
-from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
-from src.features.sentence_embeddings import sentence_embeddings
 from src.models.algorithms import validation
-from src.models.algorithms.svm_algorithm import SvmAlgorithm
-from src.data import make_dataset
 import itertools
 import os
+
+
+def get_test_summary_path(data_folder, classifier):
+    return os.path.join(os.path.dirname(__file__),
+                        '..\\..\\models\\test_summaries\\{0}_{1}.txt'.format(data_folder, type(classifier).__name__))
 
 
 def test_parameters(data_folder, folds_count, classifier, sentence_embedding, word_embedding, **kwargs):
@@ -18,10 +18,9 @@ def test_parameters(data_folder, folds_count, classifier, sentence_embedding, wo
                                             feature_builder, classifier, folds_count, **kwargs)
 
 
-def test_all_params_combinations(data_folder, folds_count, **kwargs):
+def test_all_params_combinations(data_folder, classifier, folds_count, **kwargs):
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
-    classifiers = kwargs['classifiers']
     tested_params = kwargs['params']
 
     params_values = ([(param, val) for val in values] for param, values in tested_params.iteritems())
@@ -34,17 +33,22 @@ def test_all_params_combinations(data_folder, folds_count, **kwargs):
     classifiers_params = []
     classifiers_descriptions = []
 
-    for classifier in classifiers:
+    output_path = get_test_summary_path(data_folder, classifier)
+    if not os.path.exists(os.path.dirname(output_path)):
+        os.makedirs(os.path.dirname(output_path))
+
+    with open(output_path, 'w') as output_file:
         for word_emb in word_embeddings:
             for sen_emb in sentence_embeddings:
                 best_for_classifier_result = 0.0
                 best_for_classifier_params = None
-                classifier_desc = ','.join(map(lambda n: type(n).__name__, [classifier, word_emb, sen_emb]))
+                classifier_desc = ', '.join(map(lambda n: type(n).__name__, [word_emb, sen_emb]))
                 classifiers_descriptions.append(classifier_desc)
                 for params in all_combinations:
                     print("." * 20)
                     print("Testing " + classifier_desc)
                     result = test_parameters(data_folder, folds_count, classifier, sen_emb, word_emb, **params)
+                    output_file.write('{:s};{:s};{:4.2f}\n'.format(classifier_desc, str(params), result))
                     if result > best_for_classifier_result:
                         best_for_classifier_result = result
                         best_for_classifier_params = [params]
@@ -80,31 +84,3 @@ def test_all_params_combinations(data_folder, folds_count, **kwargs):
 
 def log_range(min_ten_power, max_ten_power):
     return (10 ** i for i in xrange(min_ten_power, max_ten_power))
-
-
-if __name__ == "__main__":
-    data_folder = "dataset3_reduced"
-    folds_count = 5
-
-    input_file_path = make_dataset.get_external_data_path(data_folder)
-    output_file_path = make_dataset.get_processed_data_path(data_folder)
-
-    if not os.path.isfile(input_file_path):
-        print "Path {0} does not exist".format(input_file_path)
-        exit(-1)
-    else:
-        make_dataset.make_dataset(input_file_path, output_file_path)
-
-    word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
-    sentence_embeddings = [  # sentence_embeddings.ConcatenationEmbedding(),  as of now test only best embedding
-        #  sentence_embeddings.SumEmbedding(),
-        #  sentence_embeddings.TermCategoryVarianceEmbedding(),
-        #  sentence_embeddings.ReverseTermFrequencyAverageEmbedding(),
-        sentence_embeddings.TermFrequencyAverageEmbedding()
-        ]
-
-    classifiers = [SvmAlgorithm()]
-
-    test_all_params_combinations(data_folder, folds_count, word_embeddings=word_embeddings,
-                                 sentence_embeddings=sentence_embeddings, classifiers=classifiers,
-                                 params={"C": log_range(2, 3), "gamma": log_range(-2, -1)})
