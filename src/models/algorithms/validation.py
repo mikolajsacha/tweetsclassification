@@ -1,9 +1,7 @@
 """
-Contains method for performing validation of learning models
+Contains methods for performing validation of learning models
 """
-import itertools
-import numpy as np
-
+from sklearn.model_selection import StratifiedKFold
 from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
@@ -19,25 +17,25 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
 
     labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
 
-    folded_labels = np.array_split(labels, folds_count)
-    folded_sentences = np.array_split(sentences, folds_count)
-
     # test accuracy for all folds combination
     total_successes = 0
     print("." * 20)
     print("Testing with {0} - fold cross-validation...".format(folds_count))
-    for fold in xrange(folds_count):
+
+    skf = StratifiedKFold(n_splits=folds_count)
+    fold = 1
+
+    for train_index, test_index in skf.split(sentences, labels):
         # print("." * 20)
         print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
 
         # uncomment prints if more verbose comments are preferred
         # print("Slicing data set...")
-        training_labels = np.array(list(itertools.chain(*[folded_labels[i] for i in xrange(folds_count) if i != fold])))
-        training_sentences = np.array(
-            list(itertools.chain(*[folded_sentences[i] for i in xrange(folds_count) if i != fold])))
+        training_labels = labels[train_index]
+        training_sentences = sentences[train_index]
 
-        test_labels = folded_labels[fold]
-        test_sentences = folded_sentences[fold]
+        test_labels = labels[test_index]
+        test_sentences = sentences[test_index]
 
         # print("Building word embedding...")
         word_embedding.build(training_sentences)
@@ -63,6 +61,7 @@ def test_cross_validation(data_folder, word_embedding, sentence_embedding, featu
               .format(fold + 1, successes, set_length, successes / (1.0 * set_length) * 100))
 
         total_successes += successes
+        fold += 1
 
     print("." * 20)
     total_set_length = len(labels)
@@ -111,6 +110,7 @@ def test_with_self(data_folder, word_embedding, sentence_embedding, feature_buil
 
 
 if __name__ == "__main__":
+    """ Example of how cross validation works"""
     data_folder = "dataset1"
     folds_count = 5
 
@@ -120,31 +120,12 @@ if __name__ == "__main__":
     feature_builder = FeatureBuilder()
     classifier = SvmAlgorithm()
 
-    best_cross_result = 0.0
-    best_c_param = None
+    c = 100
+    gamma = 0.1
 
-    tested_c_params = [10 ** i for i in xrange(2, 4)]
-    cross_results = []
-    self_results = []
+    print("Testing parameter C={0}, gamma={1}...".format(c, gamma))
 
-    # test for various C parameters:
-    for c in tested_c_params:
-        print("." * 20)
-        print("Testing parameter C={0}...".format(c))
-        print("." * 20)
-
-        # train on the whole training set and test on the training set (just for curiosity)
-        self_result = test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, C=c)
-        cross_result = test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
-                                             classifier, folds_count, C=c)
-        self_results.append(self_result)
-        cross_results.append(cross_result)
-        if cross_result > best_cross_result:
-            best_cross_result = cross_result
-            best_c_param = c
-
-    print ("Results of testing training set on itself and mean cross-validation results: ")
-    for i, c in enumerate(tested_c_params):
-        print ("C = {10.2f}: with self: {:4.2f}%, cross-validation: {:4.2f}%"
-               .format(c, self_results[i], cross_results[i]))
-    print ("Best cross-validation result is {0}% with parameter C={1}".format(best_cross_result, best_c_param))
+    # train on the whole training set and test on the training set (just for curiosity)
+    # test_with_self(data_folder, word_embedding, sentence_embedding, feature_builder, classifier, C=c)
+    test_cross_validation(data_folder, word_embedding, sentence_embedding, feature_builder,
+                          classifier, folds_count, C=c, gamma=gamma)

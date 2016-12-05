@@ -8,7 +8,7 @@ from collections import Counter
 from src.features.sentence_embeddings.isentence_embedding import ISentenceEmbedding
 from src.features.word_embeddings.iword_embedding import IWordEmbedding
 
-
+#  This embedding does not work well - I won't use it in further research
 class ConcatenationEmbedding(ISentenceEmbedding):
     """
     Creates vector representation for senteces by simply concatenating word vectors from a given word embedding
@@ -103,6 +103,7 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
             self.weights[word] = occurrences
 
 
+#  This embedding does not work well - I won't use it in further research
 class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     """
     Creates vector representation for sentences by averaging word vectors, where more frequent have lower weights
