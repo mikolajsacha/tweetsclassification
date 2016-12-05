@@ -31,9 +31,3 @@ class IClassificationAlgorithm(object):
         """
         raise NotImplementedError
 
-    @abstractmethod
-    def get_estimator(self):
-        """
-        :return: An estimator object from sklearn package for this algorithm
-        """
-        raise NotImplementedError

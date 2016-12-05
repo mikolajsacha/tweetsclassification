@@ -19,6 +19,7 @@ import numpy as np
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
+    training_set_size = 0.80
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
         sentence_embeddings.SumEmbedding(),
@@ -46,7 +47,7 @@ if __name__ == "__main__":
         else:
             make_dataset.make_dataset(input_file_path, output_file_path)
 
-        test_all_params_combinations(data_folder, SvmAlgorithm, folds_count,
+        test_all_params_combinations(data_folder, SvmAlgorithm, folds_count, training_set_size,
                                      word_embeddings=word_embeddings,
                                      sentence_embeddings=sentence_embeddings,
                                      params={"C": c_range, "gamma": gamma_range})
@@ -66,7 +67,7 @@ if __name__ == "__main__":
 
     ax.set_xlabel('log(C)')
     ax.set_ylabel('log(gamma)')
-    fig.suptitle("Comparison of cross-validation results for different embeddings and parameters")
+    fig.suptitle("Model selection results acquired by cross-validation for different embeddings and parameters")
     colors = itertools.cycle(["r", "g", "b", "y", "cyan", "magenta"])
     legend_handles = []
 

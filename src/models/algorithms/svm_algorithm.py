@@ -30,9 +30,6 @@ class SvmAlgorithm(IClassificationAlgorithm):
     def predict_proba(self, sentence):
         return self.clf.predict_proba([self.sentence_embedding[sentence]])[0]
 
-    def get_estimator(self):
-        return self.clf
-
 
 if __name__ == '__main__':
     """
