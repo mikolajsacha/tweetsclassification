@@ -2,12 +2,17 @@
 Contains class representing Word2Vec embedding, implementing IWordEmbedding interface
 """
 import os
+import warnings
 import itertools
 import multiprocessing
-from gensim.models import Word2Vec
-from sklearn.decomposition import PCA
 from src.data import make_dataset
 from iword_embedding import IWordEmbedding, TextCorpora
+#  from sklearn.decomposition import PCA
+
+#  This import generates an annoying warning on Windows
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    from gensim.models import Word2Vec
 
 
 class Word2VecEmbedding(IWordEmbedding):

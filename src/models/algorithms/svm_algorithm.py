@@ -16,10 +16,12 @@ class SvmAlgorithm(IClassificationAlgorithm):
     """
     Class for building model using Support Vector Machine method
     """
-
-    def train(self, labels, features, sentence_embedding, **kwargs):
+    def __init__(self, sentence_embedding, **kwargs):
+        IClassificationAlgorithm.__init__(self)
         self.sentence_embedding = sentence_embedding
         self.clf = svm.SVC(**kwargs)
+
+    def fit(self, features, labels):
         self.clf.fit(features, labels)
 
     def predict(self, sentence):
@@ -27,6 +29,9 @@ class SvmAlgorithm(IClassificationAlgorithm):
 
     def predict_proba(self, sentence):
         return self.clf.predict_proba([self.sentence_embedding[sentence]])[0]
+
+    def get_estimator(self):
+        return self.clf
 
 
 if __name__ == '__main__':
@@ -56,8 +61,8 @@ if __name__ == '__main__':
     fb = build_features.FeatureBuilder()
     fb.build(sentence_embedding, labels, sentences)
 
-    svmAlg = SvmAlgorithm()
-    svmAlg.train(fb.labels, fb.features, sentence_embedding, C=100, gamma=0.1, probability=True)
+    svmAlg = SvmAlgorithm(sentence_embedding, C=100, gamma=0.1, probability=True)
+    svmAlg.fit(fb.features, fb.labels)
     while True:
         command = raw_input("Type sentence to test model or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":

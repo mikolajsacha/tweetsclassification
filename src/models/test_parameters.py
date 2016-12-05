@@ -6,7 +6,7 @@ import os
 
 def get_test_summary_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\summaries\\{0}_{1}.txt'.format(data_folder, type(classifier).__name__))
+                        '..\\..\\summaries\\{0}_{1}.txt'.format(data_folder, classifier.__name__))
 
 
 def test_parameters(data_folder, folds_count, classifier, sentence_embedding, word_embedding, **kwargs):

@@ -1,31 +1,34 @@
+import math
+
+import itertools
+
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings import sentence_embeddings
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.test_parameters import test_all_params_combinations, log_range, get_test_summary_path
 from src.data import make_dataset
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
+import mpl_toolkits.mplot3d as mplot3d
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib import cm
 import os
 import ast
+import numpy as np
 
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    svmAlgorithm = SvmAlgorithm()
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
-        sentence_embeddings.ConcatenationEmbedding(),
         sentence_embeddings.SumEmbedding(),
         sentence_embeddings.TermCategoryVarianceEmbedding(),
-        sentence_embeddings.ReverseTermFrequencyAverageEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
-    c_range = log_range(0, 4)
-    gamma_range = log_range(-3, 0)
+    c_range = log_range(0, 6)
+    gamma_range = log_range(-3, 2)
 
-    summary_file_path = get_test_summary_path(data_folder, svmAlgorithm)
+    summary_file_path = get_test_summary_path(data_folder, SvmAlgorithm)
 
     generate_params = not os.path.isfile(summary_file_path)
 
@@ -43,7 +46,7 @@ if __name__ == "__main__":
         else:
             make_dataset.make_dataset(input_file_path, output_file_path)
 
-        test_all_params_combinations(data_folder, svmAlgorithm, folds_count,
+        test_all_params_combinations(data_folder, SvmAlgorithm, folds_count,
                                      word_embeddings=word_embeddings,
                                      sentence_embeddings=sentence_embeddings,
                                      params={"C": c_range, "gamma": gamma_range})
@@ -53,35 +56,32 @@ if __name__ == "__main__":
         embedding, params, result = tuple(line.split(";"))
         params_dict = ast.literal_eval(params)
         if embedding not in summary:
-            summary[embedding] = [(params_dict, result)]
+            summary[embedding] = {(math.log(params_dict['C'], 10), math.log(params_dict['gamma'], 10)): result}
         else:
-            summary[embedding].append((params_dict, result))
+            summary[embedding][(math.log(params_dict['C'], 10), math.log(params_dict['gamma'], 10))] = result
+
+    fig = plt.figure()
+
+    ax = fig.gca(projection='3d')
+
+    ax.set_xlabel('log(C)')
+    ax.set_ylabel('log(gamma)')
+    fig.suptitle("Comparison of cross-validation results for different embeddings and parameters")
+    colors = itertools.cycle(["r", "g", "b", "y", "cyan", "magenta"])
+    legend_handles = []
 
     for embedding, results, in summary.iteritems():
-        fig = plt.figure()
-        plt.title(embedding)
-        plt.xlabel('C')
-        plt.ylabel('gamma')
-        ax = fig.gca(projection='3d')
+        x, y = map(lambda e: sorted(set(e)), zip(*results.iterkeys()))
+        x, y = np.meshgrid(x, y)
+        z = np.empty(x.shape, dtype=float)
 
-        X, Y, Z = [], [], []
+        for i in xrange(x.shape[0]):
+            for j in xrange(x.shape[1]):
+                z[i][j] = results[(x[i][j], y[i][j])]
 
-        for params, result in results:
-            X.append(float(params['C']))
-            Y.append(float(params['gamma']))
-            Z.append(float(result))
+        color = next(colors)
+        legend_handles.append(mpatches.Patch(color=color, label=embedding))
+        ax.plot_surface(x, y, z, color=color, linewidth=0, rstride=1, cstride=1)
 
-        surf = ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm,
-                               linewidth=0, antialiased=False)
-        ax.set_zlim(-1.01, 1.01)
-
-        ax.zaxis.set_major_locator(LinearLocator(10))
-        ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
-
-        fig.colorbar(surf, shrink=0.5, aspect=5)
-
-        plt.show()
-
-
-
-
+    plt.legend(handles=legend_handles)
+    plt.show()

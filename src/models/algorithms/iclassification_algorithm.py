@@ -11,17 +11,13 @@ class IClassificationAlgorithm(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def train(self, labels, features, sentence_embedding, sentence_length):
+    def fit(self, labels, features):
         """
         Generates model for predicting categories using specific method
         :param labels: list of labels (categories) of sentences
         :param features: matrix of features as real values
-        :param sentence_embedding: sentence embedding used in model
-        :param sentence_length: fixed length of sentences
         :type labels: list of non-negative integers
         :type features: numpy matrix of floats
-        :param sentence_embedding: instance of class deriving ISentenceEmbedding
-        :param sentence_length: non-negative integer
         """
         raise NotImplementedError
 
@@ -32,5 +28,12 @@ class IClassificationAlgorithm(object):
         :param sentence: list of words (sentence)
         :type sentence: list of strings (words)
         :return: list of pairs (category, probability)
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_estimator(self):
+        """
+        :return: An estimator object from sklearn package for this algorithm
         """
         raise NotImplementedError

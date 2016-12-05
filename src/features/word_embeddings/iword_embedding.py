@@ -7,6 +7,7 @@ import nltk
 from abc import ABCMeta, abstractmethod
 
 
+
 class TextCorpora(object):
     """ Utility class for downloading text corpora using NLTK download manager and storing them in one place """
     corpuses = {}
