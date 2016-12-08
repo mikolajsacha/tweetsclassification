@@ -1,5 +1,9 @@
 import ast
 
+from matplotlib.markers import MarkerStyle
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from skimage import measure
+
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
@@ -10,7 +14,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt
+from matplotlib import gridspec
 
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
@@ -74,7 +78,7 @@ if __name__ == "__main__":
     examples_from_category = 20
     categories_count = len(data_info['Categories'])
     data_set_size = int(data_info['Size'])
-    folds_count = int(data_set_size/(examples_from_category * categories_count))
+    folds_count = int(data_set_size / (examples_from_category * categories_count))
 
     skf = StratifiedKFold(n_splits=folds_count)
     _, example_data_indices = next(skf.split(sentences, labels))
@@ -83,14 +87,18 @@ if __name__ == "__main__":
     example_sentences = sentences[example_data_indices]
     example_sentences_vectors = [sen_emb[s] for s in example_sentences]
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(15, 10))
     fig.suptitle("Data classification using PCA reducing sentence dimensions to 3")
-    ax = fig.gca(projection='3d')
-    #ax = fig.add_subplot(111, projection='3d')
+    gs = gridspec.GridSpec(1, 2)
 
-    colors = itertools.cycle(['r', 'g', 'b', 'yellow', 'magenta', 'cyan'])
+    ax = plt.subplot(gs[0], projection='3d')
+    ax.set_title('Real labels of some training set samples')
+
+    colors = ['r', 'g', 'b', 'yellow', 'magenta', 'cyan']
+    colors_gen = itertools.cycle(colors)
     legend_handles = []
 
+    # plot dots representing tested sentences
     xs, ys, zs = [], [], []
     underlying_sentences = []
 
@@ -112,17 +120,54 @@ if __name__ == "__main__":
             zs[i].append(sentence_vector[2])
             underlying_sentences[i].append(example_sentences[j])
 
-        color = next(colors)
+        color = next(colors_gen)
         ax.scatter(xs[i], ys[i], zs[i], c=color, s=60, picker=True)
         legend_handles.append(mpatches.Patch(color=color, label=data_info['Categories'][i]))
 
     fig.canvas.mpl_connect('pick_event', on_dot_pick)
 
-    plt.legend(handles=legend_handles)
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    # plot hyperplane acquired by SVM
+    X_MIN = min(s[0] for s in example_sentences_vectors)
+    X_MAX = max(s[0] for s in example_sentences_vectors)
+    Y_MIN = min(s[1] for s in example_sentences_vectors)
+    Y_MAX = max(s[1] for s in example_sentences_vectors)
+    Z_MIN = min(s[2] for s in example_sentences_vectors)
+    Z_MAX = max(s[2] for s in example_sentences_vectors)
+
+    MESHGRID_SIZE = 5
+
+    xx, yy, zz = np.meshgrid(np.linspace(X_MIN, X_MAX, MESHGRID_SIZE),
+                             np.linspace(Y_MIN, Y_MAX, MESHGRID_SIZE),
+                             np.linspace(Z_MIN, Z_MAX, MESHGRID_SIZE))
+    sens = np.c_[xx.ravel(), yy.ravel(), zz.ravel()]
+    Z = svmAlg.clf.predict(sens)
+
+    ax = plt.subplot(gs[1], projection='3d')
+    ax.set_title('Visualization of hyperplane acquire by SVM')
+
+    xs, ys, zs = [], [], []
+    colors_gen = itertools.cycle(colors)
+    for i in xrange(categories_count):
+        xs.append([])
+        ys.append([])
+        zs.append([])
+        category_vectors = filter(lambda (j, s): Z[j] == i, enumerate(sens))
+        for j, sentence_vector in category_vectors:
+            xs[i].append(sentence_vector[0])
+            ys[i].append(sentence_vector[1])
+            zs[i].append(sentence_vector[2])
+
+        color = next(colors_gen)
+        ax.scatter(xs[i], ys[i], zs[i], c=color, s=60)
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
 
     print ("Click on a dot to display a sentence it is representing")
+    plt.legend(handles=legend_handles)
     plt.show()
