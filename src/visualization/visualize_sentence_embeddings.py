@@ -1,0 +1,92 @@
+from src.features.sentence_embeddings.sentence_embeddings import *
+from src.features.word_embeddings.word2vec_embedding import *
+from sklearn.model_selection import StratifiedKFold
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+from matplotlib import gridspec
+from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
+from src.data import make_dataset
+from src.features.sentence_embeddings import sentence_embeddings
+from src.features.word_embeddings.iword_embedding import TextCorpora
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.models.algorithms.svm_algorithm import SvmAlgorithm
+
+if __name__ == "__main__":
+    data_folder = "dataset3_reduced"
+    data_path = make_dataset.get_processed_data_path(data_folder)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+
+    labels, sentences = make_dataset.read_dataset(data_path, data_info)
+
+    algorithm = SvmAlgorithm
+    word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
+    sentence_embeddings = [
+        sentence_embeddings.ConcatenationEmbedding(),
+        sentence_embeddings.SumEmbedding(),
+        sentence_embeddings.TermFrequencyAverageEmbedding()
+    ]
+    c = 10
+    gamma = 0.1
+
+    # take only 20 examples for each category for visualization
+    examples_from_category = 20
+    categories_count = len(data_info['Categories'])
+    data_set_size = int(data_info['Size'])
+    folds_count = int(data_set_size / (examples_from_category * categories_count))
+
+    skf = StratifiedKFold(n_splits=folds_count)
+    _, example_data_indices = next(skf.split(sentences, labels))
+
+    example_labels = labels[example_data_indices]
+    example_sentences = sentences[example_data_indices]
+
+    print ("Building word embedding...")
+    word_emb.build(sentences)
+
+    fig = plt.figure(figsize=(20, 10))
+    fig.suptitle("Example of several sentence embeddings in action")
+    gs = gridspec.GridSpec(1, len(sentence_embeddings))
+    colors = ['r', 'g', 'b', 'yellow', 'magenta', 'cyan']
+    legend_handles = []
+
+    # for the sake of visualization we will use 3 dimensional sentence vectors
+    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
+    ISentenceEmbedding.target_sentence_vector_length = 3
+
+    for i, sen_emb in enumerate(sentence_embeddings):
+        print ("Building sentence embedding: " + type(sen_emb).__name__ + "...")
+        sen_emb.build(word_emb, labels, sentences)
+
+        example_sentences_vectors = [sen_emb[s] for s in example_sentences]
+
+        ax = plt.subplot(gs[i], projection='3d')
+        ax.set_title(type(sen_emb).__name__)
+
+        colors_gen = itertools.cycle(colors)
+
+        # plot dots representing sentences
+        xs, ys, zs = [], [], []
+
+        for j in xrange(categories_count):
+            xs.append([])
+            ys.append([])
+            zs.append([])
+            category_vectors = filter(lambda (k, s): example_labels[k] == j, enumerate(example_sentences_vectors))
+            for k, sentence_vector in category_vectors:
+                xs[j].append(sentence_vector[0])
+                ys[j].append(sentence_vector[1])
+                zs[j].append(sentence_vector[2])
+
+            color = next(colors_gen)
+            ax.scatter(xs[j], ys[j], zs[j], c=color, s=60, picker=True)
+
+            if i == len(sentence_embeddings) - 1:
+                legend_handles.append(mpatches.Patch(color=color, label=data_info['Categories'][j]))
+
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+
+    plt.legend(handles=legend_handles)
+    plt.tight_layout()
+    plt.show()

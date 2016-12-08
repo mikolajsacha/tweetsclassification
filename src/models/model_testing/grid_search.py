@@ -110,14 +110,12 @@ if __name__ == "__main__":
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
-    #    sentence_embeddings.SumEmbedding(),
-    #    sentence_embeddings.TermCategoryVarianceEmbedding(),
+        sentence_embeddings.SumEmbedding(),
+        sentence_embeddings.TermCategoryVarianceEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
-    #c_range = log_range(0, 6)
-    #gamma_range = log_range(-3, 2)
-    c_range = [10]
-    gamma_range = [1]
+    c_range = log_range(0, 6)
+    gamma_range = log_range(-3, 2)
 
     summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
 

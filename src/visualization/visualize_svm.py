@@ -1,9 +1,5 @@
 import ast
 
-from matplotlib.markers import MarkerStyle
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from skimage import measure
-
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
@@ -11,7 +7,7 @@ from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
 from sklearn.model_selection import StratifiedKFold
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
@@ -60,7 +56,7 @@ if __name__ == "__main__":
     word_emb.build(sentences)
 
     # for the sake of visualization we will use 3 dimensional sentence vectors
-    # this gives model accuracy at about 60-80% but sure be sufficient for a visualization
+    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
     ISentenceEmbedding.target_sentence_vector_length = 3
     sen_emb = eval(sen_emb_class)()
     sen_emb.build(word_emb, labels, sentences)
@@ -170,4 +166,5 @@ if __name__ == "__main__":
 
     print ("Click on a dot to display a sentence it is representing")
     plt.legend(handles=legend_handles)
+    plt.tight_layout()
     plt.show()
