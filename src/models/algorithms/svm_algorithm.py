@@ -58,7 +58,7 @@ if __name__ == '__main__':
     fb = build_features.FeatureBuilder()
     fb.build(sentence_embedding, labels, sentences)
 
-    svmAlg = SvmAlgorithm(sentence_embedding, C=100, gamma=0.1, probability=True)
+    svmAlg = SvmAlgorithm(sentence_embedding, C=10, gamma=1, probability=True)
     svmAlg.fit(fb.features, fb.labels)
     while True:
         command = raw_input("Type sentence to test model or 'quit' to exit: ")

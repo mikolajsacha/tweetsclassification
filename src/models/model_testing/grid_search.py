@@ -1,20 +1,28 @@
-from src.data import make_dataset
-from src.features.build_features import FeatureBuilder
-from src.models.algorithms import validation
 import itertools
 import os
+
+from src.data import make_dataset
+from src.features.build_features import FeatureBuilder
+from src.features.sentence_embeddings import sentence_embeddings
+from src.features.word_embeddings.iword_embedding import TextCorpora
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.models.algorithms.svm_algorithm import SvmAlgorithm
+from src.models.model_testing import validation
 
 
 def log_range(min_ten_power, max_ten_power):
     return (10 ** i for i in xrange(min_ten_power, max_ten_power))
 
 
-def get_test_summary_path(data_folder, classifier):
+def get_grid_search_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\summaries\\{0}_{1}.txt'.format(data_folder, classifier.__name__))
+                        '..\\..\\..\\summaries\\{0}_{1}_grid_search_results.txt'.format(data_folder, classifier.__name__))
 
 
-def test_all_params_combinations(data_folder, classifier, folds_count, training_set_fraction, **kwargs):
+def grid_search(data_folder, classifier, folds_count, training_set_fraction, **kwargs):
+    """ Performs grid search of all possible combinations of given parameters with logarithmic ranges.
+        Saves results in formatted file in location pointed by get_grid_search_results_path method """
+
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
     tested_params = kwargs['params']
@@ -32,7 +40,7 @@ def test_all_params_combinations(data_folder, classifier, folds_count, training_
 
     print("." * 20)
 
-    output_path = get_test_summary_path(data_folder, classifier)
+    output_path = get_grid_search_results_path(data_folder, classifier)
     if not os.path.exists(os.path.dirname(output_path)):
         os.makedirs(os.path.dirname(output_path))
 
@@ -90,3 +98,39 @@ def test_all_params_combinations(data_folder, classifier, folds_count, training_
                                    .format(desc, mean))
                             output_file.write('{:s};{:s};{:4.2f}\n'.format(embedding_desc, str(params), mean))
                             print("." * 20)
+
+
+if __name__ == "__main__":
+    """ Runs grid search on a predefined set of parameters """
+
+    data_folder = "dataset3_reduced"
+    folds_count = 5
+    training_set_size = 0.80
+    algorithm = SvmAlgorithm
+
+    word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
+    sentence_embeddings = [
+    #    sentence_embeddings.SumEmbedding(),
+    #    sentence_embeddings.TermCategoryVarianceEmbedding(),
+        sentence_embeddings.TermFrequencyAverageEmbedding()
+    ]
+    #c_range = log_range(0, 6)
+    #gamma_range = log_range(-3, 2)
+    c_range = [10]
+    gamma_range = [1]
+
+    summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
+
+    input_file_path = make_dataset.get_external_data_path(data_folder)
+    output_file_path = make_dataset.get_processed_data_path(data_folder)
+
+    if not os.path.isfile(input_file_path):
+        print "Path {0} does not exist".format(input_file_path)
+        exit(-1)
+    else:
+        make_dataset.make_dataset(input_file_path, output_file_path)
+
+    grid_search(data_folder, algorithm, folds_count, training_set_size,
+                word_embeddings=word_embeddings,
+                sentence_embeddings=sentence_embeddings,
+                params={"C": c_range, "gamma": gamma_range})
