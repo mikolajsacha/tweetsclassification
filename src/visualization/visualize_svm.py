@@ -85,7 +85,8 @@ if __name__ == "__main__":
 
     fig = plt.figure()
     fig.suptitle("Data classification using PCA reducing sentence dimensions to 3")
-    ax = fig.add_subplot(111, projection='3d')
+    ax = fig.gca(projection='3d')
+    #ax = fig.add_subplot(111, projection='3d')
 
     colors = itertools.cycle(['r', 'g', 'b', 'yellow', 'magenta', 'cyan'])
     legend_handles = []
@@ -95,8 +96,9 @@ if __name__ == "__main__":
 
     def on_dot_pick(event):
         set_num = int(event.artist.get_label()[-1])
-        for i in (int(j) for j in list(event.ind)):
-            print underlying_sentences[set_num][i]
+        if len(underlying_sentences) > set_num:
+            for i in (int(j) for j in list(event.ind)):
+                print underlying_sentences[set_num][i]
 
     for i in xrange(categories_count):
         xs.append([])
