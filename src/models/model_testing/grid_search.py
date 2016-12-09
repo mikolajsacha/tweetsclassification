@@ -103,7 +103,7 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
 if __name__ == "__main__":
     """ Runs grid search on a predefined set of parameters """
 
-    data_folder = "dataset3_reduced"
+    data_folder = "dataset1"
     folds_count = 5
     training_set_size = 0.80
     algorithm = SvmAlgorithm
