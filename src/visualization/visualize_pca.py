@@ -93,12 +93,12 @@ if __name__ == "__main__":
 
             pca_accuracies.append(sum(validation_results) / folds_count)
 
-        lowest_execution_time = min(pca_execution_times)
+        highest_execution_time = max(pca_execution_times)
         highest_score = max(pca_accuracies)
 
         # normalize times and accuracies
         for i in xrange(len(pca_lengths)):
-            pca_execution_times[i] /= lowest_execution_time
+            pca_execution_times[i] /= highest_execution_time
             pca_accuracies[i] /= highest_score
 
         with open(output_path, 'w') as output_file:
@@ -109,8 +109,9 @@ if __name__ == "__main__":
     execution_time_legend = mpatches.Patch(color='r', label="Execution time (as compared to the slowest)")
 
     plt.legend(handles=[accuracy_legend, execution_time_legend])
-    plt.plot(pca_lengths, pca_accuracies, 'b', pca_lengths, pca_execution_times, 'r',
-             pca_lengths, pca_accuracies, 'bo', pca_lengths, pca_execution_times, 'ro')
+    lines = plt.plot(pca_lengths, pca_accuracies, 'b', pca_lengths, pca_execution_times, 'r',
+                     pca_lengths, pca_accuracies, 'bo', pca_lengths, pca_execution_times, 'ro')
+    plt.setp(lines, linewidth=2, markersize=8)
 
     plt.title('How PCA dimension reduction affects model accuracy?')
     plt.xlabel('PCA dimensions')

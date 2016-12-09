@@ -12,6 +12,10 @@ from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 if __name__ == "__main__":
+    # for the sake of visualization we will use 3 dimensional sentence vectors
+    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
+    ISentenceEmbedding.target_sentence_vector_length = 3
+
     data_folder = "dataset3_reduced"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
@@ -28,8 +32,8 @@ if __name__ == "__main__":
     c = 10
     gamma = 0.1
 
-    # take only 20 examples for each category for visualization
-    examples_from_category = 20
+    # take only 100 examples for each category for visualization
+    examples_from_category = 100
     categories_count = len(data_info['Categories'])
     data_set_size = int(data_info['Size'])
     folds_count = int(data_set_size / (examples_from_category * categories_count))
@@ -48,10 +52,6 @@ if __name__ == "__main__":
     gs = gridspec.GridSpec(1, len(sentence_embeddings))
     colors = ['r', 'g', 'b', 'yellow', 'magenta', 'cyan']
     legend_handles = []
-
-    # for the sake of visualization we will use 3 dimensional sentence vectors
-    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
-    ISentenceEmbedding.target_sentence_vector_length = 3
 
     for i, sen_emb in enumerate(sentence_embeddings):
         print ("Building sentence embedding: " + type(sen_emb).__name__ + "...")

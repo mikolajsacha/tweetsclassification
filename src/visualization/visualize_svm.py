@@ -59,14 +59,7 @@ if __name__ == "__main__":
     ISentenceEmbedding.target_sentence_vector_length = 3
     sen_emb = eval(sen_emb_class)()
 
-    # take only 50 examples for each category for visualization
-    examples_from_category = 50
     categories_count = len(data_info['Categories'])
-    data_set_size = int(data_info['Size'])
-    folds_count = int(data_set_size / (examples_from_category * categories_count))
-
-    skf = StratifiedKFold(n_splits=folds_count)
-    _, example_data_indices = next(skf.split(sentences, labels))
 
     fig = plt.figure(figsize=(15, 10))
     fig.suptitle("Data classification using PCA reducing sentence dimensions to 3")
@@ -78,15 +71,17 @@ if __name__ == "__main__":
 
     MESHGRID_SIZE = 10
 
+
     def map_label_to_binary_for(index):
         def map_label_to_binary(label):
             return 1 if label == index else 0
 
         return map_label_to_binary
 
-    xs = np.empty((categories_count, examples_from_category), dtype=float)
-    ys = np.empty((categories_count, examples_from_category), dtype=float)
-    zs = np.empty((categories_count, examples_from_category), dtype=float)
+
+    xs = [[]] * categories_count
+    ys = [[]] * categories_count
+    zs = [[]] * categories_count
 
     svm_models = []
 
@@ -109,23 +104,22 @@ if __name__ == "__main__":
         svm_models.append(svm)
 
         category_vectors = filter(lambda (k, s): fb.labels[k] == 1, enumerate(fb.features))
-        j = 0
         for k, sentence_vector in category_vectors:
-            if j >= examples_from_category:
-                break
-            xs[i][j] = sentence_vector[0]
-            ys[i][j] = sentence_vector[1]
-            zs[i][j] = sentence_vector[2]
-            j += 1
+            xs[i].append(sentence_vector[0])
+            ys[i].append(sentence_vector[1])
+            zs[i].append(sentence_vector[2])
 
     print ("Drawing plot...")
 
-    X_MIN = min(xs.ravel())
-    X_MAX = max(xs.ravel())
-    Y_MIN = min(ys.ravel())
-    Y_MAX = max(ys.ravel())
-    Z_MIN = min(zs.ravel())
-    Z_MAX = max(zs.ravel())
+    def flatten(l):
+        return (item for sublist in l for item in sublist)
+
+    X_MIN = min(flatten(xs))
+    X_MAX = max(flatten(xs))
+    Y_MIN = min(flatten(ys))
+    Y_MAX = max(flatten(ys))
+    Z_MIN = min(flatten(zs))
+    Z_MAX = max(flatten(zs))
 
     # plot dots representing sentences
     for i, category in enumerate(data_info['Categories']):
@@ -143,13 +137,7 @@ if __name__ == "__main__":
         color = next(color_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))
 
-        ax.scatter(xs[i], ys[i], zs[i], c=color, s=70)
-        other_indices = np.concatenate((np.arange(i, dtype=int), np.arange(i+1, len(xs), dtype=int)))
-
-        other_xs = xs[other_indices].ravel()
-        other_ys = ys[other_indices].ravel()
-        other_zs = ys[other_indices].ravel()
-        ax.scatter(other_xs, other_ys, other_zs, c='gray', s=20)
+        ax.scatter(xs[i], ys[i], zs[i], c=color, s=20)
 
         # plot hyperplane acquired by SVM
         xx, yy, zz = np.meshgrid(np.linspace(X_MIN, X_MAX, MESHGRID_SIZE),
