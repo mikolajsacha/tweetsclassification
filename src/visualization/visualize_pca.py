@@ -8,7 +8,6 @@ from src.models.model_testing.grid_search import get_grid_search_results_path
 from src.models.model_testing.validation import test_cross_validation
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from scipy.interpolate import interp1d
 
 
 def get_pca_results_path(data_folder, classifier):
@@ -109,15 +108,8 @@ if __name__ == "__main__":
     accuracy_legend = mpatches.Patch(color='b', label="Accuracy (as compared to the best)")
     execution_time_legend = mpatches.Patch(color='r', label="Execution time (as compared to the slowest)")
 
-    # interpolate
-    spline_points_count = 100
-    grid = np.linspace(pca_lengths[0], pca_lengths[-1], spline_points_count)
-
-    acc_f = interp1d(pca_lengths, pca_accuracies, kind="cubic")
-    time_f = interp1d(pca_lengths, pca_execution_times, kind="cubic")
-
     plt.legend(handles=[accuracy_legend, execution_time_legend])
-    plt.plot(grid, acc_f(grid), 'b', grid, time_f(grid), 'r',
+    plt.plot(pca_lengths, pca_accuracies, 'b', pca_lengths, pca_execution_times, 'r',
              pca_lengths, pca_accuracies, 'bo', pca_lengths, pca_execution_times, 'ro')
 
     plt.title('How PCA dimension reduction affects model accuracy?')
