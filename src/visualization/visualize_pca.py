@@ -8,11 +8,14 @@ from src.models.model_testing.grid_search import get_grid_search_results_path
 from src.models.model_testing.validation import test_cross_validation
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from scipy.interpolate import interp1d
+
 
 def get_pca_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
                         '..\\..\\summaries\\{0}_{1}_pca_comparison_results.txt'.format(data_folder,
                                                                                        classifier.__name__))
+
 
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
@@ -55,7 +58,7 @@ if __name__ == "__main__":
             use_new_pca = True
 
     if use_new_pca:
-        pca_lengths = [1, 2, 3, 5, 10, 15, 20, 35, 50, 75, 100]
+        pca_lengths = [1, 2, 3, 5, 10, 15, 25, 35, 45, 55, 70, 85, 100]
 
         max_result = 0.0
         best_parameters = []
@@ -106,8 +109,16 @@ if __name__ == "__main__":
     accuracy_legend = mpatches.Patch(color='b', label="Accuracy (as compared to the best)")
     execution_time_legend = mpatches.Patch(color='r', label="Execution time (as compared to the slowest)")
 
+    # interpolate
+    spline_points_count = 100
+    grid = np.linspace(pca_lengths[0], pca_lengths[-1], spline_points_count)
+
+    acc_f = interp1d(pca_lengths, pca_accuracies, kind="cubic")
+    time_f = interp1d(pca_lengths, pca_execution_times, kind="cubic")
+
     plt.legend(handles=[accuracy_legend, execution_time_legend])
-    plt.plot(pca_lengths, pca_accuracies, 'bo-', pca_lengths, pca_execution_times, 'ro-')
+    plt.plot(grid, acc_f(grid), 'b', grid, time_f(grid), 'r',
+             pca_lengths, pca_accuracies, 'bo', pca_lengths, pca_execution_times, 'ro')
 
     plt.title('How PCA dimension reduction affects model accuracy?')
     plt.xlabel('PCA dimensions')

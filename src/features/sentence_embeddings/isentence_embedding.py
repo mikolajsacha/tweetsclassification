@@ -11,7 +11,7 @@ class ISentenceEmbedding(object):
     Sentence embedding creates vectors representing sentences (word lists) using a specified word embedding.
     """
     __metaclass__ = ABCMeta
-    target_sentence_vector_length = 100
+    target_sentence_vector_length = 30
 
     def __init__(self):
         self.pca = PCA(n_components=ISentenceEmbedding.target_sentence_vector_length)
