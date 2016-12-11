@@ -28,17 +28,21 @@ Project Organization
     ├── requirements.txt     <- The requirements file for reproducing the analysis environment
     │
     ├── src                  <- Source code for use in this project.
-        │
-        ├── data             <- Scripts to generate preprocessed data
-        │   └── make_dataset.py
-        │
-        ├── features         <- Scripts to turn raw data into features for modeling
-        │   ├── word_embeddings     <- Word embeddings
-        │   ├── sentence_embeddings <- Scripts for embedding word sets into set vectors
-        │   └── build_features.py   <- Script for building features for a given word end sentence embedding
-        │
-        ├── models           <- Scripts to train and test models
-        │   ├── algorithms          <- Wrappers around a few of data classification algorithms
-        │   └── model_testing       <- Scripts for testing model accuracy
-        │
-        └── visualization    <- Scripts to create exploratory and results oriented visualizations
+    │    │
+    │    ├── data            <- Scripts to generate preprocessed data
+    │    │   └── make_dataset.py
+    │    │
+    │    ├── features        <- Scripts to turn raw data into features for modeling
+    │    │   ├── word_embeddings     <- Word embeddings
+    │    │   ├── sentence_embeddings <- Scripts for embedding word sets into set vectors
+    │    │   └── build_features.py   <- Script for building features for a given word end sentence embedding
+    │    │
+    │    ├── models          <- Scripts to train and test models
+    │    │   ├── algorithms          <- Wrappers around a few of data classification algorithms
+    │    │   └── model_testing       <- Scripts for testing model accuracy
+    │    │
+    │    └── visualization   <- Scripts to create exploratory and results oriented visualizations
+    │        └── interactive.py      <- Script for testing models by predicting sentences interactively
+    │    
+    └── summaries            <- Results of tests of models' performance in textual form
+    
