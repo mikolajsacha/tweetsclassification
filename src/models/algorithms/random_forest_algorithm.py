@@ -13,6 +13,11 @@ class RandomForestAlgorithm(IClassificationAlgorithm):
     def __init__(self, sentence_embedding, **kwargs):
         IClassificationAlgorithm.__init__(self)
         self.sentence_embedding = sentence_embedding
+
+        # suppress this param, as random forest doesn't use such parameter
+        if 'probability' in kwargs:
+            del kwargs['probability']
+
         self.clf = RandomForestClassifier(**kwargs)
 
     def fit(self, features, labels):

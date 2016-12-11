@@ -1,23 +1,35 @@
 import ast
-from matplotlib import gridspec
-from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
+from src.features.sentence_embeddings.sentence_embeddings import *
+from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
-from sklearn.model_selection import StratifiedKFold
-from skimage import measure
-from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
-import matplotlib.patches as mpatches
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 if __name__ == "__main__":
-    """ Enables user to test SVM by typing sentences interactively"""
+    """ Enables user to test chosen classifier by typing sentences interactively"""
+
+    classifiers = [SvmAlgorithm, RandomForestAlgorithm]
+
+    number = "x"
+    print("Choose a classifier to test by typing a number:")
+    print "\n".join("{0} - {1}".format(i, clf.__name__) for i, clf in enumerate(classifiers))
+
+    while True:
+        try:
+            number = int(raw_input())
+            if len(classifiers) > number >= 0:
+                break
+            else: raise ValueError()
+        except ValueError:
+            print "Please insert a correct number"
+
+    classifier = classifiers[number]
+
     data_folder = "dataset3_reduced"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
+    summary_file_path = get_grid_search_results_path(data_folder, classifier)
 
     if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
         print "Grid Search summary file does not exist. Please run grid_search.py at first."
@@ -56,8 +68,8 @@ if __name__ == "__main__":
     fb.build(sen_emb, labels, sentences)
 
     print ("Building model...")
-    svm = SvmAlgorithm(sen_emb, probability=True, **params)
-    svm.fit(fb.features, fb.labels)
+    clf = classifier(sen_emb, probability=True, **params)
+    clf.fit(fb.features, fb.labels)
 
     print ("Model evaluated!...\n")
     while True:
@@ -66,5 +78,5 @@ if __name__ == "__main__":
             break
         sentence = make_dataset.string_to_words_list(command)
         print map(lambda (i, prob): "{:s}: {:4.2f}%".format(data_info["Categories"][i], 100.0*prob),
-                  enumerate(svm.predict_proba(sentence)))
+                  enumerate(clf.predict_proba(sentence)))
 
