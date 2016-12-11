@@ -7,37 +7,38 @@ Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
+    ├── Makefile             <- Makefile with commands like `make data` or `make train`
+    ├── README.md            <- The top-level README for developers using this project.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── processed      <- The final, canonical data sets for modeling.
+    │   └── dataset_n_name   <- Folder for one of the datasets
+    │       ├── external     <- Data from third party sources.
+    │       └── processed    <- The final, canonical data sets for modeling.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── models               <- Trained and serialized models
+    │   ├── features         <- Trained features sets (in human readable form)
+    │   └── word_embeddings  <- Trained word embeddings (in binary form)
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── notebooks            <- Jupyter notebooks. Not yet created.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── references           <- Data dictionaries, manuals, and all other explanatory materials. Not yet created
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── reports              <- Generated analysis as HTML, PDF, LaTeX, etc.
+    │   └── figures                <- Generated graphics and figures to be used in reporting
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
+    ├── requirements.txt     <- The requirements file for reproducing the analysis environment
     │
-    ├── src                <- Source code for use in this project.
-        ├── __init__.py    <- Makes src a Python module
+    ├── src                  <- Source code for use in this project.
         │
-        ├── data           <- Scripts to download or generate data
+        ├── data             <- Scripts to generate preprocessed data
         │   └── make_dataset.py
         │
-        ├── features       <- Scripts to turn raw data into features for modeling
-        │   └── build_features.py
+        ├── features         <- Scripts to turn raw data into features for modeling
+        │   ├── word_embeddings     <- Word embeddings
+        │   ├── sentence_embeddings <- Scripts for embedding word sets into set vectors
+        │   └── build_features.py   <- Script for building features for a given word end sentence embedding
         │
-        ├── models         <- Scripts to train models and then use trained models to make
-        │                     predictions
+        ├── models           <- Scripts to train and test models
+        │   ├── algorithms          <- Wrappers around a few of data classification algorithms
+        │   └── model_testing       <- Scripts for testing model accuracy
         │
-        └── visualization  <- Scripts to create exploratory and results oriented visualizations
-            └── visualize.py
+        └── visualization    <- Scripts to create exploratory and results oriented visualizations
