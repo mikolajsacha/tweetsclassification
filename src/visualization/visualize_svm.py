@@ -5,12 +5,13 @@ from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
-from sklearn.model_selection import StratifiedKFold
 from skimage import measure
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+
+from src.visualization.save_visualization import save_current_plot
 
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
@@ -137,7 +138,7 @@ if __name__ == "__main__":
         color = next(color_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))
 
-        ax.scatter(xs[i], ys[i], zs[i], c=color, s=20)
+        ax.scatter(xs[i], ys[i], zs[i], c=color, s=40)
 
         # plot hyperplane acquired by SVM
         xx, yy, zz = np.meshgrid(np.linspace(X_MIN, X_MAX, MESHGRID_SIZE),
@@ -155,4 +156,5 @@ if __name__ == "__main__":
 
     plt.legend(handles=legend_handles)
     plt.tight_layout()
+    save_current_plot('svm_visualization.svg')
     plt.show()

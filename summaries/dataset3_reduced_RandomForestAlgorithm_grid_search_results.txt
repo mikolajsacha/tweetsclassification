@@ -1,0 +1,3 @@
+Word2VecEmbedding, SumEmbedding;{};72.40
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{};70.30
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{};86.40

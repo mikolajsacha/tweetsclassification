@@ -1,18 +1,19 @@
 """
-Contains class for usage of SVM algorithm
+Contains class for usage of Random Forest method
 """
-from sklearn import svm
 from src.models.algorithms.iclassification_algorithm import IClassificationAlgorithm
+from sklearn.ensemble import RandomForestClassifier
 
 
-class SvmAlgorithm(IClassificationAlgorithm):
+class RandomForestAlgorithm(IClassificationAlgorithm):
     """
-    Class for building model using Support Vector Machine method
+    Class for building model using Random Forest method
     """
+
     def __init__(self, sentence_embedding, **kwargs):
         IClassificationAlgorithm.__init__(self)
         self.sentence_embedding = sentence_embedding
-        self.clf = svm.SVC(**kwargs)
+        self.clf = RandomForestClassifier(**kwargs)
 
     def fit(self, features, labels):
         self.clf.fit(features, labels)
@@ -22,3 +23,4 @@ class SvmAlgorithm(IClassificationAlgorithm):
 
     def predict_proba(self, sentence):
         return self.clf.predict_proba([self.sentence_embedding[sentence]])[0]
+

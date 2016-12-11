@@ -6,6 +6,7 @@ from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing import validation
 
@@ -16,7 +17,8 @@ def log_range(min_ten_power, max_ten_power):
 
 def get_grid_search_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\..\\summaries\\{0}_{1}_grid_search_results.txt'.format(data_folder, classifier.__name__))
+                        '..\\..\\..\\summaries\\{0}_{1}_grid_search_results.txt'.format(data_folder,
+                                                                                        classifier.__name__))
 
 
 def grid_search(data_folder, classifier, folds_count, training_set_fraction, **kwargs):
@@ -103,10 +105,11 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
 if __name__ == "__main__":
     """ Runs grid search on a predefined set of parameters """
 
-    data_folder = "dataset1"
+    data_folder = "dataset3_reduced"
     folds_count = 5
     training_set_size = 0.80
-    algorithm = SvmAlgorithm
+    algorithms = [(SvmAlgorithm, {"C": list(log_range(0, 6)), "gamma": list(log_range(-3, 2))}),
+                  (RandomForestAlgorithm, {})]
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
@@ -114,10 +117,6 @@ if __name__ == "__main__":
         sentence_embeddings.TermCategoryVarianceEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
-    c_range = log_range(0, 6)
-    gamma_range = log_range(-3, 2)
-
-    summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
 
     input_file_path = make_dataset.get_external_data_path(data_folder)
     output_file_path = make_dataset.get_processed_data_path(data_folder)
@@ -128,7 +127,11 @@ if __name__ == "__main__":
     else:
         make_dataset.make_dataset(input_file_path, output_file_path)
 
-    grid_search(data_folder, algorithm, folds_count, training_set_size,
-                word_embeddings=word_embeddings,
-                sentence_embeddings=sentence_embeddings,
-                params={"C": c_range, "gamma": gamma_range})
+    for algorithm, params in algorithms:
+        answer = raw_input("Do you wish to test {0} with parameters {1} ? [y/n] "
+                           .format(algorithm.__name__, str(params)))
+        if answer.lower() == 'y' or answer.lower() == 'yes':
+            grid_search(data_folder, algorithm, folds_count, training_set_size,
+                        word_embeddings=word_embeddings,
+                        sentence_embeddings=sentence_embeddings,
+                        params=params)
