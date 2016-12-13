@@ -1,3 +1,10 @@
-Word2VecEmbedding, SumEmbedding;{};86.50
-Word2VecEmbedding, TermCategoryVarianceEmbedding;{};85.90
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{};90.70
+Word2VecEmbedding, SumEmbedding;{'oob_score': True, 'criterion': 'entropy'};87.50
+Word2VecEmbedding, SumEmbedding;{'oob_score': False, 'criterion': 'gini'};86.60
+Word2VecEmbedding, SumEmbedding;{'oob_score': True, 'criterion': 'gini'};86.30
+Word2VecEmbedding, SumEmbedding;{'oob_score': False, 'criterion': 'entropy'};87.40
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'oob_score': True, 'criterion': 'gini'};86.50
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'oob_score': False, 'criterion': 'entropy'};85.80
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'oob_score': False, 'criterion': 'gini'};86.70
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': True, 'criterion': 'entropy'};90.20
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': True, 'criterion': 'gini'};90.20
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': False, 'criterion': 'gini'};90.60
