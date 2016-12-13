@@ -128,6 +128,6 @@ if __name__ == "__main__":
 
     plt.suptitle("Random Forest method with PCA reduction to 2 dimensions")
     plt.legend(handles=legend_handles)
-    save_current_plot('random_forest_visualization.svg')
+    save_current_plot('random_forest_2d_visualization.svg')
     print ""
     plt.show()
