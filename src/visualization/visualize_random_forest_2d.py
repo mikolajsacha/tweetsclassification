@@ -99,11 +99,11 @@ if __name__ == "__main__":
 
     def on_click(event):
         x, y = event.xdata, event.ydata
-        print "Point {0}, {1}:".format(x, y)
+        print "Point {:5.4f}, {:5.4f}:".format(x, y)
         proba = rf.clf.predict_proba([[x, y]])[0]
         print "Classifier prediction: {0}\n" \
               .format(", ".join(
-                     [data_info['Categories'][i] + ": {:4.2f}%".format(100 * p) for i, p in enumerate(proba)]))
+                     [data_info['Categories'][i] + ": {:2.0f}%".format(100 * p) for i, p in enumerate(proba)]))
 
     def on_pick(event):
         if event.mouseevent.button != 1:

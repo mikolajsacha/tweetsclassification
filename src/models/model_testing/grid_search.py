@@ -105,12 +105,13 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
 if __name__ == "__main__":
     """ Runs grid search on a predefined set of parameters """
 
-    data_folder = "dataset1"
+    data_folder = "dataset3_reduced"
     folds_count = 5
     training_set_size = 0.80
     algorithms = [(SvmAlgorithm, {"C": list(log_range(0, 6)), "gamma": list(log_range(-3, 2))}),
-                  (RandomForestAlgorithm, {"oob_score": [False, True],
-                                           "criterion": ["gini", "entropy"]})]
+                  (RandomForestAlgorithm, {"oob_score": [False],
+                                           "criterion": ["entropy"],
+                                           "min_samples_split": [20, 50, 100]})]
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [

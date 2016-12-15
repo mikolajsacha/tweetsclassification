@@ -1,8 +1,8 @@
-Word2VecEmbedding, SumEmbedding;{'oob_score': True, 'criterion': 'entropy'};74.30
-Word2VecEmbedding, SumEmbedding;{'oob_score': False, 'criterion': 'entropy'};72.60
-Word2VecEmbedding, SumEmbedding;{'oob_score': True, 'criterion': 'gini'};71.80
-Word2VecEmbedding, TermCategoryVarianceEmbedding;{'oob_score': True, 'criterion': 'gini'};72.30
-Word2VecEmbedding, TermCategoryVarianceEmbedding;{'oob_score': False, 'criterion': 'entropy'};71.50
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': False, 'criterion': 'entropy'};86.40
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': False, 'criterion': 'gini'};85.80
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{'oob_score': True, 'criterion': 'gini'};85.30
+Word2VecEmbedding, SumEmbedding;{'min_samples_split': 20, 'oob_score': False, 'criterion': 'entropy'};71.90
+Word2VecEmbedding, SumEmbedding;{'min_samples_split': 100, 'oob_score': False, 'criterion': 'entropy'};71.80
+Word2VecEmbedding, SumEmbedding;{'min_samples_split': 50, 'oob_score': False, 'criterion': 'entropy'};72.80
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'min_samples_split': 50, 'oob_score': False, 'criterion': 'entropy'};70.40
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'min_samples_split': 20, 'oob_score': False, 'criterion': 'entropy'};71.80
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'min_samples_split': 100, 'oob_score': False, 'criterion': 'entropy'};67.00
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 50, 'oob_score': False, 'criterion': 'entropy'};82.80
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 20, 'oob_score': False, 'criterion': 'entropy'};85.80
