@@ -80,7 +80,7 @@ if __name__ == "__main__":
 
     x_min, x_max = min(min(x) for x in xs), max(max(x) for x in xs)
     y_min, y_max = min(min(y) for y in ys), max(max(y) for y in ys)
-    MESHGRID_SIZE = 100
+    MESHGRID_SIZE = 300
     xx, yy = np.meshgrid(np.linspace(x_min - 0.1, x_max + 0.1, MESHGRID_SIZE),
                          np.linspace(y_min - 0.1, y_max + 0.1, MESHGRID_SIZE))
 
