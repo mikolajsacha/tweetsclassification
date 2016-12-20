@@ -6,6 +6,7 @@ from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing import validation
@@ -114,13 +115,14 @@ if __name__ == "__main__":
                                            "min_weight_fraction_leaf": [0, 0.1],
                                            "max_leaf_nodes": [None, 2, 5, 10],
                                            "criterion": ["gini", "entropy"],
-                                           "oop_score": [True, False]})
+                                           "oop_score": [True, False]}),
+                  (NeuralNetworkAlgorithm, {})
     ]
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
-        # sentence_embeddings.SumEmbedding(),
-        # sentence_embeddings.TermCategoryVarianceEmbedding(),
+        sentence_embeddings.SumEmbedding(),
+        sentence_embeddings.TermCategoryVarianceEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
 

@@ -3,6 +3,7 @@ import time
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
+from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
@@ -21,7 +22,7 @@ def get_pca_results_path(data_folder, classifier):
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
-    classifiers = [SvmAlgorithm, RandomForestAlgorithm]
+    classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     pca_lengths = []
     pca_accuracies = []
     pca_execution_times = []
