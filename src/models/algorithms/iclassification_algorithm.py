@@ -31,3 +31,12 @@ class IClassificationAlgorithm(object):
         """
         raise NotImplementedError
 
+    @abstractmethod
+    def visualize_2d(self, xs, ys, ax, color_map):
+        """
+        Draw a 2d visualization of algorithm on given Xs and Ys.
+        Noticee: Here, Xs and Ys are lists of built features (float vectors)
+        Should work only if features are 2-dimensional
+        """
+        raise NotImplementedError
+

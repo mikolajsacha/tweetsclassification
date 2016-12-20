@@ -3,6 +3,7 @@ Contains class for usage of Random Forest method
 """
 from src.models.algorithms.iclassification_algorithm import IClassificationAlgorithm
 from sklearn.ensemble import RandomForestClassifier
+import numpy as np
 
 
 class RandomForestAlgorithm(IClassificationAlgorithm):
@@ -28,4 +29,12 @@ class RandomForestAlgorithm(IClassificationAlgorithm):
 
     def predict_proba(self, sentence):
         return self.clf.predict_proba([self.sentence_embedding[sentence]])[0]
+
+    def visualize_2d(self, xs, ys, ax, color_map):
+        estimator_alpha = 1.0 / len(self.clf.estimators_)
+
+        for tree in self.clf.estimators_:
+            z = tree.predict(np.c_[xs.ravel(), ys.ravel()])
+            z = z.reshape(xs.shape)
+            ax.contourf(xs, ys, z, alpha=estimator_alpha, cmap=color_map)
 
