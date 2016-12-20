@@ -109,12 +109,18 @@ if __name__ == "__main__":
     folds_count = 5
     training_set_size = 0.80
     algorithms = [(SvmAlgorithm, {"C": list(log_range(0, 6)), "gamma": list(log_range(-3, 2))}),
-                  (RandomForestAlgorithm, {})]
+                  (RandomForestAlgorithm, {"min_samples_leaf": [1, 5, 10],
+                                           "min_samples_split": [2, 10, 25],
+                                           "min_weight_fraction_leaf": [0, 0.1],
+                                           "max_leaf_nodes": [None, 2, 5, 10],
+                                           "criterion": ["gini", "entropy"],
+                                           "oop_score": [True, False]})
+    ]
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
-        sentence_embeddings.SumEmbedding(),
-        sentence_embeddings.TermCategoryVarianceEmbedding(),
+        # sentence_embeddings.SumEmbedding(),
+        # sentence_embeddings.TermCategoryVarianceEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
 

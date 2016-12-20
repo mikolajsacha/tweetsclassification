@@ -10,7 +10,6 @@ from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-
 from src.visualization.save_visualization import save_current_plot
 
 if __name__ == "__main__":

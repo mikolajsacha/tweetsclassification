@@ -1,3 +1,5 @@
-Word2VecEmbedding, SumEmbedding;{};72.40
-Word2VecEmbedding, TermCategoryVarianceEmbedding;{};70.30
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{};86.40
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 2, 'max_leaf_nodes': None, 'min_weight_fraction_leaf': 0, 'min_samples_leaf': 1};86.70
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 2, 'max_leaf_nodes': None, 'min_weight_fraction_leaf': 0, 'min_samples_leaf': 5};86.00
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 10, 'max_leaf_nodes': None, 'min_weight_fraction_leaf': 0, 'min_samples_leaf': 5};86.40
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 10, 'max_leaf_nodes': None, 'min_weight_fraction_leaf': 0, 'min_samples_leaf': 10};84.30
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'min_samples_split': 10, 'max_leaf_nodes': None, 'min_weight_fraction_leaf': 0, 'min_samples_leaf': 1};84.90
