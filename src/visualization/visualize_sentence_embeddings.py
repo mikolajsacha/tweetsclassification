@@ -13,10 +13,6 @@ from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.visualization.save_visualization import save_current_plot
 
 if __name__ == "__main__":
-    # for the sake of visualization we will use 3 dimensional sentence vectors
-    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
-    ISentenceEmbedding.target_sentence_vector_length = 3
-
     data_folder = "dataset3"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
@@ -26,9 +22,9 @@ if __name__ == "__main__":
     algorithm = SvmAlgorithm
     word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
     sentence_embeddings = [
-        sentence_embeddings.ConcatenationEmbedding(),
-        sentence_embeddings.SumEmbedding(),
-        sentence_embeddings.TermFrequencyAverageEmbedding()
+        sentence_embeddings.ConcatenationEmbedding(3),
+        sentence_embeddings.SumEmbedding(3),
+        sentence_embeddings.TermFrequencyAverageEmbedding(3)
     ]
     c = 10
     gamma = 0.1

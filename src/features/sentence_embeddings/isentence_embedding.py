@@ -4,6 +4,8 @@ Contains basic interface (abstract base class) for sentence embeddings.
 from abc import ABCMeta, abstractmethod
 from sklearn.decomposition import PCA
 
+from src.features.word_embeddings.iword_embedding import IWordEmbedding
+
 
 class ISentenceEmbedding(object):
     """
@@ -11,17 +13,22 @@ class ISentenceEmbedding(object):
     Sentence embedding creates vectors representing sentences (word lists) using a specified word embedding.
     """
     __metaclass__ = ABCMeta
-    target_sentence_vector_length = 30
 
-    def __init__(self):
-        self.pca = PCA(n_components=ISentenceEmbedding.target_sentence_vector_length)
+    def __init__(self, target_sentence_vector_length):
+        self.use_pca = target_sentence_vector_length is not None
+        if self.use_pca:
+            self.pca = PCA(n_components=target_sentence_vector_length)
+            self.vector_length = target_sentence_vector_length
+        else:
+            self.vector_length = IWordEmbedding.target_vector_length
 
     def build(self, word_embedding, labels, sentences):
         """
         A wrapper for build_raw which performs further preprocessing on embedding
         """
         self.build_raw(word_embedding, labels, sentences)
-        self.pca.fit([self.get_normalized(sentence) for sentence in sentences])
+        if self.use_pca:
+            self.pca.fit([self.get_normalized(sentence) for sentence in sentences])
 
     @abstractmethod
     def build_raw(self, word_embedding, labels, sentences):
@@ -40,7 +47,7 @@ class ISentenceEmbedding(object):
         vector = self.get_raw_vector(sentence)
 
         # normalize result vector
-        result_norm = (sum(map(lambda x: x**2, vector))) ** 0.5
+        result_norm = (sum(map(lambda x: x ** 2, vector))) ** 0.5
         if result_norm != 0:
             for i in xrange(vector.shape[0]):
                 vector[i] /= result_norm
@@ -50,7 +57,10 @@ class ISentenceEmbedding(object):
         """
         A wrapper for get_raw_vector which returns vector after preprocessing
         """
-        return self.pca.transform([self.get_normalized(sentence)])[0]
+        if self.use_pca:
+            return self.pca.transform([self.get_normalized(sentence)])[0]
+        else:
+            return self.get_normalized(sentence)
 
     @abstractmethod
     def get_raw_vector(self, sentence):

@@ -54,10 +54,7 @@ if __name__ == "__main__":
     word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
     word_emb.build(sentences)
 
-    # for the sake of visualization we will use 3 dimensional sentence vectors
-    # this gives model accuracy at about 60-80% but should be sufficient for a visualization
-    ISentenceEmbedding.target_sentence_vector_length = 3
-    sen_emb = eval(sen_emb_class)()
+    sen_emb = eval(sen_emb_class)(3)
 
     categories_count = len(data_info['Categories'])
 

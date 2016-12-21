@@ -100,8 +100,7 @@ if __name__ == "__main__":
         word_emb.build(sentences)
 
         # for the sake of visualization we will use 2 dimensional sentence vectors
-        ISentenceEmbedding.target_sentence_vector_length = 2
-        sen_emb = eval(sen_emb_class)()
+        sen_emb = eval(sen_emb_class)(2)
 
         print ("Building sentence embedding...")
         sen_emb.build(word_emb, labels, sentences)

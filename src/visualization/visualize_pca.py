@@ -20,7 +20,7 @@ def get_pca_results_path(data_folder, classifier):
 
 
 if __name__ == "__main__":
-    data_folder = "dataset3"
+    data_folder = "dataset3_reduced"
     folds_count = 5
     classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     pca_lengths = []
@@ -101,8 +101,7 @@ if __name__ == "__main__":
         for pca_length in pca_lengths:
             print ("\nCalculating model for PCA with dimensions reduced to {0}".format(pca_length))
 
-            ISentenceEmbedding.target_sentence_vector_length = pca_length
-            sen_emb = eval(sen_emb_class)()
+            sen_emb = eval(sen_emb_class)(pca_length)
 
             start_time = time.time()
             validation_results = test_cross_validation(labels, sentences, word_emb, sen_emb, fb,

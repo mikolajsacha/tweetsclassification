@@ -2,6 +2,7 @@ import ast
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
 from src.features.sentence_embeddings.sentence_embeddings import *
+from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
@@ -9,7 +10,7 @@ from src.models.model_testing.grid_search import get_grid_search_results_path
 if __name__ == "__main__":
     """ Enables user to test chosen classifier by typing sentences interactively"""
 
-    classifiers = [SvmAlgorithm, RandomForestAlgorithm]
+    classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
 
     number = "x"
     print("Choose a classifier to test by typing a number:")
@@ -20,7 +21,8 @@ if __name__ == "__main__":
             number = int(raw_input())
             if len(classifiers) > number >= 0:
                 break
-            else: raise ValueError()
+            else:
+                raise ValueError()
         except ValueError:
             print "Please insert a correct number"
 

@@ -31,7 +31,7 @@ class FeatureBuilder(object):
         :param sentences: a numpy matrix of sentences (rows = sentences, columns = words)
         """
         self.labels = labels
-        sentences_vectors_length = ISentenceEmbedding.target_sentence_vector_length
+        sentences_vectors_length = sentence_embedding.vector_length
         self.features = np.empty((sentences.shape[0], sentences_vectors_length), dtype=float)
 
         for i in xrange(sentences.shape[0]):

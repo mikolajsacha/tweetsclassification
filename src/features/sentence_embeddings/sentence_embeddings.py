@@ -15,17 +15,17 @@ class ConcatenationEmbedding(ISentenceEmbedding):
     Creates vector representation for senteces by simply concatenating word vectors from a given word embedding
     """
 
-    def __init__(self):
-        ISentenceEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length=30):
+        ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
-        self.vector_length = 0
         self.sentences_length = 0
         self.max_sentence_length = 0
 
     def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
         self.max_sentence_length = reduce(lambda acc, x: max(acc, len(x)), sentences, 0)
-        self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
+        if not self.use_pca:
+            self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
 
     def get_raw_vector(self, sentence):
         empty_vectors = self.max_sentence_length - len(sentence)
@@ -41,8 +41,8 @@ class SumEmbedding(ISentenceEmbedding):
     Creates vector representation for sentences by adding word vectors coordinates
     """
 
-    def __init__(self):
-        ISentenceEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length=30):
+        ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
 
     def build_raw(self, word_embedding, labels, sentences):
@@ -63,8 +63,8 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        ISentenceEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length):
+        ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
         self.weights = {}
         self.min_weight = 1.0
@@ -93,8 +93,8 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     Creates vector representation for sentences by averaging word vectors, where more frequent have higher weights
     """
 
-    def __init__(self):
-        IWeightedWordEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length=30):
+        IWeightedWordEmbedding.__init__(self, target_sentence_vector_length)
 
     def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
@@ -102,6 +102,8 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
         word_counter = Counter(word for sentence in sentences for word in sentence)
         for word, occurrences in word_counter.iteritems():
             self.weights[word] = occurrences
+        if not self.use_pca:
+            self.vector_length = IWordEmbedding.target_vector_length
 
 
 # This embedding does not work well - I won't use it in further research
@@ -110,8 +112,8 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     Creates vector representation for sentences by averaging word vectors, where more frequent have lower weights
     """
 
-    def __init__(self):
-        IWeightedWordEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length=30):
+        IWeightedWordEmbedding.__init__(self, target_sentence_vector_length)
 
     def build_raw(self, word_embedding, labels, sentences):
         self.word_embedding = word_embedding
@@ -129,8 +131,8 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
     If the word occurs with roughly same counts in all categories, it has a low weight.
     """
 
-    def __init__(self):
-        IWeightedWordEmbedding.__init__(self)
+    def __init__(self, target_sentence_vector_length=None):
+        IWeightedWordEmbedding.__init__(self, target_sentence_vector_length)
         self.sorted_words = []  # for analysis
 
     def build_raw(self, word_embedding, labels, sentences):
@@ -154,5 +156,4 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
             sqr_avg = sum(i ** 2 for i in counts) / len(counts)
             deviation = max(sqr_avg - avg ** 2, 1) ** 0.5
             self.weights[word] = deviation
-
         self.sorted_words = sorted(self.weights.iteritems(), key=operator.itemgetter(1))
