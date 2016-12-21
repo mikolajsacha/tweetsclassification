@@ -15,7 +15,7 @@ class ConcatenationEmbedding(ISentenceEmbedding):
     Creates vector representation for senteces by simply concatenating word vectors from a given word embedding
     """
 
-    def __init__(self, target_sentence_vector_length=30):
+    def __init__(self, target_sentence_vector_length=None):
         ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
         self.max_sentence_length = 0
@@ -40,7 +40,7 @@ class SumEmbedding(ISentenceEmbedding):
     Creates vector representation for sentences by adding word vectors coordinates
     """
 
-    def __init__(self, target_sentence_vector_length=30):
+    def __init__(self, target_sentence_vector_length=None):
         ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
 
@@ -94,7 +94,7 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     Creates vector representation for sentences by averaging word vectors, where more frequent have higher weights
     """
 
-    def __init__(self, target_sentence_vector_length=30):
+    def __init__(self, target_sentence_vector_length=None):
         IWeightedWordEmbedding.__init__(self, target_sentence_vector_length)
 
     def build_raw(self, word_embedding, labels, sentences):
@@ -113,7 +113,7 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
     Creates vector representation for sentences by averaging word vectors, where more frequent have lower weights
     """
 
-    def __init__(self, target_sentence_vector_length=30):
+    def __init__(self, target_sentence_vector_length=None):
         IWeightedWordEmbedding.__init__(self, target_sentence_vector_length)
 
     def build_raw(self, word_embedding, labels, sentences):

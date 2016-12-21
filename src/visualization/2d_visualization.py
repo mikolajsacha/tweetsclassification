@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 if __name__ == "__main__":
-    data_folder = "dataset3"
+    data_folder = "dataset3_reduced"
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
     categories_count = len(data_info['Categories'])
     data_path = make_dataset.get_processed_data_path(data_folder)

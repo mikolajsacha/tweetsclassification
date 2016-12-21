@@ -55,7 +55,7 @@ if __name__ == "__main__":
         print "Word Embeddings Results summary file does not exist or is empty. New search will be run."
         use_new_word_embedding_dim = True
     else:
-        answer = raw_input("Do you wish to use existing PCA results summary file [y] or run new calculations? [n] ")
+        answer = raw_input("Do you wish to use existing results summary file [y] or run new calculations? [n] ")
         if answer.lower() == 'y' or answer.lower == 'yes':
             print ("Using existing PCA summary file...")
 
