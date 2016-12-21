@@ -15,7 +15,7 @@ with warnings.catch_warnings():
 
 
 class Word2VecEmbedding(IWordEmbedding):
-    def __init__(self, text_corpus, vector_length=100):
+    def __init__(self, text_corpus, vector_length=40):
         IWordEmbedding.__init__(self, vector_length)
         self.text_corpus = text_corpus
         self.model = {}
