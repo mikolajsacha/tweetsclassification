@@ -2,10 +2,8 @@
 Contains basic interface (abstract base class) for word embeddings.
 """
 import os
-import numpy as np
 import nltk
 from abc import ABCMeta, abstractmethod
-
 
 
 class TextCorpora(object):
@@ -33,9 +31,9 @@ class IWordEmbedding(object):
     Abstract base class for word embeddings
     """
     __metaclass__ = ABCMeta
-    # change 'target_vector_length' only if applying PCA on words
-    initial_vector_length = 100  # vector length through embedding process
-    target_vector_length = initial_vector_length  # vector length after preprocessing of embedding
+
+    def __init__(self, vector_length):
+        self.vector_length = vector_length
 
     @abstractmethod
     def build(self, sentences):

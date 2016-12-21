@@ -15,7 +15,7 @@ class FeatureBuilder(object):
     """
     Class used for building feature matrix.
     Field "labels" is a list of categories of sentences
-    Field "features" is a features matrix of shape (training set sixe, target_vector_length)
+    Field "features" is a features matrix of shape (training set sixe, vector_length)
     """
 
     def __init__(self):

@@ -18,9 +18,7 @@ class ISentenceEmbedding(object):
         self.use_pca = target_sentence_vector_length is not None
         if self.use_pca:
             self.pca = PCA(n_components=target_sentence_vector_length)
-            self.vector_length = target_sentence_vector_length
-        else:
-            self.vector_length = IWordEmbedding.target_vector_length
+        self.vector_length = target_sentence_vector_length
 
     def build(self, word_embedding, labels, sentences):
         """

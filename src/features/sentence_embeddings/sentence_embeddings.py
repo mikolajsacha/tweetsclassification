@@ -25,7 +25,7 @@ class ConcatenationEmbedding(ISentenceEmbedding):
         self.word_embedding = word_embedding
         self.max_sentence_length = reduce(lambda acc, x: max(acc, len(x)), sentences, 0)
         if not self.use_pca:
-            self.vector_length = IWordEmbedding.target_vector_length * self.max_sentence_length
+            self.vector_length = word_embedding.vector_length * self.max_sentence_length
 
     def get_raw_vector(self, sentence):
         empty_vectors = self.max_sentence_length - len(sentence)
@@ -46,10 +46,12 @@ class SumEmbedding(ISentenceEmbedding):
         self.word_embedding = None
 
     def build_raw(self, word_embedding, labels, sentences):
+        if not self.use_pca:
+            self.vector_length = word_embedding.vector_length
         self.word_embedding = word_embedding
 
     def get_raw_vector(self, sentence):
-        vector_size = self.word_embedding.target_vector_length
+        vector_size = self.word_embedding.vector_length
         word_vectors = map(lambda word: self.word_embedding[word], sentence)
         result = np.empty(vector_size, dtype=float)
         for i in xrange(vector_size):
@@ -79,7 +81,7 @@ class IWeightedWordEmbedding(ISentenceEmbedding):
         return self.weights[word]
 
     def get_raw_vector(self, sentence):
-        vector_size = self.word_embedding.target_vector_length
+        vector_size = self.word_embedding.vector_length
         result = np.zeros(vector_size, dtype=float)
         for word, vector in ((w, self.word_embedding[w]) for w in sentence):
             weight = self.get_weight(word)
@@ -103,7 +105,7 @@ class TermFrequencyAverageEmbedding(IWeightedWordEmbedding):
         for word, occurrences in word_counter.iteritems():
             self.weights[word] = occurrences
         if not self.use_pca:
-            self.vector_length = IWordEmbedding.target_vector_length
+            self.vector_length = word_embedding.vector_length
 
 
 # This embedding does not work well - I won't use it in further research
@@ -122,6 +124,8 @@ class ReverseTermFrequencyAverageEmbedding(IWeightedWordEmbedding):
         total_words_count = sum(len(sen) for sen in sentences)
         for word, occurrences in word_counter.iteritems():
             self.weights[word] = (total_words_count - occurrences) / total_words_count
+        if not self.use_pca:
+            self.vector_length = word_embedding.vector_length
 
 
 class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
@@ -156,4 +160,6 @@ class TermCategoryVarianceEmbedding(IWeightedWordEmbedding):
             sqr_avg = sum(i ** 2 for i in counts) / len(counts)
             deviation = max(sqr_avg - avg ** 2, 1) ** 0.5
             self.weights[word] = deviation
+        if not self.use_pca:
+            self.vector_length = word_embedding.vector_length
         self.sorted_words = sorted(self.weights.iteritems(), key=operator.itemgetter(1))
