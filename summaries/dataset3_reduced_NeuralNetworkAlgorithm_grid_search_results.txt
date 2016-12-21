@@ -1,3 +1,18 @@
-Word2VecEmbedding, SumEmbedding;{};81.90
-Word2VecEmbedding, TermCategoryVarianceEmbedding;{};77.00
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{};89.30
+Word2VecEmbedding, SumEmbedding;{'alpha': 0.0001, 'learning_rate': 'adaptive', 'activation': 'relu'};73.00
+Word2VecEmbedding, SumEmbedding;{'alpha': 0.0001, 'learning_rate': 'invscaling', 'activation': 'relu'};74.50
+Word2VecEmbedding, SumEmbedding;{'alpha': 1e-05, 'learning_rate': 'adaptive', 'activation': 'relu'};74.00
+Word2VecEmbedding, SumEmbedding;{'alpha': 0.001, 'learning_rate': 'adaptive', 'activation': 'relu'};73.20
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 1e-05, 'learning_rate': 'adaptive', 'activation': 'relu'};74.90
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 0.001, 'learning_rate': 'invscaling', 'activation': 'relu'};75.10
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 1e-05, 'learning_rate': 'invscaling', 'activation': 'relu'};75.50
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 0.0001, 'learning_rate': 'constant', 'activation': 'relu'};75.50
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 0.0001, 'learning_rate': 'invscaling', 'activation': 'relu'};75.90
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'alpha': 0.001, 'learning_rate': 'constant', 'activation': 'relu'};75.60
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 1e-05, 'learning_rate': 'constant', 'activation': 'relu'};88.00
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 0.001, 'learning_rate': 'adaptive', 'activation': 'relu'};88.20
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 0.0001, 'learning_rate': 'constant', 'activation': 'relu'};87.80
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 1e-05, 'learning_rate': 'adaptive', 'activation': 'relu'};87.60
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 0.0001, 'learning_rate': 'invscaling', 'activation': 'relu'};88.20
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 0.001, 'learning_rate': 'constant', 'activation': 'identity'};86.00
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 0.001, 'learning_rate': 'invscaling', 'activation': 'tanh'};86.00
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'alpha': 1e-05, 'learning_rate': 'invscaling', 'activation': 'relu'};87.90
