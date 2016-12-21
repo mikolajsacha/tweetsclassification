@@ -1,0 +1,6 @@
+Word2VecEmbedding, SumEmbedding;{'criterion': 'gini'};77.51
+Word2VecEmbedding, SumEmbedding;{'criterion': 'entropy'};77.41
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'criterion': 'entropy'};89.73
+Word2VecEmbedding, TermCategoryVarianceEmbedding;{'criterion': 'gini'};89.84
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'entropy'};91.72
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'gini'};91.70

@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # this gives model accuracy at about 60-80% but should be sufficient for a visualization
     ISentenceEmbedding.target_sentence_vector_length = 3
 
-    data_folder = "dataset3_reduced"
+    data_folder = "dataset3"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 

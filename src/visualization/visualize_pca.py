@@ -20,7 +20,7 @@ def get_pca_results_path(data_folder, classifier):
 
 
 if __name__ == "__main__":
-    data_folder = "dataset3_reduced"
+    data_folder = "dataset3"
     folds_count = 5
     classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     pca_lengths = []
