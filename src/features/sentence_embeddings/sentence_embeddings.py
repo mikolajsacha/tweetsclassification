@@ -18,7 +18,6 @@ class ConcatenationEmbedding(ISentenceEmbedding):
     def __init__(self, target_sentence_vector_length=30):
         ISentenceEmbedding.__init__(self, target_sentence_vector_length)
         self.word_embedding = None
-        self.sentences_length = 0
         self.max_sentence_length = 0
 
     def build_raw(self, word_embedding, labels, sentences):
