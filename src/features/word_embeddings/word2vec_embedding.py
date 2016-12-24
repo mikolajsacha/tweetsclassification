@@ -7,7 +7,6 @@ import itertools
 import multiprocessing
 from src.data import make_dataset
 from iword_embedding import IWordEmbedding, TextCorpora
-#  from sklearn.decomposition import PCA
 
 #  This import generates an annoying warning on Windows
 with warnings.catch_warnings():
@@ -16,13 +15,9 @@ with warnings.catch_warnings():
 
 
 class Word2VecEmbedding(IWordEmbedding):
-    visualization_sample_size = 100
-
-    def __init__(self, text_corpus):
-        self.text_corpus = text_corpus
+    def __init__(self, text_corpus, vector_length=40):
+        IWordEmbedding.__init__(self, text_corpus, vector_length)
         self.model = {}
-        # self.preprocess = lambda x: x
-        # self.pca = PCA(n_components=IWordEmbedding.target_vector_length)
 
     def saved_embedding_exists(self, data_folder):
         embedding_file_path = self.get_embedding_model_path(data_folder)
@@ -35,19 +30,6 @@ class Word2VecEmbedding(IWordEmbedding):
 
     def load(self, data_path, sentences):
         self.model = Word2Vec.load(data_path)
-        # self.build_preprocess_transformation(sentences)
-
-    def build_preprocess_transformation(self, training_set_sentences):
-        # preprocessing is built only by words from our training set
-        training_set_vectors = []
-        already_in_training_set = set()
-        for sentence in training_set_sentences:
-            for word in sentence:
-                if word not in already_in_training_set:
-                    already_in_training_set.add(word)
-                    training_set_vectors.append(self.model[word])
-        self.pca.fit(training_set_vectors)
-        self.preprocess = lambda vector: self.pca.transform(vector)
 
     def build(self, sentences):
         vec_length = IWordEmbedding.initial_vector_length
@@ -55,13 +37,11 @@ class Word2VecEmbedding(IWordEmbedding):
         cpu_count = multiprocessing.cpu_count()
         self.model = Word2Vec(total_corpus, size=vec_length, min_count=1, workers=cpu_count)
         self.model.init_sims(replace=True)  # finalize the model
-        # self.build_preprocess_transformation(sentences) uncomment to fit PCA on single words
 
     def __getitem__(self, word):
         if word not in self.model or word == '':
             return [0.0] * IWordEmbedding.target_vector_length
         return self.model[[word]][0]
-        # return self.preprocess(self.model[[word]])[0]
 
     def get_embedding_model_path(self, data_folder):
         return IWordEmbedding.get_embedding_model_path(data_folder) + '\\word2vec'

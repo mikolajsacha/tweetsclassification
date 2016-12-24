@@ -2,10 +2,8 @@
 Contains basic interface (abstract base class) for word embeddings.
 """
 import os
-import numpy as np
 import nltk
 from abc import ABCMeta, abstractmethod
-
 
 
 class TextCorpora(object):
@@ -18,7 +16,7 @@ class TextCorpora(object):
             text_corpus_downloaded = False
             while not text_corpus_downloaded:
                 try:
-                    TextCorpora.corpuses[key] = iter(eval("nltk.corpus.{0}.sents()".format(key)))
+                    TextCorpora.corpuses[key] = list(eval("nltk.corpus.{0}.sents()".format(key)))
                     text_corpus_downloaded = True
                 except LookupError:
                     print ("Please use NLTK manager to download text corpus \"{0}\"".format(key))
@@ -33,9 +31,10 @@ class IWordEmbedding(object):
     Abstract base class for word embeddings
     """
     __metaclass__ = ABCMeta
-    # change 'target_vector_length' only if applying PCA on words
-    initial_vector_length = 100  # vector length through embedding process
-    target_vector_length = initial_vector_length  # vector length after preprocessing of embedding
+
+    def __init__(self, text_corpus, vector_length):
+        self.vector_length = vector_length
+        self.text_corpus = text_corpus
 
     @abstractmethod
     def build(self, sentences):
@@ -105,3 +104,6 @@ class IWordEmbedding(object):
             for line in f:
                 sentence = line.split(' ')[1]
                 yield map(lambda word: word.rstrip(), sentence.split(','))
+
+    def __str__(self):
+        return type(self).__name__
