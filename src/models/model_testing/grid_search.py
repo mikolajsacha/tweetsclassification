@@ -1,9 +1,8 @@
 import itertools
 import os
-from pathos.multiprocessing import ProcessingPool as Pool
 import multiprocessing
-
-import src
+from multiprocessing.pool import ThreadPool
+from sklearn.model_selection import StratifiedKFold
 from src.data import make_dataset
 from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
@@ -32,7 +31,7 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
     tested_params = kwargs['params']
-    print tested_params
+    # is_full_search = kwargs['full'] TODO
 
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
@@ -51,78 +50,125 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
     if not os.path.exists(os.path.dirname(output_path)):
         os.makedirs(os.path.dirname(output_path))
 
-    with open(output_path, 'w') as output_file:
-        for word_emb in word_embeddings:
-            for sen_emb in sentence_embeddings:
-                embedding_desc = ', '.join(map(lambda n: type(n).__name__, [word_emb, sen_emb]))
+    # clear output file
+    with open(output_path, 'w'):
+        pass
 
-                best_results = [0.0] * folds_count
-                best_results_descriptions = [""] * folds_count
-                best_results_params = [{}] * folds_count
+    for word_emb in word_embeddings:
+        for sen_emb in sentence_embeddings:
+            embedding_desc = ', '.join(map(lambda n: type(n).__name__, [word_emb, sen_emb]))
 
+            best_results = [0.0] * folds_count
+            best_results_descriptions = [""] * folds_count
+            best_results_params = [{}] * folds_count
+
+            print("." * 20)
+            print("Testing embedding: {0}...".format(embedding_desc))
+
+            skf = StratifiedKFold(n_splits=folds_count)
+            feature_builder = FeatureBuilder()
+            fold = 0
+            for train_index, test_index in skf.split(training_sentences, training_labels):
                 print("." * 20)
-                print("Testing embedding: {0}...".format(embedding_desc))
+                print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
+                print("Building embeddings...")
+                fold_training_labels = training_labels[train_index]
+                fold_training_sentences = training_sentences[train_index]
 
-                for params in all_combinations:
-                    params['training_labels'] = training_labels
-                    params['training_sentences'] = training_sentences
-                    params['classifier'] = classifier
-                    params['folds_count'] = folds_count
-                    params['word_emb'] = word_emb
-                    params['sen_emb'] = sen_emb
+                test_labels = training_labels[test_index]
+                test_sentences = training_sentences[test_index]
 
-                t_pool = Pool(multiprocessing.cpu_count())
-                all_results = t_pool.map(validation.test_cross_validation_dict, all_combinations)
-
-                for params in all_combinations:
-                    del params['training_labels']
-                    del params['training_sentences']
-                    del params['classifier']
-                    del params['folds_count']
-                    del params['word_emb']
-                    del params['sen_emb']
+                word_emb.build(fold_training_sentences)
+                sen_emb.build(word_emb, fold_training_labels, fold_training_sentences)
+                feature_builder.build(sen_emb, fold_training_labels, fold_training_sentences)
 
                 for i, params in enumerate(all_combinations):
-                    results = all_results[i]
+                    params['training_features'] = feature_builder.features
+                    params['training_labels'] = fold_training_labels
+                    params['test_sentences'] = test_sentences
+                    params['test_labels'] = test_labels
+                    params['sentence_embedding'] = sen_emb
+                    params['classifier_class'] = classifier
+
+                print("Testing all hyperparameters combinations...")
+                t_pool = ThreadPool(multiprocessing.cpu_count())
+                all_results_for_fold = t_pool.map(validation.single_fold_validation_dict, all_combinations)
+
+                for i, params in enumerate(all_combinations):
                     result_desc = embedding_desc + ", params = " + str(params)
-                    print "Mean cross-validation result for {0} is: {1}" \
-                        .format(result_desc, sum(results) / float(len(results)))
-                    for j in xrange(folds_count):
-                        result = results[j]
-                        if result > best_results[j]:
-                            best_results[j] = result
-                            best_results_descriptions[j] = [result_desc]
-                            best_results_params[j] = [params]
-                        elif result == best_results[j]:
-                            best_results_descriptions[j].append(result_desc)
-                            best_results_params[j].append(params)
+                    result = all_results_for_fold[i]
+                    if result > best_results[fold]:
+                        best_results[fold] = result
+                        best_results_descriptions[fold] = [result_desc]
+                        best_results_params[fold] = [params]
+                    elif result == best_results[fold]:
+                        best_results_descriptions[fold].append(result_desc)
+                        best_results_params[fold].append(params)
+                fold += 1
 
-                for i in xrange(folds_count):
-                    print("." * 20)
-                    print ("Best result for {:s}, fold {:d} is {:4.2f}% for the following cases:"
-                           .format(embedding_desc, i + 1, best_results[i] * 100))
-                    for desc in best_results_descriptions[i]:
-                        print desc
+            for i in xrange(folds_count):
+                print("." * 20)
+                print ("Best result for {:s}, fold {:d} is {:4.2f}% for the following cases:"
+                       .format(embedding_desc, i + 1, best_results[i] * 100))
+                for desc in best_results_descriptions[i]:
+                    print desc
 
+            print("." * 20)
+            print("." * 20)
+            print ("Evaluating the estimate of out-of-model errors for best parameters...")
+            print("." * 20)
+            print("." * 20)
+
+            best_params = []
+            best_params_descriptions = []
+            for i in xrange(len(best_results_params)):
+                for j in xrange(len(best_results_params[i])):
+                    if best_results_params[i][j] not in best_params:
+                        best_params.append(best_results_params[i][j])
+                        best_params_descriptions.append(best_results_descriptions[i][j])
+
+            fold = 0
+            fold_evaluations = []
+
+            for train_index, test_index in skf.split(sentences, labels):
                 print("." * 20)
-                print("." * 20)
-                print ("Evaluating the estimate of out-of-model errors for best parameters...")
-                print("." * 20)
-                already_checked_params = set()
-                for i in xrange(folds_count):
-                    zipped_params = zip(best_results_descriptions[i], best_results_params[i])
-                    for desc, params, in zipped_params:
-                        if desc not in already_checked_params:
-                            already_checked_params.add(desc)
-                            print("Testing " + desc)
-                            results = validation.test_cross_validation(labels, sentences, word_emb, sen_emb,
-                                                                       FeatureBuilder(), classifier,
-                                                                       folds_count, **params)
-                            mean = sum(results) / float(len(results)) * 100.0
-                            print ("Model evaluation result for {:s} is {:4.2f}%"
-                                   .format(desc, mean))
-                            output_file.write('{:s};{:s};{:4.2f}\n'.format(embedding_desc, str(params), mean))
-                            print("." * 20)
+                print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
+                print("Building embeddings...")
+                training_labels = labels[train_index]
+                training_sentences = sentences[train_index]
+                test_labels = labels[test_index]
+                test_sentences = sentences[test_index]
+
+                word_emb.build(training_sentences)
+                sen_emb.build(word_emb, training_labels, training_sentences)
+                feature_builder.build(sen_emb, training_labels, training_sentences)
+
+                for i, params in enumerate(best_params):
+                    params['training_features'] = feature_builder.features
+                    params['training_labels'] = training_labels
+                    params['test_sentences'] = test_sentences
+                    params['test_labels'] = test_labels
+                    params['sentence_embedding'] = sen_emb
+                    params['classifier_class'] = classifier
+
+                t_pool = ThreadPool(multiprocessing.cpu_count())
+                fold_evaluations.append(t_pool.map(validation.single_fold_validation_dict, best_params))
+                fold += 1
+
+            evaluations = [0.0] * len(best_params)
+            for j in xrange(len(best_params)):
+                for i in xrange(len(fold_evaluations)):
+                    evaluations[j] += fold_evaluations[i][j]
+                evaluations[j] /= float(len(fold_evaluations))
+
+            for i in xrange(len(best_params_descriptions)):
+                print "Model evaluation for {:s}: {:4.2f}%".format(best_params_descriptions[i], evaluations[i]*100)
+
+            with open(output_path, 'a') as output_file:
+                for i, evaluation in enumerate(evaluations):
+                    output_file.write('{:s};{:s};{:4.2f}\n'.format(embedding_desc, str(best_params[i]), evaluation*100))
+
+            print "Results saved!"
 
 
 if __name__ == "__main__":
@@ -154,10 +200,18 @@ if __name__ == "__main__":
         make_dataset.make_dataset(input_file_path, output_file_path)
 
     for algorithm, params in algorithms:
-        answer = raw_input("Do you wish to test {0} with parameters {1} ? [y/n] "
+        to_run = raw_input("Do you wish to test {0} with parameters {1} ? [y/n] "
                            .format(algorithm.__name__, str(params)))
-        if answer.lower() == 'y' or answer.lower() == 'yes':
+        if to_run.lower() == 'y' or to_run.lower() == 'yes':
+            # TODO: Allow FULL grid search (evaulate all parameters)
+            # search_type = raw_input("Do you wish to evalute all parameters performance [y] (may take very long) " +
+            #                         "or just look for best evaluation [n] (double cross-validation)? [y/n]")
+            # if search_type.lower() == 'y' or search_type.lower() == 'yes':
+            #     full = True
+            # else:
+            #     full = False
             grid_search(data_folder, algorithm, folds_count, training_set_size,
+                        # full=full,
                         word_embeddings=word_embeddings,
                         sentence_embeddings=sentence_embeddings,
                         params=params)
