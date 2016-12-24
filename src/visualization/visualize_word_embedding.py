@@ -60,7 +60,7 @@ if __name__ == "__main__":
     words_colors = list(map(lambda x: mix_colors(x[1], colors), trimmed_words))
 
     fig = plt.figure(figsize=(10, 10))
-    fig.suptitle("Example of word embedding + PCA in action")
+    fig.suptitle("Example of word embedding in action")
     legend_handles = []
 
     ax = plt.subplot(projection='3d')

@@ -16,8 +16,7 @@ with warnings.catch_warnings():
 
 class Word2VecEmbedding(IWordEmbedding):
     def __init__(self, text_corpus, vector_length=40):
-        IWordEmbedding.__init__(self, vector_length)
-        self.text_corpus = text_corpus
+        IWordEmbedding.__init__(self, text_corpus, vector_length)
         self.model = {}
 
     def saved_embedding_exists(self, data_folder):
@@ -32,16 +31,6 @@ class Word2VecEmbedding(IWordEmbedding):
     def load(self, data_path, sentences):
         self.model = Word2Vec.load(data_path)
 
-    def build_preprocess_transformation(self, training_set_sentences):
-        training_set_vectors = []
-        already_in_training_set = set()
-        for sentence in training_set_sentences:
-            for word in sentence:
-                if word not in already_in_training_set:
-                    already_in_training_set.add(word)
-                    training_set_vectors.append(self.model[word])
-        self.pca.fit(training_set_vectors)
-
     def build(self, sentences):
         total_corpus = itertools.chain(self.text_corpus, sentences)
         cpu_count = multiprocessing.cpu_count()
@@ -53,7 +42,8 @@ class Word2VecEmbedding(IWordEmbedding):
             return [0.0] * self.vector_length
         return self.model[[word]][0]
 
-    def get_embedding_model_path(self, data_folder):
+    @staticmethod
+    def get_embedding_model_path(data_folder):
         return IWordEmbedding.get_embedding_model_path(data_folder) + '\\word2vec'
 
 

@@ -1,6 +1,9 @@
 import itertools
 import os
+from pathos.multiprocessing import ProcessingPool as Pool
+import multiprocessing
 
+import src
 from src.data import make_dataset
 from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
@@ -29,6 +32,7 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
     tested_params = kwargs['params']
+    print tested_params
 
     data_file_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
@@ -39,7 +43,7 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
     training_sentences = sentences[:training_set_size]
 
     params_values = ([(param, val) for val in values] for param, values in tested_params.iteritems())
-    all_combinations = map(lambda tuple_list: dict(tuple_list), itertools.product(*params_values))
+    all_combinations = list(map(lambda tuple_list: dict(tuple_list), itertools.product(*params_values)))
 
     print("." * 20)
 
@@ -57,22 +61,41 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
                 best_results_params = [{}] * folds_count
 
                 print("." * 20)
-                print("Testing embedding: " + embedding_desc)
+                print("Testing embedding: {0}...".format(embedding_desc))
+
                 for params in all_combinations:
+                    params['training_labels'] = training_labels
+                    params['training_sentences'] = training_sentences
+                    params['classifier'] = classifier
+                    params['folds_count'] = folds_count
+                    params['word_emb'] = word_emb
+                    params['sen_emb'] = sen_emb
+
+                t_pool = Pool(multiprocessing.cpu_count())
+                all_results = t_pool.map(validation.test_cross_validation_dict, all_combinations)
+
+                for params in all_combinations:
+                    del params['training_labels']
+                    del params['training_sentences']
+                    del params['classifier']
+                    del params['folds_count']
+                    del params['word_emb']
+                    del params['sen_emb']
+
+                for i, params in enumerate(all_combinations):
+                    results = all_results[i]
                     result_desc = embedding_desc + ", params = " + str(params)
-                    print("." * 20)
-                    print("Testing " + result_desc)
-                    results = validation.test_cross_validation(training_labels, training_sentences, word_emb, sen_emb,
-                                                               FeatureBuilder(), classifier, folds_count, **params)
-                    for i in xrange(folds_count):
-                        result = results[i]
-                        if result > best_results[i]:
-                            best_results[i] = result
-                            best_results_descriptions[i] = [result_desc]
-                            best_results_params[i] = [params]
-                        elif result == best_results[i]:
-                            best_results_descriptions[i].append(result_desc)
-                            best_results_params[i].append(params)
+                    print "Mean cross-validation result for {0} is: {1}" \
+                        .format(result_desc, sum(results) / float(len(results)))
+                    for j in xrange(folds_count):
+                        result = results[j]
+                        if result > best_results[j]:
+                            best_results[j] = result
+                            best_results_descriptions[j] = [result_desc]
+                            best_results_params[j] = [params]
+                        elif result == best_results[j]:
+                            best_results_descriptions[j].append(result_desc)
+                            best_results_params[j].append(params)
 
                 for i in xrange(folds_count):
                     print("." * 20)
@@ -96,7 +119,6 @@ def grid_search(data_folder, classifier, folds_count, training_set_fraction, **k
                                                                        FeatureBuilder(), classifier,
                                                                        folds_count, **params)
                             mean = sum(results) / float(len(results)) * 100.0
-                            print("." * 20)
                             print ("Model evaluation result for {:s} is {:4.2f}%"
                                    .format(desc, mean))
                             output_file.write('{:s};{:s};{:4.2f}\n'.format(embedding_desc, str(params), mean))
@@ -114,12 +136,11 @@ if __name__ == "__main__":
                   (NeuralNetworkAlgorithm, {"alpha": list(log_range(-5, -2)),
                                             "learning_rate": ["constant", "invscaling", "adaptive"],
                                             "activation": ["identity", "logistic", "tanh", "relu"]})
-    ]
+                  ]
 
     word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
     sentence_embeddings = [
         sentence_embeddings.SumEmbedding(),
-        sentence_embeddings.TermCategoryVarianceEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]
 
