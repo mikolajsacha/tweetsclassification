@@ -16,7 +16,7 @@ class TextCorpora(object):
             text_corpus_downloaded = False
             while not text_corpus_downloaded:
                 try:
-                    TextCorpora.corpuses[key] = iter(eval("nltk.corpus.{0}.sents()".format(key)))
+                    TextCorpora.corpuses[key] = list(eval("nltk.corpus.{0}.sents()".format(key)))
                     text_corpus_downloaded = True
                 except LookupError:
                     print ("Please use NLTK manager to download text corpus \"{0}\"".format(key))
@@ -32,8 +32,9 @@ class IWordEmbedding(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, vector_length):
+    def __init__(self, text_corpus, vector_length):
         self.vector_length = vector_length
+        self.text_corpus = text_corpus
 
     @abstractmethod
     def build(self, sentences):
@@ -103,3 +104,6 @@ class IWordEmbedding(object):
             for line in f:
                 sentence = line.split(' ')[1]
                 yield map(lambda word: word.rstrip(), sentence.split(','))
+
+    def __str__(self):
+        return type(self).__name__
