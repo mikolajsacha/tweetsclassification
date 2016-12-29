@@ -26,7 +26,7 @@ def single_fold_validation_dict(params):
     del params['sentence_embedding']
     del params['classifier_class']
     return single_fold_validation(training_features, training_labels, test_sentences, test_labels,
-                                    classifier_class, sentence_embedding, **params)
+                                  classifier_class, sentence_embedding, **params)
 
 
 def single_fold_validation(training_features, training_labels, test_sentences, test_labels,

@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     classifier = classifiers[number]
 
-    data_folder = "dataset3_reduced"
+    data_folder = "gathered_dataset"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
     summary_file_path = get_grid_search_results_path(data_folder, classifier)
@@ -47,6 +47,7 @@ if __name__ == "__main__":
     print("Found Grid Search results in " + summary_file_path.split("..")[-1])
     for line in open(summary_file_path, 'r'):
         embedding, params, result = tuple(line.split(";"))
+        result = float(result)
         if result > max_result:
             max_result = result
             best_parameters = embedding, ast.literal_eval(params)

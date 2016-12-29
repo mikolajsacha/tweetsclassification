@@ -18,7 +18,6 @@ def get_pca_results_path(data_folder, classifier):
                         '..\\..\\summaries\\{0}_{1}_pca_comparison_results.txt'.format(data_folder,
                                                                                        classifier.__name__))
 
-
 if __name__ == "__main__":
     data_folder = "dataset3_reduced"
     folds_count = 5
@@ -91,21 +90,21 @@ if __name__ == "__main__":
         embedding, params = best_parameters
         word_emb_class, sen_emb_class = tuple(embedding.split(","))
 
-        print ("\nEvaluating model for embedding {:s} with params {:s}".format(embedding, str(params)))
+        print ("\nEvaluating model for embedding {:s} with params {:s}\n".format(embedding, str(params)))
 
-        word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
-        word_emb.build(sentences)
+        word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"), 100)
 
         fb = build_features.FeatureBuilder()
 
         for pca_length in pca_lengths:
-            print ("\nCalculating model for PCA with dimensions reduced to {0}".format(pca_length))
+            print ("Calculating model for PCA with dimensions reduced to {0}..".format(pca_length))
 
             sen_emb = eval(sen_emb_class)(pca_length)
 
             start_time = time.time()
-            validation_results = test_cross_validation(labels, sentences, word_emb, sen_emb, fb,
-                                                       classifier, folds_count, **params)
+            validation_results = test_cross_validation(labels, sentences, word_emb, sen_emb,
+                                                       build_features.FeatureBuilder(), classifier,
+                                                       folds_count, **params)
             pca_execution_times.append((time.time() - start_time))
 
             pca_accuracies.append(sum(validation_results) / folds_count)

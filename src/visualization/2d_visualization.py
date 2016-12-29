@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 if __name__ == "__main__":
-    data_folder = "dataset3_reduced"
+    data_folder = "gathered_dataset"
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
     categories_count = len(data_info['Categories'])
     data_path = make_dataset.get_processed_data_path(data_folder)
@@ -59,7 +59,6 @@ if __name__ == "__main__":
     for category in data_info['Categories']:
         color = next(colors_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))
-        plt.legend(handles=legend_handles)
 
     for classifier_index, Classifier in enumerate(classifiers):
         summary_file_path = get_grid_search_results_path(data_folder, Classifier)
@@ -153,7 +152,6 @@ if __name__ == "__main__":
         print "\n"
 
 
-    # noinspection PyProtectedMember
     def on_pick(event):
         try:
             if event.mouseevent.button != 1:
@@ -167,6 +165,7 @@ if __name__ == "__main__":
 
     plt.suptitle("Visualization of chosen classification algorithms with number of dimensions reduced to 2")
     plt.tight_layout()
+    plt.legend(handles=legend_handles)
     save_current_plot('2d_visualization.svg')
     print ""
     plt.show()

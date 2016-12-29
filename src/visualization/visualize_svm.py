@@ -13,7 +13,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from src.visualization.save_visualization import save_current_plot
 
 if __name__ == "__main__":
-    data_folder = "dataset3_reduced"
+    data_folder = "gathered_dataset"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
     summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         Z = svm_models[i].clf.decision_function(np.c_[xx.ravel(), yy.ravel(), zz.ravel()])
         Z = Z.reshape(xx.shape)
 
-        verts, faces = measure.marching_cubes(Z, 0)
+        verts, faces = measure.marching_cubes(Z, (Z.min() + Z.max())/2.0)
         verts = verts * [X_MAX - X_MIN, Y_MAX - Y_MIN, Z_MAX - Z_MIN] / MESHGRID_SIZE
         verts = verts + [X_MIN, Y_MIN, Z_MIN]
         mesh = Poly3DCollection(verts[faces], facecolor=color, edgecolor=color, alpha=0.5)

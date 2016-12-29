@@ -12,7 +12,7 @@ from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.visualization.save_visualization import save_current_plot
 
 if __name__ == "__main__":
-    data_folder = "dataset3"
+    data_folder = "gathered_dataset"
     data_path = make_dataset.get_processed_data_path(data_folder)
     data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
 
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     data_set_size = int(data_info['Size'])
     folds_count = int(data_set_size / (examples_from_category * categories_count))
 
+    folds_count = max(folds_count, 3)
     skf = StratifiedKFold(n_splits=folds_count)
     _, example_data_indices = next(skf.split(sentences, labels))
 
