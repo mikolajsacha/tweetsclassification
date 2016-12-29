@@ -46,35 +46,6 @@ class IWordEmbedding(object):
         raise NotImplementedError
 
     @abstractmethod
-    def saved_embedding_exists(self, data_folder):
-        """
-        :param data_folder: name of folder of data set (e. g. 'dataset1')
-        :type data_folder: string (folder name)
-        :return: True/False indicating if there exists saved file with this embedding
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def save(self, output_path):
-        """
-        Saves current embedding to a file located in proper direcotry
-        :param output_path: absolute path to file where embedding should be saved
-        :type output_path: string (file path)
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def load(self, data_path, sentences):
-        """
-        Loads model from a file locaten in a proper directory for data_folder name
-        :param data_path: absolute path to a file with saved embedding
-        :param sentences: list of training set sentences (to build preprocessing transformation)
-        :type data_path: string (file path)
-        :type sentences: list of lists of strings (words)
-        """
-        raise NotImplementedError
-
-    @abstractmethod
     def __getitem__(self, word):
         """
         Returns vector representation for given word based on current model

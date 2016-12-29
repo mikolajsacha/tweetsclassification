@@ -2,54 +2,49 @@
 Contains class with own word embedding build using embedding layer from keras library
 """
 import os
-import warnings
 import itertools
-import multiprocessing
+from keras.layers import Embedding
+from keras.models import Sequential
 from src.data import make_dataset
 from iword_embedding import IWordEmbedding, TextCorpora
 
-#  This import generates an annoying warning on Windows
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    from gensim.models import Word2Vec
 
-
-class Word2VecEmbedding(IWordEmbedding):
+class KerasWordEmbedding(IWordEmbedding):
     def __init__(self, text_corpus, vector_length=40):
         IWordEmbedding.__init__(self, text_corpus, vector_length)
-        self.model = {}
-
-    def saved_embedding_exists(self, data_folder):
-        embedding_file_path = self.get_embedding_model_path(data_folder)
-        return os.path.isfile(embedding_file_path)
-
-    def save(self, output_path):
-        if not os.path.exists(os.path.dirname(output_path)):
-            os.makedirs(os.path.dirname(output_path))
-        self.model.save(output_path)
-
-    def load(self, data_path, sentences):
-        self.model = Word2Vec.load(data_path)
+        self.model = None
+        self.indices = {}
 
     def build(self, sentences):
-        total_corpus = itertools.chain(self.text_corpus, sentences)
-        cpu_count = multiprocessing.cpu_count()
-        self.model = Word2Vec(total_corpus, size=self.vector_length, min_count=1, workers=cpu_count)
-        self.model.init_sims(replace=True)  # finalize the model
+        total_corpus = list(itertools.chain(self.text_corpus, sentences))
+        curr_index = 0
+        for sentence in total_corpus:
+            for word in sentence:
+                if word not in self.indices:
+                    self.indices[word] = curr_index
+                    curr_index += 1
+
+        numbered_corpus = [[self.indices[word] for word in sentence] for sentence in total_corpus]
+
+        model = Sequential()
+        model.add(Embedding(curr_index, self.vector_length))
+        model.compile('rmsprop', 'mse')
+
+        self.model = model.predict(numbered_corpus)
 
     def __getitem__(self, word):
-        if word not in self.model or word == '':
+        if word not in self.indices or word == '':
             return [0.0] * self.vector_length
-        return self.model[[word]][0]
+        return self.model[self.indices[word]] # TODO: this does not work (could not test on windows)
 
     @staticmethod
     def get_embedding_model_path(data_folder):
-        return IWordEmbedding.get_embedding_model_path(data_folder) + '\\word2vec'
+        return IWordEmbedding.get_embedding_model_path(data_folder) + '\\keras'
 
 
 if __name__ == "__main__":
     """
-    Main method allows to interactively build and test Word2Vec model
+    Main method allows to interactively build and test model
     """
 
     while True:
@@ -65,7 +60,7 @@ if __name__ == "__main__":
     labels, sentences = make_dataset.read_dataset(input_file_path, data_info)
 
     print("Building embedding...")
-    model = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
+    model = KerasWordEmbedding(TextCorpora.get_corpus("brown"))
     model.build(sentences)
     print("Saving model to a file...")
     model.save(model.get_embedding_model_path(command))

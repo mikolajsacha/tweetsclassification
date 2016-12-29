@@ -4,7 +4,6 @@ Contains class representing Word2Vec embedding, implementing IWordEmbedding inte
 import os
 import warnings
 import itertools
-import multiprocessing
 from src.data import make_dataset
 from iword_embedding import IWordEmbedding, TextCorpora
 
@@ -17,7 +16,7 @@ with warnings.catch_warnings():
 class Word2VecEmbedding(IWordEmbedding):
     def __init__(self, text_corpus, vector_length=40):
         IWordEmbedding.__init__(self, text_corpus, vector_length)
-        self.model = {}
+        self.model = None
 
     def saved_embedding_exists(self, data_folder):
         embedding_file_path = self.get_embedding_model_path(data_folder)
@@ -28,13 +27,12 @@ class Word2VecEmbedding(IWordEmbedding):
             os.makedirs(os.path.dirname(output_path))
         self.model.save(output_path)
 
-    def load(self, data_path, sentences):
+    def load(self, data_path):
         self.model = Word2Vec.load(data_path)
 
     def build(self, sentences):
         total_corpus = itertools.chain(self.text_corpus, sentences)
-        cpu_count = multiprocessing.cpu_count()
-        self.model = Word2Vec(total_corpus, size=self.vector_length, min_count=1, workers=cpu_count)
+        self.model = Word2Vec(total_corpus, size=self.vector_length, min_count=1)
         self.model.init_sims(replace=True)  # finalize the model
 
     def __getitem__(self, word):
