@@ -10,8 +10,11 @@ and trimming/extending word vectors to given length.
 import re
 import os
 import json
+import inflect
 import nltk
 import numpy as np
+
+inflect_eng = inflect.engine()
 
 while True:
     try:
@@ -47,28 +50,31 @@ def get_processed_data_path(data_folder):
     return os.path.join(os.path.dirname(__file__), '..\\..\\data\\{0}\\processed\\training_set.txt'.format(data_folder))
 
 
-def filter_words(sentence):
-    """
-    Filters unnecessary words from given sentence and return new sentence
-    :param sentence: a list of words
-    :type sentence: list of strings
-    :return sentence with unnecessary words filtered out
-    """
+def preprocess_sentence(sentence):
+    """Adjusts sentence by filtering words and correcting some common issues """
 
-    def is_filtered_out(word):
-        return (word in cached_stopwords or  # filter out stop words
-                word.startswith('http') or  # remove links
-                word.startswith('www'))
+    #  twitter users often forget to put space before special words
+    sentence = sentence.replace('http', ' http').replace('www', ' www').replace('@', ' @').replace('#', ' #')
 
-    # More filtering can be implemented in the future
-    return filter(lambda word: not is_filtered_out(word), sentence)  # filter out stop words
+    new_sentence = []
+    alpha_numeric = re.compile("[^a-z0-9]")
+
+    sentence = ' '.join(filter(lambda w: not (w.startswith('@') or w.startswith('&') or
+                                              w.startswith('http') or w.startswith('www')), sentence.split()))
+    for w in alpha_numeric.sub(' ', sentence).split():
+        if w.isdigit():  # convert numbers to words using inflect package
+            new_sentence.append(inflect_eng.number_to_words(int(w)))
+        elif not w.isalpha() or w in cached_stopwords or len(w) < 3:
+            continue
+        else:
+            new_sentence.append(w)
+
+    return new_sentence
 
 
 def string_to_words_list(sentence):
-    keywords = re.compile('[a-zA-Z]+').findall(sentence)  # get all words as a list
-    keywords = filter_words(keywords)  # filter out unnecessary words
-    keywords = map(lambda word: word.lower(), keywords)  # map words to lowercase
-    return keywords
+    words = preprocess_sentence(sentence.lower())  # filter words and correct some common issues in sentence
+    return words
 
 
 def make_dataset(data_file_path, output_file_path):
@@ -89,8 +95,8 @@ def make_dataset(data_file_path, output_file_path):
 
     with open(output_file_path, 'w') as output_data_file:
         for line in open(data_file_path, 'r'):
-            category = line.split(' ', 1)[0]
-            keywords = string_to_words_list(line)
+            category, sentence = line.split(' ', 1)
+            keywords = string_to_words_list(sentence)
             output_data_file.write("{0} {1}\n".format(category, ','.join(keywords)))
 
     print "Processed data written to " + output_file_path

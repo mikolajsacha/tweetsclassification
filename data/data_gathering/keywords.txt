@@ -1,6 +1,0 @@
-music:
-sport:
-technology:science,scientist,gpu,ddos,hacker,cyber,cyborg,programming,programmer,linux,unix,ios,atari,microsoft,elon,musk,mars,artificial intelligence,machine learning,neural network,deep learning,big data,search engine,operating system,nasa,global warming,climate change,solar,alternative energy,alternative fuel,hadoop,networking,astronaut,phycistist,physics,power plant,nuclear power,nuclear electricity,relativity,einstein,hawking,de grasse,grasse tyson,moon landing,eletrical car,crypto,cryptography,software,hardware,engineer,research,statistics,digital,bitcoin,drone,bionic,self-driving,self driving,airpod,ai,malware,virus,macbook,wearable,ceo,steve jobs,bill gates,satya nadella,silicon valley,smart home,laser,hiv,alzheimer
-weather:
-movies:
-politics:

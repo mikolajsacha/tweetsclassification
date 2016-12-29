@@ -1,4 +1,4 @@
-Word2VecEmbedding, SumEmbedding;{'criterion': 'entropy'};54.00
-Word2VecEmbedding, SumEmbedding;{'criterion': 'gini'};52.40
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'entropy'};82.60
-Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'gini'};83.00
+Word2VecEmbedding, SumEmbedding;{'criterion': 'gini'};52.26
+Word2VecEmbedding, SumEmbedding;{'criterion': 'entropy'};46.23
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'gini'};78.39
+Word2VecEmbedding, TermFrequencyAverageEmbedding;{'criterion': 'entropy'};83.42

@@ -1,0 +1,5 @@
+{
+	"Title": "A manually labeled set of tweets labeled with one of six categories",
+	"Categories": ["Music", "Sport", "Technology", "Weather", "Movies", "Politics"],
+	"Size": 1200
+}

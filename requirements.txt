@@ -1,3 +1,4 @@
+inflect
 tweepy
 numpy
 nltk
