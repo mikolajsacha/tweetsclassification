@@ -5,6 +5,7 @@ from src.features.sentence_embeddings.sentence_embeddings import *
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
+from src.configuration import DATA_FOLDER
 from src.models.model_testing.grid_search import get_grid_search_results_path
 
 if __name__ == "__main__":
@@ -28,10 +29,9 @@ if __name__ == "__main__":
 
     classifier = classifiers[number]
 
-    data_folder = "gathered_dataset"
-    data_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    summary_file_path = get_grid_search_results_path(data_folder, classifier)
+    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
+    summary_file_path = get_grid_search_results_path(DATA_FOLDER, classifier)
 
     if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
         print "Grid Search summary file does not exist. Please run grid_search.py at first."

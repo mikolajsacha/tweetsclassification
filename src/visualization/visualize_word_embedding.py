@@ -5,6 +5,7 @@ from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.visualization.save_visualization import save_current_plot
+from src.configuration import DATA_FOLDER
 
 
 def mix_colors(weighted_color_list, colors):
@@ -18,9 +19,8 @@ def mix_colors(weighted_color_list, colors):
     return r / total_weight, g / total_weight, b / total_weight
 
 if __name__ == "__main__":
-    data_folder = "gathered_dataset"
-    data_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
     categories_count = len(data_info['Categories'])
     data_set_size = int(data_info['Size'])
 

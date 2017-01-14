@@ -11,12 +11,12 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from src.visualization.save_visualization import save_current_plot
+from src.configuration import DATA_FOLDER
 
 if __name__ == "__main__":
-    data_folder = "gathered_dataset"
-    data_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    summary_file_path = get_grid_search_results_path(data_folder, SvmAlgorithm)
+    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
+    summary_file_path = get_grid_search_results_path(DATA_FOLDER, SvmAlgorithm)
 
     if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
         print "Grid Search summary file does not exist. Please run grid_search.py at first."

@@ -15,17 +15,17 @@ from src.models.model_testing.validation import test_cross_validation
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from src.visualization.save_visualization import save_current_plot
+from src.configuration import DATA_FOLDER
 import warnings
 
 
-def get_dim_results_path(data_folder, classifier):
+def get_dim_results_path(DATA_FOLDER, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\summaries\\{0}_{1}_word_emb_with_pca_dim_comparison_results.txt'
-                        .format(data_folder, classifier.__name__))
+                        '../../summaries/{0}_{1}_word_emb_with_pca_dim_comparison_results.txt'
+                        .format(DATA_FOLDER, classifier.__name__))
 
 
 if __name__ == "__main__":
-    data_folder = "dataset3_reduced"
     folds_count = 5
     classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     dim_lengths = []
@@ -49,11 +49,11 @@ if __name__ == "__main__":
 
     classifier = classifiers[number]
 
-    data_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
 
-    summary_file_path = get_grid_search_results_path(data_folder, classifier)
-    output_path = get_dim_results_path(data_folder, classifier)
+    summary_file_path = get_grid_search_results_path(DATA_FOLDER, classifier)
+    output_path = get_dim_results_path(DATA_FOLDER, classifier)
 
     use_new_dim = False
 

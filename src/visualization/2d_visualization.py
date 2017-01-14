@@ -11,15 +11,15 @@ from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_grid_search_results_path
 from src.visualization.save_visualization import save_current_plot
+from src.configuration import DATA_FOLDER
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 if __name__ == "__main__":
-    data_folder = "gathered_dataset"
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
+    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
     categories_count = len(data_info['Categories'])
-    data_path = make_dataset.get_processed_data_path(data_folder)
+    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
     possible_classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     labels, sentences = make_dataset.read_dataset(data_path, data_info)
 
@@ -61,7 +61,8 @@ if __name__ == "__main__":
         legend_handles.append(mpatches.Patch(color=color, label=category))
 
     for classifier_index, Classifier in enumerate(classifiers):
-        summary_file_path = get_grid_search_results_path(data_folder, Classifier)
+        print "Looking for Grid Search results for classifier {0}".format(Classifier.__name__)
+        summary_file_path = get_grid_search_results_path(DATA_FOLDER, Classifier)
 
         if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
             print "Grid Search summary file does not exist. Please run grid_search.py at first."
@@ -92,7 +93,6 @@ if __name__ == "__main__":
         word_emb_class, sen_emb_class = tuple(embedding.split(","))
 
         print ("\nEvaluating model for embedding {:s} with params {:s}".format(embedding, str(params)))
-        print ("Calculating model as a set of binary classifiers...")
 
         print ("Building word embedding...")
         word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
@@ -152,16 +152,7 @@ if __name__ == "__main__":
         print "\n"
 
 
-    def on_pick(event):
-        try:
-            if event.mouseevent.button != 1:
-                return  # only left-click
-            for ind in event.ind:
-                print " ".join(sentences[ind])
-        except Exception as e: print e
-
     fig.canvas.callbacks.connect('button_press_event', on_click)
-    fig.canvas.mpl_connect('pick_event', on_pick)
 
     plt.suptitle("Visualization of chosen classification algorithms with number of dimensions reduced to 2")
     plt.tight_layout()

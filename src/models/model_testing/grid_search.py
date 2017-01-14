@@ -20,7 +20,7 @@ def log_range(min_ten_power, max_ten_power):
 
 def get_grid_search_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\..\\summaries\\{0}_{1}_grid_search_results.txt'.format(data_folder,
+                        '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder,
                                                                                         classifier.__name__))
 
 
