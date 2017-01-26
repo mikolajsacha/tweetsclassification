@@ -4,6 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.features.word_embeddings.keras_word_embedding import KerasWordEmbedding
 from src.visualization.save_visualization import save_current_plot
 from src.configuration import DATA_FOLDER
 
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     labels, sentences = make_dataset.read_dataset(data_path, data_info)
 
     print ("Building word embedding...")
-    word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"), 3)
+    word_emb = KerasWordEmbedding(TextCorpora.get_corpus("brown"), 3)
     word_emb.build(sentences)
 
     print ("Drawing plot...")
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         ys.append(word_vector[1])
         zs.append(word_vector[2])
 
-    ax.scatter(xs, ys, zs, c=words_colors, s=60, picker=True)
+    ax.scatter(xs,ys, zs, c=words_colors, s=60, picker=True)
 
     for i in xrange(categories_count):
         legend_handles.append(mpatches.Patch(color=colors[i], label=data_info['Categories'][i]))

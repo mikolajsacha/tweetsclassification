@@ -1,6 +1,8 @@
 """
 Contains class for usage of Neural Network algorithm
 """
+import warnings
+
 from sklearn.neural_network import MLPClassifier
 from src.models.algorithms.iclassification_algorithm import IClassificationAlgorithm
 import numpy as np
@@ -21,7 +23,10 @@ class NeuralNetworkAlgorithm(IClassificationAlgorithm):
         self.clf = MLPClassifier(**kwargs)
 
     def fit(self, features, labels):
-        self.clf.fit(features, labels)
+        # ignore ConvergenceWarning from neural network
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.clf.fit(features, labels)
 
     def predict(self, sentence):
         return int(self.clf.predict([self.sentence_embedding[sentence]])[0])

@@ -1,3 +1,5 @@
+""" Methods for performing grid search on model for a collection of parameters' combinations """
+
 import itertools
 import os
 import multiprocessing
@@ -8,6 +10,7 @@ from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.features.word_embeddings.keras_word_embedding import KerasWordEmbedding
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
@@ -21,7 +24,7 @@ def log_range(min_ten_power, max_ten_power):
 def get_grid_search_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
                         '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder,
-                                                                                        classifier.__name__))
+                                                                                    classifier.__name__))
 
 
 def full_grid_search(data_folder, classifier, folds_count, **kwargs):
@@ -37,7 +40,7 @@ def full_grid_search(data_folder, classifier, folds_count, **kwargs):
     labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
 
     params_values = ([(param, val) for val in values] for param, values in tested_params.iteritems())
-    all_combinations = list(map(lambda tuple_list: dict(tuple_list), itertools.product(*params_values)))
+    all_combinations = [dict(tuple_list) for tuple_list in itertools.product(*params_values)]
     print("." * 20)
 
     output_path = get_grid_search_results_path(data_folder, classifier)
@@ -52,7 +55,7 @@ def full_grid_search(data_folder, classifier, folds_count, **kwargs):
 
     for word_emb in word_embeddings:
         for sen_emb in sentence_embeddings:
-            embedding_desc = ', '.join(map(lambda n: type(n).__name__, [word_emb, sen_emb]))
+            embedding_desc = ', '.join(type(n).__name__ for n in [word_emb, sen_emb])
 
             print("." * 20)
             print("Testing embedding: {0}...".format(embedding_desc))
@@ -284,8 +287,12 @@ if __name__ == "__main__":
                                             "hidden_layer_sizes": [(100,), (200,), (100, 50), (100, 100)]})
                   ]
 
-    word_embeddings = [Word2VecEmbedding(TextCorpora.get_corpus("brown"))]
+    word_embeddings = [
+        Word2VecEmbedding(TextCorpora.get_corpus("brown")),
+        KerasWordEmbedding(TextCorpora.get_corpus("brown"))
+    ]
     sentence_embeddings = [
+        sentence_embeddings.ConcatenationEmbedding(),
         sentence_embeddings.SumEmbedding(),
         sentence_embeddings.TermFrequencyAverageEmbedding()
     ]

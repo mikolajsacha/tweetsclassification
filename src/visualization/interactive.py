@@ -1,6 +1,7 @@
 import ast
 from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
+from src.features.word_embeddings.keras_word_embedding import *
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm

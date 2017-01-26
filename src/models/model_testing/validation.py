@@ -31,18 +31,27 @@ def single_fold_validation_dict(params):
 
 def single_fold_validation(training_features, training_labels, test_sentences, test_labels,
                            classifier_class, sentence_embedding, **kwargs):
+    include_wrong_sentences = "include_wrong_sentences" in kwargs and kwargs["include_wrong_sentences"]
+    if "include_wrong_sentences" in kwargs: del kwargs["include_wrong_sentences"]
+
     # test accuracy on a single fold with already built embeddings
     classifier = classifier_class(sentence_embedding, **kwargs)
     classifier.fit(training_features, training_labels)
 
     successes = 0
+    wrong_sentences = []
 
     for i, label in enumerate(test_labels):
         prediction = classifier.predict(test_sentences[i])
         if int(prediction) == int(label):
             successes += 1
+        elif include_wrong_sentences:
+            wrong_sentences.append((' '.join(test_sentences[i]), label, prediction))
 
-    return float(successes) / len(test_labels)
+    ratio = float(successes) / len(test_labels)
+    if include_wrong_sentences:
+        return ratio, wrong_sentences
+    return ratio
 
 
 def test_cross_validation(labels, sentences, word_embedding, sentence_embedding, feature_builder,
@@ -52,6 +61,7 @@ def test_cross_validation(labels, sentences, word_embedding, sentence_embedding,
     skf = StratifiedKFold(n_splits=folds_count)
     fold = 0
     validation_results = []
+    include_wrong_sentences = "include_wrong_sentences" in kwargs and kwargs["include_wrong_sentences"]
 
     for train_index, test_index in skf.split(sentences, labels):
         if verbose:
@@ -79,10 +89,12 @@ def test_cross_validation(labels, sentences, word_embedding, sentence_embedding,
             print("Building classifier model and testing predictions...")
         success_rate = single_fold_validation(feature_builder.features, feature_builder.labels,
                                               test_sentences, test_labels,
-                                              classifier_class, sentence_embedding, **kwargs)
+                                              classifier_class, sentence_embedding,
+                                              **kwargs)
 
         if verbose:
-            print("Result in fold {:d}: {:4.2f}%".format(fold + 1, success_rate * 100))
+            rate = success_rate[0] if include_wrong_sentences else success_rate
+            print("Result in fold {:d}: {:4.2f}%".format(fold + 1, rate * 100))
         validation_results.append(success_rate)
         fold += 1
 

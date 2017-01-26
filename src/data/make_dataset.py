@@ -16,6 +16,7 @@ import numpy as np
 
 inflect_eng = inflect.engine()
 
+
 while True:
     try:
         cached_stopwords = set(nltk.corpus.stopwords.words("english"))
@@ -62,7 +63,7 @@ def preprocess_sentence(sentence):
     sentence = ' '.join(filter(lambda w: not (w.startswith('@') or w.startswith('&') or
                                               w.startswith('http') or w.startswith('www')), sentence.split()))
     for w in alpha_numeric.sub(' ', sentence).split():
-        if w.isdigit():  # convert numbers to words using inflect package
+        if w.isdigit() and int(w) <= 21 :  # convert small numbers to words using inflect package
             new_sentence.append(inflect_eng.number_to_words(int(w)))
         elif not w.isalpha() or w in cached_stopwords or len(w) < 3:
             continue
@@ -113,7 +114,7 @@ def read_dataset(data_file_path, data_info):
         label, rest = line.split(' ', 1)
         sentence = string_to_words_list(rest)
         if len(sentence) > 0:
-            sentences[count] = sentence
+            sentences[count] = sentence + ['\n'] # add new line for better embedding
             labels[count] = int(label)
             count += 1
 

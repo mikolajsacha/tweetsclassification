@@ -9,6 +9,7 @@ from src.data import make_dataset
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.features.word_embeddings.keras_word_embedding import KerasWordEmbedding
 from src.visualization.save_visualization import save_current_plot
 from src.configuration import DATA_FOLDER
 
@@ -20,7 +21,6 @@ if __name__ == "__main__":
 
     word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
     sentence_embeddings = [
-        sentence_embeddings.ConcatenationEmbedding(3),
         sentence_embeddings.SumEmbedding(3),
         sentence_embeddings.TermFrequencyAverageEmbedding(3)
     ]

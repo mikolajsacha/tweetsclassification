@@ -5,7 +5,7 @@ import os
 import warnings
 import itertools
 from src.data import make_dataset
-from iword_embedding import IWordEmbedding, TextCorpora
+from src.features.word_embeddings.iword_embedding import IWordEmbedding, TextCorpora
 
 #  This import generates an annoying warning on Windows
 with warnings.catch_warnings():
@@ -31,12 +31,12 @@ class Word2VecEmbedding(IWordEmbedding):
         self.model = Word2Vec.load(data_path)
 
     def build(self, sentences):
-        total_corpus = itertools.chain(self.text_corpus, sentences)
+        total_corpus = list(itertools.chain(self.text_corpus, sentences))
         self.model = Word2Vec(total_corpus, size=self.vector_length, min_count=1)
         self.model.init_sims(replace=True)  # finalize the model
 
     def __getitem__(self, word):
-        if word not in self.model or word == '':
+        if word not in self.model or len(word) <= 1:
             return [0.0] * self.vector_length
         return self.model[[word]][0]
 
@@ -73,6 +73,13 @@ if __name__ == "__main__":
         if command.lower() == "quit" or command.lower() == "exit":
             break
         try:
-            print "model[{0}] = {1}".format(command, str(model[command]))
+            print "most similar words: "
+            words = command.split(' ')
+            if len(words) == 1:
+                similar_words = model.model.most_similar(words[0])
+                print '\n'.join("{:s} : {:4.4f}".format(w, sim*100) for w, sim in similar_words)
+            else:
+                for w1, w2 in (p for p in itertools.product(words, words) if p[0] < p[1]):
+                    print "Similarity of {0} and {1}: {2}".format(w1, w2, model.model.similarity(w1, w2))
         except KeyError:
             print "No such word in model"

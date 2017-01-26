@@ -16,7 +16,7 @@ from src.configuration import DATA_FOLDER
 
 def get_pca_results_path(DATA_FOLDER, classifier):
     return os.path.join(os.path.dirname(__file__),
-                        '..\\..\\summaries\\{0}_{1}_pca_comparison_results.txt'.format(DATA_FOLDER,
+                        '../../summaries/{0}_{1}_pca_comparison_results.txt'.format(DATA_FOLDER,
                                                                                        classifier.__name__))
 
 if __name__ == "__main__":
