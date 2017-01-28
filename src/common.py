@@ -48,7 +48,7 @@ DATA_INFO = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA
 CATEGORIES = DATA_INFO['Categories']
 DATA_SIZE = DATA_INFO['Size']
 CATEGORIES_COUNT = len(CATEGORIES)
-LABELS, SENTENCES = make_dataset.read_dataset(PROCESSED_DATA_PATH, DATA_INFO)
+LABELS, SENTENCES = make_dataset.read_dataset(EXTERNAL_DATA_PATH, DATA_INFO)
 
 
 def choose_multiple_classifiers():

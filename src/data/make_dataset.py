@@ -63,6 +63,8 @@ def preprocess_sentence(sentence):
     sentence = ' '.join(filter(lambda w: not (w.startswith('@') or w.startswith('&') or
                                               w.startswith('http') or w.startswith('www')), sentence.split()))
     for w in alpha_numeric.sub(' ', sentence).split():
+        if w.isspace():
+            continue
         if w.isdigit() and int(w) <= 21:  # convert small numbers to words using inflect package
             new_sentence.append(inflect_eng.number_to_words(int(w)))
         elif not w.isalpha() or w in cached_stopwords or len(w) < 3:
@@ -74,7 +76,7 @@ def preprocess_sentence(sentence):
 
 
 def string_to_words_list(sentence):
-    words = preprocess_sentence(sentence.lower())  # filter words and correct some common issues in sentence
+    words = preprocess_sentence(sentence.strip().lower())  # filter words and correct some common issues in sentence
     return words
 
 
@@ -114,7 +116,7 @@ def read_dataset(data_file_path, data_info):
         label, rest = line.split(' ', 1)
         sentence = string_to_words_list(rest)
         if len(sentence) > 0:
-            sentences[count] = sentence + ['\n']  # add new line for better embedding
+            sentences[count] = sentence
             labels[count] = int(label)
             count += 1
 
