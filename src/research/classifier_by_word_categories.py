@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 from src.common import SENTENCES, LABELS, CATEGORIES, CATEGORIES_COUNT
+from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from word_categories import get_words_categories_regressors
@@ -178,3 +179,28 @@ if __name__ == "__main__":
     plt.suptitle("Visualization of trained model with PCA to 2 dimensions")
     plt.legend(handles=legend_handles)
     plt.show()
+
+    print ("Interactive test.")
+    clf = RandomForestClassifier(n_estimators=n_estimators, n_jobs=-1)
+    clf.fit(features, LABELS)
+
+    while True:
+        command = raw_input("Type sentence to test model or 'quit' to exit: ")
+        if command.lower() == "quit" or command.lower() == "exit":
+            break
+        sentence = make_dataset.string_to_words_list(command)
+        sentence_features = np.zeros((4 * CATEGORIES_COUNT), dtype=float)
+        for j, cls in enumerate(word_classifiers):
+            predictions = [w_predictions[j][w_indices[word]] for word in sentence if word in word_emb.model]
+            if not predictions:
+                print "No word from sentence is in word embedding"
+                break
+            pred_len = len(predictions)
+            pred_avg = sum(predictions) / pred_len
+            std_deviation = (sum(x ** 2 for x in predictions) / pred_len - (pred_avg / pred_len) ** 2) ** 0.5
+            sentence_features[4 * j] = pred_avg
+            sentence_features[4 * j + 1] = min(predictions)
+            sentence_features[4 * j + 2] = max(predictions)
+            sentence_features[4 * j + 3] = std_deviation
+        print ', '.join("{:s}: {:4.2f}%".format(CATEGORIES[k], 100.0*prob)
+                         for k, prob in enumerate(clf.predict_proba([sentence_features])[0]))
