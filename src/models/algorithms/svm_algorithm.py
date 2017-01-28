@@ -13,6 +13,8 @@ class SvmAlgorithm(IClassificationAlgorithm):
     def __init__(self, sentence_embedding, **kwargs):
         IClassificationAlgorithm.__init__(self)
         self.sentence_embedding = sentence_embedding
+        if "n_jobs" in kwargs:
+            del kwargs["n_jobs"] # multi-threading not available here
         self.clf = svm.SVC(**kwargs)
 
     def fit(self, features, labels):

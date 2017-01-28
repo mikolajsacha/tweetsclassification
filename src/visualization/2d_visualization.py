@@ -1,5 +1,6 @@
 import ast
 
+import multiprocessing
 from matplotlib import gridspec
 from matplotlib.colors import ListedColormap
 
@@ -10,38 +11,15 @@ from src.features.word_embeddings.keras_word_embedding import *
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
-from src.models.model_testing.grid_search import get_grid_search_results_path
+from src.models.model_testing.grid_search import get_best_from_grid_search_results
 from src.visualization.save_visualization import save_current_plot
-from src.configuration import DATA_FOLDER
+from src.common import CATEGORIES_COUNT, CATEGORIES, SENTENCES, choose_multiple_classifiers, LABELS
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
 if __name__ == "__main__":
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
-    categories_count = len(data_info['Categories'])
-    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
-    possible_classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
-    labels, sentences = make_dataset.read_dataset(data_path, data_info)
-
-    print("Choose classifiers to compare by typing a list of their indices (e.g: '0,2'):")
-    print "\n".join("{0} - {1}".format(i, clf.__name__) for i, clf in enumerate(possible_classifiers))
-
-    numbers = []
-    while True:
-        try:
-            str_numbers = raw_input().replace(" ", "").split(',')
-            for str_number in str_numbers:
-                number = int(str_number)
-                if len(possible_classifiers) > number >= 0:
-                    numbers.append(number)
-                else:
-                    raise ValueError()
-            break
-        except ValueError:
-            print "Please insert a correct list of numbers"
-
-    classifiers = [possible_classifiers[i] for i in numbers]
+    classifiers = choose_multiple_classifiers();
     trained_classifiers = []
     classifiers_features = []
     subplots = []
@@ -55,59 +33,35 @@ if __name__ == "__main__":
 
     legend_handles = []
     colors_gen = itertools.cycle(colors)
-    color_map = ListedColormap(list(itertools.islice(colors_gen, categories_count)), name='classifiers_color_map')
+    color_map = ListedColormap(list(itertools.islice(colors_gen, CATEGORIES_COUNT)), name='classifiers_color_map')
 
-    for category in data_info['Categories']:
+    for category in CATEGORIES:
         color = next(colors_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))
 
     for classifier_index, Classifier in enumerate(classifiers):
-        print "Looking for Grid Search results for classifier {0}".format(Classifier.__name__)
-        summary_file_path = get_grid_search_results_path(DATA_FOLDER, Classifier)
-
-        if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
-            print "Grid Search summary file does not exist. Please run grid_search.py at first."
+        best_parameters = get_best_from_grid_search_results(Classifier)
+        if best_parameters is None:
             exit(-1)
-
-        if os.stat(summary_file_path).st_size == 0:
-            print "Grid Search summary file is empty. Please run grid_search.py to gest some results."
-            exit(-1)
-
-        max_result = 0.0
-        best_parameters = []
-
-        print("Found Grid Search results in " + summary_file_path.split("..")[-1])
-        for line in open(summary_file_path, 'r'):
-            embedding, params, result = tuple(line.split(";"))
-            if result > max_result:
-                max_result = result
-                best_parameters = []
-            if result >= max_result:
-                params_dict = ast.literal_eval(params)
-                best_parameters.append((embedding, params_dict))
-
-        print("Model evaluation: {:4.2f}% for the following embeddings and parameters:\n".format(float(max_result)))
-        for embedding, params in best_parameters:
-            print embedding, params
-
-        embedding, params = best_parameters[0]
+        embedding, params = best_parameters
         word_emb_class, sen_emb_class = tuple(embedding.split(","))
 
         print ("\nEvaluating model for embedding {:s} with params {:s}".format(embedding, str(params)))
+        params["n_jobs"] = multiprocessing.cpu_count()
 
         print ("Building word embedding...")
         word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
-        word_emb.build(sentences)
+        word_emb.build(SENTENCES)
 
         # for the sake of visualization we will use 2 dimensional sentence vectors
         sen_emb = eval(sen_emb_class)(2)
 
         print ("Building sentence embedding...")
-        sen_emb.build(word_emb, labels, sentences)
+        sen_emb.build(word_emb, LABELS, SENTENCES)
 
         print ("Building features...")
         fb = build_features.FeatureBuilder()
-        fb.build(sen_emb, labels, sentences)
+        fb.build(sen_emb, LABELS, SENTENCES)
         classifiers_features.append(fb.features)
 
         print ("Building model...")
@@ -119,7 +73,7 @@ if __name__ == "__main__":
         print ("Drawing plot...")
 
         xs, ys = [], []
-        for i in xrange(categories_count):
+        for i in xrange(CATEGORIES_COUNT):
             category_vectors = filter(lambda (k, s): fb.labels[k] == i, enumerate(fb.features))
             xs.append([vec[0] for _, vec in category_vectors])
             ys.append([vec[1] for _, vec in category_vectors])
@@ -139,7 +93,7 @@ if __name__ == "__main__":
 
         colors_gen = itertools.cycle(colors)
 
-        for i, category in enumerate(data_info['Categories']):
+        for i, category in enumerate(CATEGORIES):
             ax.scatter(xs[i], ys[i], color=next(colors_gen), picker=True, edgecolors='black', s=30)
 
     def on_click(event):
@@ -149,7 +103,7 @@ if __name__ == "__main__":
             proba = classifier.clf.predict_proba([[x, y]])[0]
             print "{0} prediction: {1}" \
                   .format(type(classifier).__name__, ", ".join(
-                         [data_info['Categories'][i] + ": {:2.0f}%".format(100 * p) for i, p in enumerate(proba)]))
+                         [CATEGORIES[i] + ": {:2.0f}%".format(100 * p) for i, p in enumerate(proba)]))
         print "\n"
 
 

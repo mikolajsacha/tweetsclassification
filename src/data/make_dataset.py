@@ -17,15 +17,6 @@ import numpy as np
 inflect_eng = inflect.engine()
 
 
-while True:
-    try:
-        cached_stopwords = set(nltk.corpus.stopwords.words("english"))
-        break
-    except LookupError:
-        print ("Please download 'stopwords' using NTLK download manager")
-        nltk.download()
-
-
 def get_data_set_info_path(data_folder):
     """
     :param data_folder: name of data folder, e.g. 'dataset1'
@@ -51,6 +42,15 @@ def get_processed_data_path(data_folder):
     return os.path.join(os.path.dirname(__file__), '../../data/{0}/processed/training_set.txt'.format(data_folder))
 
 
+while True:
+    try:
+        cached_stopwords = set(nltk.corpus.stopwords.words("english"))
+        break
+    except LookupError:
+        print ("Please download 'stopwords' using NTLK download manager")
+        nltk.download()
+
+
 def preprocess_sentence(sentence):
     """Adjusts sentence by filtering words and correcting some common issues """
 
@@ -63,7 +63,7 @@ def preprocess_sentence(sentence):
     sentence = ' '.join(filter(lambda w: not (w.startswith('@') or w.startswith('&') or
                                               w.startswith('http') or w.startswith('www')), sentence.split()))
     for w in alpha_numeric.sub(' ', sentence).split():
-        if w.isdigit() and int(w) <= 21 :  # convert small numbers to words using inflect package
+        if w.isdigit() and int(w) <= 21:  # convert small numbers to words using inflect package
             new_sentence.append(inflect_eng.number_to_words(int(w)))
         elif not w.isalpha() or w in cached_stopwords or len(w) < 3:
             continue
@@ -114,7 +114,7 @@ def read_dataset(data_file_path, data_info):
         label, rest = line.split(' ', 1)
         sentence = string_to_words_list(rest)
         if len(sentence) > 0:
-            sentences[count] = sentence + ['\n'] # add new line for better embedding
+            sentences[count] = sentence + ['\n']  # add new line for better embedding
             labels[count] = int(label)
             count += 1
 

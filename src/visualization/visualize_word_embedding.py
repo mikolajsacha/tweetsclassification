@@ -6,7 +6,7 @@ from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.word_embeddings.keras_word_embedding import KerasWordEmbedding
 from src.visualization.save_visualization import save_current_plot
-from src.configuration import DATA_FOLDER
+from src.common import SENTENCES, CATEGORIES_COUNT, LABELS, CATEGORIES
 
 
 def mix_colors(weighted_color_list, colors):
@@ -20,34 +20,27 @@ def mix_colors(weighted_color_list, colors):
     return r / total_weight, g / total_weight, b / total_weight
 
 if __name__ == "__main__":
-    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
-    categories_count = len(data_info['Categories'])
-    data_set_size = int(data_info['Size'])
-
-    labels, sentences = make_dataset.read_dataset(data_path, data_info)
-
     print ("Building word embedding...")
     word_emb = KerasWordEmbedding(TextCorpora.get_corpus("brown"), 3)
-    word_emb.build(sentences)
+    word_emb.build(SENTENCES)
 
     print ("Drawing plot...")
 
     # take all the words from dataset and count their occurences in categories
     # take only words which occur at least in 3 different tweets and are longer than 2 letters
-    uniq_sens = (set(sen) for sen in sentences)  # remove duplicate words from tweets
+    uniq_sens = (set(sen) for sen in SENTENCES)  # remove duplicate words from tweets
     words_with_tweets_counts = {}
     for i, sen in enumerate(uniq_sens):
-        sen_category = labels[i]
+        sen_category = LABELS[i]
         for word in filter(lambda x: len(x) > 2, sen):
             if word not in words_with_tweets_counts:
-                words_with_tweets_counts[word] = [0] * categories_count
+                words_with_tweets_counts[word] = [0] * CATEGORIES_COUNT
             words_with_tweets_counts[word][sen_category] += 1
 
     words_with_tweets_counts = filter(lambda (word, counters): sum(counters) >= 3, words_with_tweets_counts.iteritems())
     trimmed_words = []
     words_from_category = 75  # leave only 75 words from each "category"
-    categories_counters = [0] * categories_count
+    categories_counters = [0] * CATEGORIES_COUNT
     for word, counters in words_with_tweets_counts:
         word_category = counters.index(max(counters))
         if categories_counters[word_category] >= words_from_category:
@@ -76,8 +69,8 @@ if __name__ == "__main__":
 
     ax.scatter(xs,ys, zs, c=words_colors, s=60, picker=True)
 
-    for i in xrange(categories_count):
-        legend_handles.append(mpatches.Patch(color=colors[i], label=data_info['Categories'][i]))
+    for i in xrange(CATEGORIES_COUNT):
+        legend_handles.append(mpatches.Patch(color=colors[i], label=CATEGORIES[i]))
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')

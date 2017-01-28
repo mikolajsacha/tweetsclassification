@@ -1,11 +1,13 @@
 """ Methods for performing grid search on model for a collection of parameters' combinations """
-
+import ast
 import itertools
 import os
 import multiprocessing
 from multiprocessing.pool import Pool
 from sklearn.model_selection import StratifiedKFold
 from src.data import make_dataset
+from src.common import DATA_FOLDER, PROCESSED_DATA_PATH, EXTERNAL_DATA_PATH, CLASSIFIERS_PARAMS, SENTENCE_EMBEDDINGS, \
+    WORD_EMBEDDINGS, FOLDS_COUNT, TRAINING_SET_SIZE
 from src.features.build_features import FeatureBuilder
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.word_embeddings.iword_embedding import TextCorpora
@@ -17,14 +19,35 @@ from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing import validation
 
 
-def log_range(min_ten_power, max_ten_power):
-    return (10 ** i for i in xrange(min_ten_power, max_ten_power))
-
-
 def get_grid_search_results_path(data_folder, classifier):
     return os.path.join(os.path.dirname(__file__),
                         '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder,
                                                                                     classifier.__name__))
+
+
+def get_best_from_grid_search_results(classifier):
+    summary_file_path = get_grid_search_results_path(DATA_FOLDER, classifier)
+
+    if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
+        print "Grid Search summary file does not exist. Please run grid_search.py at first."
+        return None
+
+    if os.stat(summary_file_path).st_size == 0:
+        print "Grid Search summary file is empty. Please run grid_search.py to get some results."
+        return None
+
+    max_result = 0.0
+    best_parameters = None
+
+    print("Found Grid Search results in " + summary_file_path.split("..")[-1])
+    for line in open(summary_file_path, 'r'):
+        embedding, params, result = tuple(line.split(";"))
+        result = float(result)
+        if result > max_result:
+            max_result = result
+            best_parameters = embedding, ast.literal_eval(params)
+
+    return best_parameters
 
 
 def full_grid_search(data_folder, classifier, folds_count, **kwargs):
@@ -273,53 +296,25 @@ def double_validation_grid_search(data_folder, classifier, folds_count, training
 if __name__ == "__main__":
     """ Runs grid search on a predefined set of parameters """
 
-    data_folder = "gathered_dataset"
-    folds_count = 5
-    training_set_size = 0.80
-    algorithms = [(SvmAlgorithm, {"C": list(log_range(0, 6)), "gamma": list(log_range(-3, 2))}),
-                  (RandomForestAlgorithm, {"criterion": ["gini", "entropy"],
-                                           "min_samples_split": [2, 10],
-                                           "min_samples_leaf": [1, 10],
-                                           "max_features": [None, "sqrt"]}),
-                  (NeuralNetworkAlgorithm, {"alpha": list(log_range(-5, -2)),
-                                            "learning_rate": ["constant", "invscaling", "adaptive"],
-                                            "activation": ["identity", "logistic", "tanh", "relu"],
-                                            "hidden_layer_sizes": [(100,), (200,), (100, 50), (100, 100)]})
-                  ]
-
-    word_embeddings = [
-        Word2VecEmbedding(TextCorpora.get_corpus("brown")),
-        KerasWordEmbedding(TextCorpora.get_corpus("brown"))
-    ]
-    sentence_embeddings = [
-        sentence_embeddings.ConcatenationEmbedding(),
-        sentence_embeddings.SumEmbedding(),
-        sentence_embeddings.TermFrequencyAverageEmbedding()
-    ]
-
-    input_file_path = make_dataset.get_external_data_path(data_folder)
-    output_file_path = make_dataset.get_processed_data_path(data_folder)
-
-    if not os.path.isfile(input_file_path):
-        print "Path {0} does not exist".format(input_file_path)
+    if not os.path.isfile(EXTERNAL_DATA_PATH):
+        print "Path {0} does not exist".format(EXTERNAL_DATA_PATH)
         exit(-1)
     else:
-        make_dataset.make_dataset(input_file_path, output_file_path)
+        make_dataset.make_dataset(EXTERNAL_DATA_PATH, PROCESSED_DATA_PATH)
 
-    for algorithm, params in algorithms:
+    for algorithm, params in CLASSIFIERS_PARAMS:
         to_run = raw_input("Do you wish to test {0} with parameters {1} ? [y/n] "
                            .format(algorithm.__name__, str(params)))
         if to_run.lower() == 'y' or to_run.lower() == 'yes':
-            search_type = raw_input("Do you wish to evalute all parameters performance [y] (may take very long) " +
+            search_type = raw_input("Do you wish to evaluate all parameters performance [y] (may take very long) " +
                                     "or just look for best evaluation [n] (double cross-validation)? [y/n] ")
             if search_type.lower() == 'y' or search_type.lower() == 'yes':
-                full_grid_search(data_folder, algorithm, folds_count,
-                                 word_embeddings=word_embeddings,
-                                 sentence_embeddings=sentence_embeddings,
+                full_grid_search(DATA_FOLDER, algorithm, FOLDS_COUNT,
+                                 word_embeddings=WORD_EMBEDDINGS,
+                                 sentence_embeddings=SENTENCE_EMBEDDINGS,
                                  params=params)
             else:
-                double_validation_grid_search(data_folder, algorithm, folds_count, training_set_size,
-                                              # full=full,
-                                              word_embeddings=word_embeddings,
-                                              sentence_embeddings=sentence_embeddings,
+                double_validation_grid_search(DATA_FOLDER, algorithm, FOLDS_COUNT, TRAINING_SET_SIZE,
+                                              word_embeddings=WORD_EMBEDDINGS,
+                                              sentence_embeddings=SENTENCE_EMBEDDINGS,
                                               params=params)

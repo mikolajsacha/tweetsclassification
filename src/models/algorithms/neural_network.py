@@ -19,6 +19,8 @@ class NeuralNetworkAlgorithm(IClassificationAlgorithm):
         # suppress this param, as neural network doesn't use such parameter
         if 'probability' in kwargs:
             del kwargs['probability']
+        if "n_jobs" in kwargs:
+            del kwargs["n_jobs"] # multi-threading not available here
 
         self.clf = MLPClassifier(**kwargs)
 
