@@ -23,9 +23,9 @@ CLASSIFIERS_PARAMS = [(SvmAlgorithm, {"C": list(log_range(0, 6)), "gamma": list(
                                                "min_samples_leaf": [1, 10],
                                                "max_features": [None, "sqrt"]}),
                       (NeuralNetworkAlgorithm, {"alpha": list(log_range(-5, -2)),
-                                                "learning_rate": ["constant", "invscaling", "adaptive"],
+                                                "learning_rate": ["constant", "adaptive"],
                                                 "activation": ["identity", "logistic", "tanh", "relu"],
-                                                "hidden_layer_sizes": [(100,), (200,), (100, 50), (100, 100)]}),
+                                                "hidden_layer_sizes": [(100,), (100, 50)]}),
                       (NearestNeighborsAlgorithm, {'n_neighbors': [1, 2, 3, 4, 7, 15, 30], 'p': [1, 2, 3],
                                                    'weights': ['uniform', 'distance']})
                       ]

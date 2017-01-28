@@ -20,7 +20,7 @@ class NeuralNetworkAlgorithm(IClassificationAlgorithm):
         if 'probability' in kwargs:
             del kwargs['probability']
         if "n_jobs" in kwargs:
-            del kwargs["n_jobs"] # multi-threading not available here
+            del kwargs["n_jobs"]  # multi-threading not available here
 
         self.clf = MLPClassifier(**kwargs)
 
