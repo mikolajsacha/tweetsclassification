@@ -9,8 +9,8 @@ from src.models.algorithms.nearest_neighbors_algorithm import NearestNeighborsAl
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 
 
-def log_range(min_ten_power, max_ten_power):
-    return (10 ** i for i in xrange(min_ten_power, max_ten_power))
+def log_range(min_ten_power, max_ten_power, base=10):
+    return (base ** i for i in xrange(min_ten_power, max_ten_power))
 
 
 DATA_FOLDER = "gathered_dataset"

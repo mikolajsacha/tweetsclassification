@@ -1,3 +1,4 @@
+import ast
 from multiprocessing import Pool
 import multiprocessing
 import numpy as np
@@ -29,8 +30,9 @@ def grid_search(folds_count):
     word_scores = get_words_scores(LABELS, SENTENCES)
     t_pool = Pool(multiprocessing.cpu_count())
 
-    classifier_params = [(SVC, {"C": list(log_range(-2, 8)), "gamma": list(log_range(-5, -1))}),
+    classifier_params = [(SVC, {"C": list(log_range(-15, 7, 2)), "gamma": list(log_range(-20, -5, 2))}),
                          (RandomForestClassifier, {"criterion": ["gini", "entropy"],
+                                                   "n_estimators": [1,2,3,5,10,15,20,30],
                                                    "min_samples_split": [2, 10],
                                                    "min_samples_leaf": [1, 10],
                                                    "max_features": [None, "sqrt"]}),
@@ -107,11 +109,41 @@ def grid_search(folds_count):
         for classifier_class, all_combinations in classifier_params:
             for i in xrange(len(all_combinations)):
                 evaluation = sum(fold_results[classifier_class.__name__][i] for fold_results in results_in_folds) \
-                             / float(folds_count)
+                             / float(folds_count) * 100
                 params = all_combinations[i]
                 output_file.write(
                     '{:s};{:s};{:f}\n'.format(classifier_class.__name__, str(params), evaluation))
     print "Results saved!"
+
+
+def get_best_own_classifier_from_grid_search_results(features, labels):
+    summary_file_path = get_grid_search_results_path()
+
+    if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
+        print "Grid Search summary file does not exist. Please run grid_search.py at first."
+        return None
+
+    if os.stat(summary_file_path).st_size == 0:
+        print "Grid Search summary file is empty. Please run grid_search.py to get some results."
+        return None
+
+    max_result = -1000.0
+    best_parameters = None
+
+    print("Found Grid Search results in " + summary_file_path.split("..")[-1])
+    for line in open(summary_file_path, 'r'):
+        classifier_class, params, result = tuple(line.split(";"))
+        result = float(result)
+        if result > max_result:
+            max_result = result
+            best_parameters = eval(classifier_class), ast.literal_eval(params)
+
+    classifier_class, params = best_parameters
+    print("Use {:s}, {:s} with score of {:4.4f}%").format(classifier_class.__name__, str(params), max_result)
+
+    clf = classifier_class(**params)
+    clf.fit(features, labels)
+    return clf
 
 
 if __name__ == "__main__":

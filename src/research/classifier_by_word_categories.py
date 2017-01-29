@@ -11,95 +11,32 @@ from src.common import SENTENCES, LABELS, CATEGORIES, CATEGORIES_COUNT
 from src.data import make_dataset
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
-from word_categories import get_words_categories_regressors
-
-
-def show_cross_validation_result(folds_count, n_estimators):
-    skf = StratifiedKFold(n_splits=folds_count)
-
-    word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
-
-    success_rates_in_folds = []
-    print("Cross-validating model...")
-    for fold, (train_index, test_index) in enumerate(skf.split(SENTENCES, LABELS)):
-        training_labels = LABELS[train_index]
-        test_labels = LABELS[test_index]
-        training_sentences = SENTENCES[train_index]
-
-        word_emb.build(training_sentences)
-
-        word_classifiers = get_words_categories_regressors(training_labels, training_sentences, word_emb)
-
-        words_vectors = []
-        w_indices = {}
-        visited_words = set()
-        for sentence in SENTENCES:
-            for word in sentence:
-                if word not in visited_words:
-                    visited_words.add(word)
-                    if word in word_emb.model:
-                        w_indices[word] = len(words_vectors)
-                        words_vectors.append(word_emb[word])
-
-        w_predictions = [cls.predict(words_vectors) for cls in word_classifiers]
-
-        features = np.zeros((len(SENTENCES), 4 * CATEGORIES_COUNT), dtype=float)
-        for i, sentence in enumerate(SENTENCES):
-            for j, cls in enumerate(word_classifiers):
-                predictions = [w_predictions[j][w_indices[word]] for word in sentence if word in word_emb.model]
-                if not predictions:
-                    continue
-                pred_len = len(predictions)
-                pred_avg = sum(predictions) / pred_len
-                std_deviation = (sum(x ** 2 for x in predictions) / pred_len - (pred_avg / pred_len) ** 2) ** 0.5
-                features[i][4 * j] = pred_avg
-                features[i][4 * j + 1] = min(predictions)
-                features[i][4 * j + 2] = max(predictions)
-                features[i][4 * j + 3] = std_deviation
-
-        training_features = features[train_index]
-        test_features = features[test_index]
-
-        cls = RandomForestClassifier(n_estimators=n_estimators, n_jobs=-1)
-        cls.fit(training_features, training_labels)
-
-        predictions = cls.predict(test_features)
-        successes = sum(1 for i, prediction in enumerate(predictions) if prediction == test_labels[i])
-
-        success_rate = float(successes) / len(test_labels)
-        success_rates_in_folds.append(success_rate)
-
-    avg_success_rate = sum(success_rates_in_folds) / folds_count * 100
-    print "Average success rate: {:4.4f}%".format(avg_success_rate)
-
+from src.research.grid_search_sentence_classifier import get_best_own_classifier_from_grid_search_results
+from src.research.grid_search_word_classifier import get_best_words_categories_regressors
+from word_categories import get_words_categories_regressors, get_words_scores
 
 if __name__ == "__main__":
     """ Let's use classifiers for word categories to predict sentences categories"""
     n_estimators = 20
-    # show_cross_validation_result(5, n_estimators)
 
     print "Training model on whole data-set for visualization..."
     word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
     word_emb.build(SENTENCES)
 
-    word_classifiers = get_words_categories_regressors(LABELS, SENTENCES, word_emb)
+    word_scores = get_words_scores(LABELS, SENTENCES)
+    word_vectors = [word_emb[word] for word in word_scores.iterkeys()]
 
-    words_vectors = []
+    print("Building word regressors...")
+    word_regressors = get_best_words_categories_regressors(word_scores, word_vectors, word_emb, verbose=True)
+
+    w_predictions = [cls.predict(word_vectors) for cls in word_regressors]
     w_indices = {}
-    visited_words = set()
-    for sentence in SENTENCES:
-        for word in sentence:
-            if word not in visited_words:
-                visited_words.add(word)
-                if word in word_emb.model:
-                    w_indices[word] = len(words_vectors)
-                    words_vectors.append(word_emb[word])
-
-    w_predictions = [cls.predict(words_vectors) for cls in word_classifiers]
+    for i, word in enumerate(word_scores.iterkeys()):
+        w_indices[word] = i
 
     features = np.zeros((len(SENTENCES), 4 * CATEGORIES_COUNT), dtype=float)
     for i, sentence in enumerate(SENTENCES):
-        for j, cls in enumerate(word_classifiers):
+        for j, cls in enumerate(word_regressors):
             predictions = [w_predictions[j][w_indices[word]] for word in sentence if word in word_emb.model]
             if not predictions:
                 continue
@@ -180,9 +117,10 @@ if __name__ == "__main__":
     plt.legend(handles=legend_handles)
     plt.show()
 
-    print ("Interactive test.")
-    clf = RandomForestClassifier(n_estimators=n_estimators, n_jobs=-1)
-    clf.fit(features, LABELS)
+    print ("\n\nInteractive test.")
+    clf = get_best_own_classifier_from_grid_search_results(features, LABELS)
+    if clf is None:
+        exit(-1)
 
     while True:
         command = raw_input("Type sentence to test model or 'quit' to exit: ")
@@ -190,10 +128,12 @@ if __name__ == "__main__":
             break
         sentence = make_dataset.string_to_words_list(command)
         sentence_features = np.zeros((4 * CATEGORIES_COUNT), dtype=float)
-        for j, cls in enumerate(word_classifiers):
-            predictions = [w_predictions[j][w_indices[word]] for word in sentence if word in word_emb.model]
+        skip = False
+        for j, cls in enumerate(word_regressors):
+            predictions = [cls.predict([word_emb[word]])[0] for word in sentence if word in word_emb.model]
             if not predictions:
                 print "No word from sentence is in word embedding"
+                skip = True
                 break
             pred_len = len(predictions)
             pred_avg = sum(predictions) / pred_len
@@ -202,5 +142,7 @@ if __name__ == "__main__":
             sentence_features[4 * j + 1] = min(predictions)
             sentence_features[4 * j + 2] = max(predictions)
             sentence_features[4 * j + 3] = std_deviation
-        print ', '.join("{:s}: {:4.2f}%".format(CATEGORIES[k], 100.0*prob)
-                         for k, prob in enumerate(clf.predict_proba([sentence_features])[0]))
+
+        if not skip:
+            print ', '.join("{:s}: {:4.2f}%".format(CATEGORIES[k], 100.0*prob)
+                             for k, prob in enumerate(clf.predict_proba([sentence_features])[0]))
