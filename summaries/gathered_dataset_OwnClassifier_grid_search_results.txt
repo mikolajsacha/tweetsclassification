@@ -1,0 +1,53 @@
+SVC;{'C': 0.01, 'gamma': 1e-05};0.716667
+SVC;{'C': 0.01, 'gamma': 0.0001};0.754167
+SVC;{'C': 0.01, 'gamma': 0.001};0.725000
+SVC;{'C': 0.01, 'gamma': 0.01};0.420833
+SVC;{'C': 0.1, 'gamma': 1e-05};0.716667
+SVC;{'C': 0.1, 'gamma': 0.0001};0.750000
+SVC;{'C': 0.1, 'gamma': 0.001};0.737500
+SVC;{'C': 0.1, 'gamma': 0.01};0.420833
+SVC;{'C': 1, 'gamma': 1e-05};0.750000
+SVC;{'C': 1, 'gamma': 0.0001};0.770833
+SVC;{'C': 1, 'gamma': 0.001};0.820833
+SVC;{'C': 1, 'gamma': 0.01};0.679167
+SVC;{'C': 10, 'gamma': 1e-05};0.783333
+SVC;{'C': 10, 'gamma': 0.0001};0.808333
+SVC;{'C': 10, 'gamma': 0.001};0.825000
+SVC;{'C': 10, 'gamma': 0.01};0.683333
+SVC;{'C': 100, 'gamma': 1e-05};0.808333
+SVC;{'C': 100, 'gamma': 0.0001};0.812500
+SVC;{'C': 100, 'gamma': 0.001};0.825000
+SVC;{'C': 100, 'gamma': 0.01};0.683333
+SVC;{'C': 1000, 'gamma': 1e-05};0.812500
+SVC;{'C': 1000, 'gamma': 0.0001};0.800000
+SVC;{'C': 1000, 'gamma': 0.001};0.825000
+SVC;{'C': 1000, 'gamma': 0.01};0.683333
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': None, 'criterion': 'gini', 'min_samples_split': 2};0.883333
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': None, 'criterion': 'gini', 'min_samples_split': 2};0.850000
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': None, 'criterion': 'entropy', 'min_samples_split': 2};0.841667
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': None, 'criterion': 'entropy', 'min_samples_split': 2};0.812500
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': 'sqrt', 'criterion': 'gini', 'min_samples_split': 2};0.833333
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': 'sqrt', 'criterion': 'gini', 'min_samples_split': 2};0.841667
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': 'sqrt', 'criterion': 'entropy', 'min_samples_split': 2};0.850000
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': 'sqrt', 'criterion': 'entropy', 'min_samples_split': 2};0.833333
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': None, 'criterion': 'gini', 'min_samples_split': 10};0.895833
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': None, 'criterion': 'gini', 'min_samples_split': 10};0.858333
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': None, 'criterion': 'entropy', 'min_samples_split': 10};0.870833
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': None, 'criterion': 'entropy', 'min_samples_split': 10};0.854167
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': 'sqrt', 'criterion': 'gini', 'min_samples_split': 10};0.833333
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': 'sqrt', 'criterion': 'gini', 'min_samples_split': 10};0.829167
+RandomForestClassifier;{'min_samples_leaf': 1, 'max_features': 'sqrt', 'criterion': 'entropy', 'min_samples_split': 10};0.866667
+RandomForestClassifier;{'min_samples_leaf': 10, 'max_features': 'sqrt', 'criterion': 'entropy', 'min_samples_split': 10};0.825000
+KNeighborsClassifier;{'n_neighbors': 1};0.770833
+KNeighborsClassifier;{'n_neighbors': 2};0.750000
+KNeighborsClassifier;{'n_neighbors': 3};0.791667
+KNeighborsClassifier;{'n_neighbors': 4};0.791667
+KNeighborsClassifier;{'n_neighbors': 5};0.795833
+KNeighborsClassifier;{'n_neighbors': 6};0.800000
+KNeighborsClassifier;{'n_neighbors': 7};0.816667
+KNeighborsClassifier;{'n_neighbors': 8};0.825000
+KNeighborsClassifier;{'n_neighbors': 9};0.829167
+KNeighborsClassifier;{'n_neighbors': 10};0.837500
+KNeighborsClassifier;{'n_neighbors': 15};0.825000
+KNeighborsClassifier;{'n_neighbors': 20};0.791667
+KNeighborsClassifier;{'n_neighbors': 30};0.791667

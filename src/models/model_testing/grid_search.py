@@ -20,9 +20,9 @@ from src.models.model_testing import validation
 
 
 def get_grid_search_results_path(data_folder, classifier):
+    name = classifier if isinstance(classifier, basestring) else classifier.__name__
     return os.path.join(os.path.dirname(__file__),
-                        '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder,
-                                                                                    classifier.__name__))
+                        '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder, name))
 
 
 def get_best_from_grid_search_results(classifier):

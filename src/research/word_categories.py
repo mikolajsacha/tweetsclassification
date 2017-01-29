@@ -4,13 +4,13 @@
 
 from sklearn.ensemble import RandomForestRegressor
 from src.features.word_embeddings.iword_embedding import TextCorpora
-from src.common import LABELS, SENTENCES, CATEGORIES, CATEGORIES_COUNT
+from src.common import LABELS, SENTENCES, CATEGORIES, CATEGORIES_COUNT, DATA_FOLDER
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 import numpy as np
 
 
-def get_words_categories_regressors(labels, sentences, word_emb, verbose=False):
-    # count how often words occur in each category and make as score out of it
+def get_words_scores(labels, sentences):
+    """ Returns list of tuples (word, [scores in categories])"""
     words_counts = {}
     for label, sentence in zip(labels, sentences):
         for word in (w for w in sentence if not w.isspace()):
@@ -28,17 +28,23 @@ def get_words_categories_regressors(labels, sentences, word_emb, verbose=False):
         for counts in words_counts.itervalues():
             counts[i] /= category_max
             counts[i] *= 100
+    return words_counts
+
+
+def get_words_categories_regressors(labels, sentences, word_emb, verbose=False):
+    # count how often words occur in each category and make as score out of it
+    words_scores = get_words_scores(labels, sentences)
 
     if verbose:
         print ("5 words with best scores for each category:")
         for i in xrange(CATEGORIES_COUNT):
             print CATEGORIES[i] + ": " + ', '.join("{:s}: {:4.2f}".format(w, v[i]) for w, v in
-                                                   sorted(words_counts.iteritems(), key=lambda (x, y): -y[i])[:10])
+                                                   sorted(words_scores.iteritems(), key=lambda (x, y): -y[i])[:10])
 
     if verbose:
         print ("\nBuilding word embedding...")
 
-    word_vectors = [word_emb[word] for word in words_counts.iterkeys()]
+    word_vectors = [word_emb[word] for word in words_scores.iterkeys()]
 
     if verbose:
         print ("\nEvaluating models predicting probabilities of each category for words...")
@@ -49,15 +55,16 @@ def get_words_categories_regressors(labels, sentences, word_emb, verbose=False):
         if verbose:
             print ("Evaluating model for category " + CATEGORIES[i] + "...")
         clf = RandomForestRegressor(n_estimators=100)
-        values = [v[i] for v in words_counts.itervalues()]
+        values = np.array([v[i] for v in words_scores.itervalues()])
 
         # use values also as weights
-        weights = np.array([v**1.5 for v in values])
+        weights = values
 
         clf.fit(word_vectors, values, weights)
         categories_classifiers.append(clf)
 
     return categories_classifiers
+
 
 if __name__ == "__main__":
     word_emb = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
