@@ -1,32 +1,28 @@
-import ast
-
 import multiprocessing
+
+import itertools
 from matplotlib import gridspec
 from matplotlib.colors import ListedColormap
-
-from src.features.sentence_embeddings.sentence_embeddings import *
-from src.features import build_features
-from src.features.word_embeddings.word2vec_embedding import *
-from src.features.word_embeddings.keras_word_embedding import *
-from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
-from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
-from src.models.algorithms.svm_algorithm import SvmAlgorithm
-from src.models.model_testing.grid_search import get_best_from_grid_search_results
-from src.visualization.save_visualization import save_current_plot
-from src.common import CATEGORIES_COUNT, CATEGORIES, SENTENCES, choose_multiple_classifiers, LABELS
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
-if __name__ == "__main__":
-    classifiers = choose_multiple_classifiers();
+from src.features.sentence_embeddings.sentence_embeddings import *
+from src.features import build_features
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.models.model_testing.grid_search import get_best_from_grid_search_results
+from src.visualization.save_visualization import save_current_plot
+from src.common import CATEGORIES_COUNT, CATEGORIES, SENTENCES, choose_multiple_classifiers, LABELS
+
+
+def visualize_2d(word_emb, classifier_classes):
     trained_classifiers = []
     classifiers_features = []
     subplots = []
 
-    fig = plt.figure(figsize=(8 * len(classifiers), 8))
+    fig = plt.figure(figsize=(8 * len(classifier_classes), 8))
     fig.suptitle("Example of several sentence embeddings in action")
-    gs = gridspec.GridSpec(1, len(classifiers))
+    gs = gridspec.GridSpec(1, len(classifier_classes))
 
     plt.rcParams["figure.figsize"] = [11, 8]
     colors = ['r', 'y', 'b', 'g', 'cyan', 'magenta']
@@ -39,38 +35,32 @@ if __name__ == "__main__":
         color = next(colors_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))
 
-    for classifier_index, Classifier in enumerate(classifiers):
+
+    for classifier_index, Classifier in enumerate(classifier_classes):
         best_parameters = get_best_from_grid_search_results(Classifier)
         if best_parameters is None:
             exit(-1)
-        embedding, params = best_parameters
-        word_emb_class, sen_emb_class = tuple(embedding.split(","))
+        _, _, sen_emb_class, params = best_parameters
 
-        print ("\nEvaluating model for embedding {:s} with params {:s}".format(embedding, str(params)))
+        print ("\nEvaluating model for sentence embedding {:s} with params {:s}..."
+               .format(sen_emb_class.__name__, str(params)))
         params["n_jobs"] = multiprocessing.cpu_count()
 
-        print ("Building word embedding...")
-        word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
-        word_emb.build(SENTENCES)
-
         # for the sake of visualization we will use 2 dimensional sentence vectors
-        sen_emb = eval(sen_emb_class)(2)
+        sen_emb = sen_emb_class(2)
 
-        print ("Building sentence embedding...")
-        sen_emb.build(word_emb, LABELS, SENTENCES)
+        sen_emb.build(word_emb, SENTENCES)
 
-        print ("Building features...")
         fb = build_features.FeatureBuilder()
         fb.build(sen_emb, LABELS, SENTENCES)
         classifiers_features.append(fb.features)
 
-        print ("Building model...")
         params['probability'] = True
         classifier = Classifier(sen_emb, **params)
         classifier.fit(fb.features, fb.labels)
         trained_classifiers.append(classifier)
 
-        print ("Drawing plot...")
+        print ("Rendering plot...")
 
         xs, ys = [], []
         for i in xrange(CATEGORIES_COUNT):
@@ -102,8 +92,8 @@ if __name__ == "__main__":
         for classifier in trained_classifiers:
             proba = classifier.clf.predict_proba([[x, y]])[0]
             print "{0} prediction: {1}" \
-                  .format(type(classifier).__name__, ", ".join(
-                         [CATEGORIES[i] + ": {:2.0f}%".format(100 * p) for i, p in enumerate(proba)]))
+                .format(type(classifier).__name__, ", ".join(
+                [CATEGORIES[i] + ": {:2.0f}%".format(100 * p) for i, p in enumerate(proba)]))
         print "\n"
 
 
@@ -115,3 +105,12 @@ if __name__ == "__main__":
     save_current_plot('2d_visualization.svg')
     print ""
     plt.show()
+
+
+if __name__ == "__main__":
+    classifier_classes = choose_multiple_classifiers()
+    # use same word embedding for all classifiers - we don't want to load more than one embedding to RAM
+    word_emb = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
+    word_emb.build()
+
+    visualize_2d(word_emb, classifier_classes)

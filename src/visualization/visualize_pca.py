@@ -1,12 +1,10 @@
-import ast
+import os
 import time
-
-import multiprocessing
+import numpy as np
 
 from src.features.sentence_embeddings.sentence_embeddings import *
-from src.features import build_features
-from src.features.word_embeddings.word2vec_embedding import *
-from src.features.word_embeddings.keras_word_embedding import *
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
+from src.features.word_embeddings.glove_embedding import GloveEmbedding
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
@@ -15,7 +13,7 @@ from src.models.model_testing.validation import test_cross_validation
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from src.visualization.save_visualization import save_current_plot
-from src.common import DATA_FOLDER, choose_classifier, LABELS, SENTENCES
+from src.common import DATA_FOLDER, choose_classifier, LABELS, SENTENCES, FOLDS_COUNT, DATA_SIZE
 
 
 def get_pca_results_path(data_folder, classifier):
@@ -23,20 +21,61 @@ def get_pca_results_path(data_folder, classifier):
                         '../../summaries/{0}_{1}_pca_comparison_results.txt'.format(data_folder,
                                                                                     classifier.__name__))
 
-if __name__ == "__main__":
-    folds_count = 5
-    classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
+
+def calculate_pca_accuracies(classifier_class, pca_count, n_jobs):
+    output_path = get_pca_results_path(DATA_FOLDER, classifier_class)
+    pca_execution_times = []
+    pca_accuracies = []
+    best_parameters = get_best_from_grid_search_results(classifier_class)
+
+    if best_parameters is None:
+        exit(-1)
+
+    word_emb_class, word_emb_params, sen_emb_class, params = best_parameters
+
+
+    print ("\nEvaluating model for word embedding: {:s}({:s}), sentence embedding: {:s} \nHyperparameters {:s}\n"
+           .format(word_emb_class.__name__, ', '.join(map(str, word_emb_params)), sen_emb_class.__name__, str(params)))
+    params["n_jobs"] = n_jobs
+
+    word_emb = word_emb_class(*word_emb_params)
+    sen_emb = sen_emb_class()
+    sen_emb.build(word_emb)
+
+    max_pca_dim = int(DATA_SIZE / float(FOLDS_COUNT) * (FOLDS_COUNT - 1)) # PCA dim can't be greater than samples count
+    pca_lengths = map(int, np.linspace(1, min(max_pca_dim, sen_emb.word_vector_length), num=pca_count))
+
+    for pca_length in pca_lengths:
+        print ("Calculating model for PCA with dimensions reduced to {0}..".format(pca_length))
+
+        sen_emb = sen_emb_class(pca_length)
+
+        start_time = time.time()
+        validation_results = test_cross_validation(LABELS, SENTENCES, word_emb, sen_emb, classifier_class,
+                                                   FOLDS_COUNT, **params)
+        pca_execution_times.append((time.time() - start_time))
+
+        pca_accuracies.append(sum(validation_results) / FOLDS_COUNT)
+
+    highest_execution_time = max(pca_execution_times)
+    highest_score = max(pca_accuracies)
+
+    # normalize times and accuracies
+    for i in xrange(len(pca_lengths)):
+        pca_execution_times[i] /= highest_execution_time
+        pca_accuracies[i] /= highest_score
+
+    with open(output_path, 'w') as output_file:
+        for i, pca_length in enumerate(pca_lengths):
+            output_file.write('{0};{1};{2}\n'.format(pca_length, pca_accuracies[i], pca_execution_times[i]))
+
+    return pca_lengths, pca_accuracies, pca_execution_times
+
+def visualize_pca(classifier_class, n_jobs):
+    output_path = get_pca_results_path(DATA_FOLDER, classifier_class)
     pca_lengths = []
     pca_accuracies = []
     pca_execution_times = []
-
-    classifier = choose_classifier()
-
-    data_path = make_dataset.get_processed_data_path(DATA_FOLDER)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(DATA_FOLDER))
-
-    summary_file_path = get_grid_search_results_path(DATA_FOLDER, classifier)
-    output_path = get_pca_results_path(DATA_FOLDER, classifier)
 
     use_new_pca = False
 
@@ -47,57 +86,18 @@ if __name__ == "__main__":
         answer = raw_input("Do you wish to use existing PCA results summary file [y] or run new calculations? [n] ")
         if answer.lower() == 'y' or answer.lower == 'yes':
             print ("Using existing PCA summary file...")
-
-            for line in open(output_path, 'r'):
-                pca_length, pca_result, pca_execution_time = tuple(line.split(";"))
-                pca_lengths.append(int(pca_length))
-                pca_accuracies.append(float(pca_result))
-                pca_execution_times.append(float(pca_execution_time))
         else:
             use_new_pca = True
 
     if use_new_pca:
-        best_parameters = get_best_from_grid_search_results(classifier)
-
-        if best_parameters is None:
-            exit(-1)
-
-        embedding, params = best_parameters
-        word_emb_class, sen_emb_class = tuple(embedding.split(","))
-        params["n_jobs"] = multiprocessing.cpu_count()
-
-        pca_lengths = [1, 2, 3, 5, 10, 15, 25, 35, 45, 55, 70, 85, 100]
-
-        print ("\nEvaluating model for embedding {:s} with params {:s}\n".format(embedding, str(params)))
-
-        word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"), 100)
-
-        fb = build_features.FeatureBuilder()
-
-        for pca_length in pca_lengths:
-            print ("Calculating model for PCA with dimensions reduced to {0}..".format(pca_length))
-
-            sen_emb = eval(sen_emb_class)(pca_length)
-
-            start_time = time.time()
-            validation_results = test_cross_validation(LABELS, SENTENCES, word_emb, sen_emb,
-                                                       build_features.FeatureBuilder(), classifier,
-                                                       folds_count, **params)
-            pca_execution_times.append((time.time() - start_time))
-
-            pca_accuracies.append(sum(validation_results) / folds_count)
-
-        highest_execution_time = max(pca_execution_times)
-        highest_score = max(pca_accuracies)
-
-        # normalize times and accuracies
-        for i in xrange(len(pca_lengths)):
-            pca_execution_times[i] /= highest_execution_time
-            pca_accuracies[i] /= highest_score
-
-        with open(output_path, 'w') as output_file:
-            for i, pca_length in enumerate(pca_lengths):
-                output_file.write('{0};{1};{2}\n'.format(pca_length, pca_accuracies[i], pca_execution_times[i]))
+        pca_count = 10 # may be changed
+        pca_lengths, pca_accuracies, pca_execution_times = calculate_pca_accuracies(classifier_class, pca_count, n_jobs)
+    else:
+        for line in open(output_path, 'r'):
+            pca_length, pca_result, pca_execution_time = tuple(line.split(";"))
+            pca_lengths.append(int(pca_length))
+            pca_accuracies.append(float(pca_result))
+            pca_execution_times.append(float(pca_execution_time))
 
     accuracy_legend = mpatches.Patch(color='b', label="Accuracy (as compared to the best)")
     execution_time_legend = mpatches.Patch(color='r', label="Execution time (as compared to the slowest)")
@@ -108,8 +108,15 @@ if __name__ == "__main__":
                      pca_lengths, pca_accuracies, 'bo', pca_lengths, pca_execution_times, 'ro')
     plt.setp(lines, linewidth=2, markersize=8)
 
-    plt.title('How PCA dimension reduction affects model accuracy (using {0})?'.format(classifier.__name__))
+    plt.title('How PCA dimension reduction affects model accuracy (using {0})?'.format(classifier_class.__name__))
     plt.xlabel('PCA dimensions')
     plt.ylabel('Accuracy vs execution time')
-    save_current_plot('pca_{0}.svg'.format(classifier.__name__))
+    save_current_plot('pca_{0}.svg'.format(classifier_class.__name__))
     plt.show()
+
+
+if __name__ == "__main__":
+    classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
+    classifier_class = choose_classifier()
+    visualize_pca(classifier_class, n_jobs=-1)
+

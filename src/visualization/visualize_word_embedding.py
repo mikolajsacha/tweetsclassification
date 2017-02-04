@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
-from src.data import make_dataset
-from src.features.word_embeddings.iword_embedding import TextCorpora
+from sklearn.decomposition import PCA
+import numpy as np
+
+from src.data.dataset import get_unique_words
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
-from src.features.word_embeddings.keras_word_embedding import KerasWordEmbedding
 from src.visualization.save_visualization import save_current_plot
-from src.common import SENTENCES, CATEGORIES_COUNT, LABELS, CATEGORIES
+from src.common import SENTENCES, CATEGORIES_COUNT, LABELS, CATEGORIES, PROCESSED_DATA_PATH
 
 
 def mix_colors(weighted_color_list, colors):
@@ -19,14 +20,21 @@ def mix_colors(weighted_color_list, colors):
         b += col[2] * (weight ** 3)
     return r / total_weight, g / total_weight, b / total_weight
 
-if __name__ == "__main__":
-    print ("Building word embedding...")
-    word_emb = KerasWordEmbedding(TextCorpora.get_corpus("brown"), 3)
-    word_emb.build(SENTENCES)
 
-    print ("Drawing plot...")
+def visualize_word_embedding(word_emb):
+    print ("Training PCA on words from dataset...")
 
-    # take all the words from dataset and count their occurences in categories
+
+    dataset_words = get_unique_words(PROCESSED_DATA_PATH)
+    dataset_words_with_emb = [word_emb[w] for w in dataset_words if word_emb[w] is not None]
+    print("{:d}/{:d} ({:4.2f}% words from dataset exist in embedding"
+          .format(len(dataset_words_with_emb), len(dataset_words),
+                  len(dataset_words_with_emb) / float(len(dataset_words)) * 100))
+
+    pca = PCA(n_components=3)
+    pca.fit(dataset_words_with_emb)
+
+    # take all the words from dataset and count their occurrences in categories
     # take only words which occur at least in 3 different tweets and are longer than 2 letters
     uniq_sens = (set(sen) for sen in SENTENCES)  # remove duplicate words from tweets
     words_with_tweets_counts = {}
@@ -37,7 +45,9 @@ if __name__ == "__main__":
                 words_with_tweets_counts[word] = [0] * CATEGORIES_COUNT
             words_with_tweets_counts[word][sen_category] += 1
 
-    words_with_tweets_counts = filter(lambda (word, counters): sum(counters) >= 3, words_with_tweets_counts.iteritems())
+    words_with_tweets_counts = filter(lambda (word, counters):
+                                      sum(counters) >= 3 and word_emb[word] is not None,
+                                      words_with_tweets_counts.iteritems())
     trimmed_words = []
     words_from_category = 75  # leave only 75 words from each "category"
     categories_counters = [0] * CATEGORIES_COUNT
@@ -62,7 +72,7 @@ if __name__ == "__main__":
     # plot dots representing words
     xs, ys, zs = [], [], []
     for word in words:
-        word_vector = word_emb[word]
+        word_vector = pca.transform([word_emb[word]])[0]
         xs.append(word_vector[0])
         ys.append(word_vector[1])
         zs.append(word_vector[2])
@@ -92,3 +102,11 @@ if __name__ == "__main__":
     plt.tight_layout()
     save_current_plot('word_embedding.svg')
     plt.show()
+
+
+if __name__ == "__main__":
+    print ("Building word embedding...")
+    word_emb = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
+    word_emb.build()
+
+    visualize_word_embedding(word_emb)

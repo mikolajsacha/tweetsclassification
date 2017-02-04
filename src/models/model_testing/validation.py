@@ -2,31 +2,14 @@
 Contains methods for performing validation of learning models
 """
 from sklearn.model_selection import StratifiedKFold
-from src.data import make_dataset
-from src.features.word_embeddings.iword_embedding import TextCorpora
+
+from src.common import LABELS, FOLDS_COUNT
+from src.common import SENTENCES
+from src.data import dataset
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings import sentence_embeddings
 from src.features.build_features import FeatureBuilder
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
-
-
-def single_fold_validation_dict(params):
-    """ This method is a wrapper on single_fold_validation to use single dict as parameter.
-        It makes multithreading using Thread Pools easier"""
-    training_features = params['training_features']
-    training_labels = params['training_labels']
-    test_sentences = params['test_sentences']
-    test_labels = params['test_labels']
-    sentence_embedding = params['sentence_embedding']
-    classifier_class = params['classifier_class']
-    del params['training_features']
-    del params['training_labels']
-    del params['test_sentences']
-    del params['test_labels']
-    del params['sentence_embedding']
-    del params['classifier_class']
-    return single_fold_validation(training_features, training_labels, test_sentences, test_labels,
-                                  classifier_class, sentence_embedding, **params)
 
 
 def single_fold_validation(training_features, training_labels, test_sentences, test_labels,
@@ -54,62 +37,60 @@ def single_fold_validation(training_features, training_labels, test_sentences, t
     return ratio
 
 
-def test_cross_validation(labels, sentences, word_embedding, sentence_embedding, feature_builder,
+def test_cross_validation(labels, sentences, word_embedding, sentence_embedding,
                           classifier_class, folds_count, verbose=False, **kwargs):
     # test accuracy for all folds combinations
 
     skf = StratifiedKFold(n_splits=folds_count)
-    fold = 0
     validation_results = []
     include_wrong_sentences = "include_wrong_sentences" in kwargs and kwargs["include_wrong_sentences"]
 
-    for train_index, test_index in skf.split(sentences, labels):
-        if verbose:
-            print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
-            print("Slicing data set...")
-        training_labels = labels[train_index]
-        training_sentences = sentences[train_index]
+    if verbose:
+        print("Building word embedding...")
+    word_embedding.build()
 
-        test_labels = labels[test_index]
-        test_sentences = sentences[test_index]
+    fb = FeatureBuilder()
 
-        if verbose:
-            print("Building word embedding...")
-        word_embedding.build(training_sentences)
-
+    if not sentence_embedding.use_pca:
         if verbose:
             print("Building sentence embedding...")
-        sentence_embedding.build(word_embedding, training_labels, training_sentences)
-
+        sentence_embedding.build(word_embedding)
         if verbose:
             print("Building features...")
-        feature_builder.build(sentence_embedding, training_labels, training_sentences)
+        fb.build(sentence_embedding, labels, sentences)
+
+    for fold, (train_index, test_index) in enumerate(skf.split(sentences, labels)):
+        if verbose:
+            print("Testing fold {0}/{1}...".format(fold + 1, folds_count))
+
+        if sentence_embedding.use_pca:
+            if verbose:
+                print("Building sentence embedding...")
+            sentence_embedding.build(word_embedding, sentences[train_index])
+            if verbose:
+                print("Building features...")
+            fb = FeatureBuilder()
+            fb.build(sentence_embedding, labels, sentences)
 
         if verbose:
             print("Building classifier model and testing predictions...")
-        success_rate = single_fold_validation(feature_builder.features, feature_builder.labels,
-                                              test_sentences, test_labels,
-                                              classifier_class, sentence_embedding,
-                                              **kwargs)
+        classifier = classifier_class(sentence_embedding, **kwargs)
+        classifier.fit(fb.features[train_index], fb.labels[train_index])
+        success_rate = classifier.clf.score(fb.features[test_index], fb.labels[test_index])
 
         if verbose:
             rate = success_rate[0] if include_wrong_sentences else success_rate
             print("Result in fold {:d}: {:4.2f}%".format(fold + 1, rate * 100))
         validation_results.append(success_rate)
-        fold += 1
 
     return validation_results
 
 
 if __name__ == "__main__":
     """ Example of how cross validation works"""
-    data_folder = "dataset1"
-    folds_count = 5
-
-    word_embedding = Word2VecEmbedding(TextCorpora.get_corpus("brown"))
+    word_embedding = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
     sentence_embedding = sentence_embeddings.ConcatenationEmbedding()
 
-    feature_builder = FeatureBuilder()
     classifier = SvmAlgorithm
 
     c = 100
@@ -118,9 +99,6 @@ if __name__ == "__main__":
     print("Testing parameter C={0}, gamma={1}...".format(c, gamma))
     print("." * 20)
 
-    data_file_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    labels, sentences = make_dataset.read_dataset(data_file_path, data_info)
-
-    test_cross_validation(labels, sentences, word_embedding, sentence_embedding, feature_builder,
-                          classifier, folds_count, False, C=c, gamma=gamma)
+    results = test_cross_validation(LABELS, SENTENCES, word_embedding, sentence_embedding, classifier,
+                                    FOLDS_COUNT, True, C=c, gamma=gamma)
+    print results

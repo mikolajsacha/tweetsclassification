@@ -2,29 +2,7 @@
 Contains basic interface (abstract base class) for word embeddings.
 """
 import os
-import nltk
 from abc import ABCMeta, abstractmethod
-
-
-class TextCorpora(object):
-    """ Utility class for downloading text corpora using NLTK download manager and storing them in one place """
-    corpuses = {}
-
-    @staticmethod
-    def get_corpus(key):
-        if key not in TextCorpora.corpuses:
-            text_corpus_downloaded = False
-            while not text_corpus_downloaded:
-                try:
-                    TextCorpora.corpuses[key] = list(eval("nltk.corpus.{0}.sents()".format(key)))
-                    text_corpus_downloaded = True
-                except LookupError:
-                    print ("Please use NLTK manager to download text corpus \"{0}\"".format(key))
-                    nltk.download()
-                except AttributeError:
-                    raise KeyError("There is no NLTK text corpus keyed \"{0}\"".format(key))
-        return TextCorpora.corpuses[key]
-
 
 class IWordEmbedding(object):
     """
@@ -32,37 +10,32 @@ class IWordEmbedding(object):
     """
     __metaclass__ = ABCMeta
 
-    def __init__(self, text_corpus, vector_length):
+    def __init__(self, path, vector_length):
+        self.model = None
+        self.path = path
         self.vector_length = vector_length
-        self.text_corpus = text_corpus
+        self.already_built = False
 
     @abstractmethod
-    def build(self, sentences):
-        """
-        Generates word embedding for given list of sentences
-        :param sentences: list of sentences in data set, formatted as lists of words
-        :type sentences: list of list of strings
-        """
+    def _build(self):
         raise NotImplementedError
 
     @abstractmethod
     def __getitem__(self, word):
-        """
-        Returns vector representation for given word based on current model
-        :param word: word to be vectorized
-        :type word: string
-        :return: vector representation of word, formatted as list of doubles
-        """
         raise NotImplementedError
 
-    @staticmethod
-    def get_embedding_model_path(data_folder):
-        """
-        :param data_folder: name of folder of data set (e. g. 'dataset1')
-        :type data_folder: string (folder name)
-        :return: absolute path to folder containing saved word embedding model
-        """
-        return os.path.join(os.path.dirname(__file__), '..\\..\\..\\models\\word_embeddings\\' + data_folder)
+    def build(self):
+        """ Loads word embedding from its file """
+        if not self.already_built:
+            print("Loading pre-trained word embedding from {0}...".format(self.path))
+            self._build()
+            self.already_built = True
+            print("Pre-trained word embedding from {0} loaded!".format(self.path))
+
+
+    def get_embedding_model_path(self):
+        """ :return: absolute path to folder containing saved word embedding model """
+        return os.path.join(os.path.dirname(__file__), '../../../models/word_embeddings', self.path)
 
     @staticmethod
     def data_file_to_sentences(data_file_path):

@@ -1,11 +1,10 @@
 import ast
 
-from dask import multiprocessing
+import multiprocessing
 
 from src.features import build_features
-from src.features.word_embeddings.word2vec_embedding import *
-from src.features.word_embeddings.keras_word_embedding import *
 from src.features.sentence_embeddings.sentence_embeddings import *
+from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
@@ -22,12 +21,13 @@ if __name__ == "__main__":
         exit(-1)
 
     embedding, params = best_parameters
-    word_emb_class, sen_emb_class = tuple(embedding.split(","))
+    _, sen_emb_class = tuple(embedding.split(","))
 
     print ("\nEvaluating model for embedding {:s} with params {:s}\n".format(embedding, str(params)))
     params["n_jobs"] = multiprocessing.cpu_count()
 
-    word_emb = eval(word_emb_class)(TextCorpora.get_corpus("brown"))
+    word_emb = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
+    word_emb.build()
     sen_emb = eval(sen_emb_class)()
     fb = build_features.FeatureBuilder()
     folds_count = 5

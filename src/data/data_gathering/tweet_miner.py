@@ -7,7 +7,7 @@ from tweepy import Stream
 import unicodedata
 import json
 
-from src.data import make_dataset
+from src.data import dataset
 from src.features import build_features
 from src.features.word_embeddings.iword_embedding import TextCorpora
 from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
@@ -76,9 +76,9 @@ class FileListener(StreamListener):
 if __name__ == "__main__":
     #  building estimator with possibly best performance on already gathered tweets
     data_folder = "gathered_dataset"
-    data_path = make_dataset.get_processed_data_path(data_folder)
-    data_info = make_dataset.read_data_info(make_dataset.get_data_set_info_path(data_folder))
-    labels, sentences = make_dataset.read_dataset(data_path, data_info)
+    data_path = dataset.get_processed_data_path(data_folder)
+    data_info = dataset.read_data_info(dataset.get_data_set_info_path(data_folder))
+    labels, sentences = dataset.read(data_path, data_info)
     classifiers = [SvmAlgorithm, NeuralNetworkAlgorithm, RandomForestAlgorithm]
 
     max_result = 0.0
