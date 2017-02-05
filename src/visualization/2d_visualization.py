@@ -25,12 +25,13 @@ def visualize_2d(word_emb, classifier_classes):
     gs = gridspec.GridSpec(1, len(classifier_classes))
 
     plt.rcParams["figure.figsize"] = [11, 8]
-    colors = ['r', 'y', 'b', 'g', 'cyan', 'magenta']
+    colors = ['r', 'y', 'b', 'g', 'cyan', 'magenta', 'gray', 'white', 'black']
 
     legend_handles = []
     colors_gen = itertools.cycle(colors)
     color_map = ListedColormap(list(itertools.islice(colors_gen, CATEGORIES_COUNT)), name='classifiers_color_map')
 
+    colors_gen = itertools.cycle(colors)
     for category in CATEGORIES:
         color = next(colors_gen)
         legend_handles.append(mpatches.Patch(color=color, label=category))

@@ -22,17 +22,17 @@ DATA_FOLDER = "gathered_dataset"
 FOLDS_COUNT = 5
 TRAINING_SET_SIZE = 0.80
 
-CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-2, 5)), "gamma": list(log_range(-2, 5))}),
+CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-1, 8)), "gamma": list(log_range(-5, 1))}),
                       (RandomForestClassifier, {"criterion": ["gini", "entropy"],
-                                               "min_samples_split": [2, 10],
-                                               "min_samples_leaf": [1, 10],
+                                               "min_samples_split": [2, 5, 10, 15],
+                                               "min_samples_leaf": [1, 5, 10, 15],
                                                "max_features": [None, "sqrt"]}),
                       (MLPClassifier, {"alpha": list(log_range(-5, -2)),
                                                 "learning_rate": ["constant", "adaptive"],
                                                 "activation": ["identity", "logistic", "tanh", "relu"],
                                                 "hidden_layer_sizes": [(100,), (100, 50)]}),
-                      (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 15, 30, 50, 75, 100, 150], 'p': [1, 2, 3],
-                                                   'weights': ['uniform', 'distance']})
+                      (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 10, 12, 15, 30, 50, 75, 100, 150],
+                                              'weights': ['uniform', 'distance']})
                       ]
 
 CLASSIFIERS_WRAPPERS = {

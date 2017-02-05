@@ -4,7 +4,7 @@ import os
 import operator
 from sklearn.model_selection import GridSearchCV
 from src.common import DATA_FOLDER, CLASSIFIERS_PARAMS, SENTENCE_EMBEDDINGS, FOLDS_COUNT, LABELS, SENTENCES, \
-    CLASSIFIERS_WRAPPERS, WORD_EMBEDDINGS
+    CLASSIFIERS_WRAPPERS, WORD_EMBEDDINGS, CLASSIFIERS
 from src.features.build_features import FeatureBuilder
 
 # don't remove this imports, they are needed to do eval() on string read from grid search result file
@@ -19,7 +19,7 @@ def get_grid_search_results_path(data_folder, classifier):
                         '../../../summaries/{0}_{1}_grid_search_results.txt'.format(data_folder, name))
 
 
-def get_best_from_grid_search_results(classifier = None):
+def get_best_from_grid_search_results_for_classifier(classifier, include_result=False):
     summary_file_path = get_grid_search_results_path(DATA_FOLDER, classifier)
 
     if not (os.path.exists(summary_file_path) and os.path.isfile(summary_file_path)):
@@ -43,11 +43,37 @@ def get_best_from_grid_search_results(classifier = None):
 
     word_embedding, word_embedding_params, sentence_embedding, classifier_params = best_parameters
     word_embedding_path, word_embedding_vector_length = tuple(word_embedding_params.split(','))
+
     # (word_emb_class, word_emb_params, sen_emb_class, clf_params)
+    if include_result:
+        return eval(word_embedding), \
+               [word_embedding_path, int(word_embedding_vector_length) ], \
+               eval(sentence_embedding), \
+               ast.literal_eval(classifier_params), \
+               max_result
     return eval(word_embedding), \
            [word_embedding_path, int(word_embedding_vector_length) ], \
-           eval(sentence_embedding),\
+           eval(sentence_embedding), \
            ast.literal_eval(classifier_params)
+
+
+def get_best_from_grid_search_results(classifier = None, include_result=False):
+    if classifier is not None:
+        return get_best_from_grid_search_results_for_classifier(classifier, include_result=include_result)
+
+    results_for_classifiers = []
+    classifier_wrappers = [CLASSIFIERS_WRAPPERS[classifier] for classifier in CLASSIFIERS]
+    for classifier_class in classifier_wrappers:
+        results = get_best_from_grid_search_results_for_classifier(classifier_class, include_result=True)
+        if results is not None:
+            results_for_classifiers.append((classifier_class, results))
+
+    # find classifier with best results
+    classifier_class, (w_emb, w_emb_params, s_emb, clf_params, result) = \
+        sorted(results_for_classifiers, key=lambda x: x[1][4])[-1]
+    if include_result:
+        return classifier_class, w_emb, w_emb_params, s_emb, clf_params, result
+    return classifier_class, w_emb, w_emb_params, s_emb, clf_params
 
 
 def grid_search(data_folder, folds_count, **kwargs):
