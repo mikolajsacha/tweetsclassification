@@ -1,0 +1,192 @@
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};90.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};90.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};90.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};90.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.17
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};90.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};91.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};91.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};91.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};92.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.17
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};95.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.83
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.58
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.75
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.42
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.33
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.92
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.25
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.00
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};92.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};91.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};92.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};92.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};92.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};92.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};92.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};92.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};92.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.83
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};92.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.83
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.25
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};92.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};92.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};93.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};93.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};92.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};92.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.25
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};93.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'identity', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};93.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};95.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};95.25
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};95.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.25
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};95.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'logistic', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.83
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};95.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};95.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};95.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'tanh', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};95.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};95.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 1e-05, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.25
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};94.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.67
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};95.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.0001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100,)};95.17
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100,)};94.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'constant', 'hidden_layer_sizes': (100, 50)};94.50
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'alpha': 0.001, 'activation': 'relu', 'learning_rate': 'adaptive', 'hidden_layer_sizes': (100, 50)};94.75

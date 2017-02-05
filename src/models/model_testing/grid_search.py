@@ -57,7 +57,7 @@ def grid_search(data_folder, folds_count, **kwargs):
     sentence_embeddings = kwargs['sentence_embeddings']
     word_embeddings = kwargs['word_embeddings']
     classifiers = kwargs['classifiers']
-    n_jobs = kwargs['n_jobs'] if 'j_jobs' in kwargs else 1
+    n_jobs = kwargs['n_jobs'] if 'n_jobs' in kwargs else 1
 
     # prepare output files
     for classifier_class, _ in classifiers:

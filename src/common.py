@@ -22,7 +22,7 @@ DATA_FOLDER = "gathered_dataset"
 FOLDS_COUNT = 5
 TRAINING_SET_SIZE = 0.80
 
-CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-3, 10)), "gamma": list(log_range(-5, 7))}),
+CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-2, 5)), "gamma": list(log_range(-2, 5))}),
                       (RandomForestClassifier, {"criterion": ["gini", "entropy"],
                                                "min_samples_split": [2, 10],
                                                "min_samples_leaf": [1, 10],
