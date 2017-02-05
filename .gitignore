@@ -71,4 +71,10 @@ target/
 
 # Generated data and models
 data/*/processed/*
+data/*/tweets_mining/*
 models/*
+
+# Generated figures
+reports/*
+
+
