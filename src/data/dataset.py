@@ -142,10 +142,7 @@ def read_data_info(data_set_info_path):
         return json.load(data_file)
 
 
-if __name__ == "__main__":
-    """
-    Main method allows to generate processed data sets in interactive mode.
-    """
+def run_interactive_processed_data_generation():
     while True:
         command = raw_input("Type data set folder name to generate data set or 'quit' to quit script: ")
         if command.lower() == "quit" or command.lower() == "exit":
@@ -159,3 +156,9 @@ if __name__ == "__main__":
 
         else:
             make(input_file_path, output_file_path)
+
+if __name__ == "__main__":
+    """
+    Main method allows to generate processed data sets in interactive mode.
+    """
+    run_interactive_processed_data_generation()

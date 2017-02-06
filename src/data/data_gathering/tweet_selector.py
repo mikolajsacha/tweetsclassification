@@ -10,7 +10,7 @@ def get_selected_tweets_path():
         os.makedirs(os.path.dirname(path))
     return path
 
-if __name__ == "__main__":
+def select_tweets():
     categories = CATEGORIES
     mined_tweets_path = get_mined_tweets_path()
     selected_tweets_path = get_selected_tweets_path()
@@ -43,3 +43,7 @@ if __name__ == "__main__":
             pass
         finally:
             print "*" * 20
+
+
+if __name__ == "__main__":
+    select_tweets()

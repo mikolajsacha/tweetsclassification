@@ -23,13 +23,9 @@ class Word2VecEmbedding(IWordEmbedding):
             return None
         return self.model[[word]][0]
 
-if __name__ == "__main__":
-    """
-    Main method allows to interactively build and test Word2Vec model
-    """
 
-    model = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
-    model.build()
+def run_interactive_word_embedding_test(model):
+    """ allows to interactively test built Word2Vec model """
     while True:
         command = raw_input("Type words to test embedding or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":
@@ -45,3 +41,10 @@ if __name__ == "__main__":
                     print "Similarity of {0} and {1}: {2}".format(w1, w2, model.model.similarity(w1, w2))
         except KeyError:
             print "No such word in model"
+
+
+if __name__ == "__main__":
+    model = Word2VecEmbedding('google/GoogleNews-vectors-negative300.bin', 300)
+    model.build()
+    run_interactive_word_embedding_test(model)
+

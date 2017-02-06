@@ -21,13 +21,9 @@ class GloveEmbedding(IWordEmbedding):
             return None
         return self.model[word]
 
-if __name__ == "__main__":
-    """
-    Main method allows to interactively build and test Glove model
-    """
-    model = GloveEmbedding('glove_twitter/glove.twitter.27B.200d.txt', 200)
-    model.build()
-    print "Model loaded"
+
+def run_interactive_word_embedding_test(model):
+    """ interactively test Glove model """
     while True:
         command = raw_input("Type a word to test embedding or 'quit' to exit: ")
         if command.lower() == "quit" or command.lower() == "exit":
@@ -36,3 +32,8 @@ if __name__ == "__main__":
             print model[command]
         except KeyError:
             print "No such word in model"
+
+if __name__ == "__main__":
+    model = GloveEmbedding('glove_twitter/glove.twitter.27B.200d.txt', 200)
+    model.build()
+    run_interactive_word_embedding_test(model)

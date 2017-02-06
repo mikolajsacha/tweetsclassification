@@ -85,7 +85,7 @@ def calculate_pca_accuracies(classifier_class, pca_count, n_jobs):
     return pca_lengths, pca_accuracies, training_times, testing_times
 
 
-def plot_pca_accuracies(pca_lengths, pca_accuracies, training_times, testing_times):
+def plot_pca_accuracies(classifier_class, pca_lengths, pca_accuracies, training_times, testing_times):
     accuracy_legend = mpatches.Patch(color='b', label="Accuracy")
     training_time_legend = mpatches.Patch(color='r', label="Relative model training time")
     testing_time_legend = mpatches.Patch(color='g', label="Relative predicting time using model")
@@ -114,11 +114,11 @@ def read_pca_results_file(file_path):
     pca_training_times = []
     pca_testing_times = []
     for line in open(file_path, 'r'):
-        pca_length, pca_result, pca_execution_time = tuple(line.split(";"))
+        pca_length, pca_result, pca_training_time, pca_testing_time = tuple(line.strip().split(";")[:4])
         pca_lengths.append(int(pca_length))
         pca_accuracies.append(float(pca_result))
-        pca_training_times.append(float(pca_execution_time))
-        pca_testing_times.append(float(pca_execution_time))
+        pca_training_times.append(float(pca_training_time))
+        pca_testing_times.append(float(pca_testing_time))
     return pca_lengths, pca_accuracies, pca_training_times, pca_testing_times
     
 
@@ -144,11 +144,10 @@ def visualize_pca(classifier_class, n_jobs):
         pca_lengths, pca_accuracies, pca_training_times, pca_testing_times = \
             read_pca_results_file(pca_file_path)
     
-    plot_pca_accuracies(pca_lengths, pca_accuracies, pca_training_times, pca_testing_times)
+    plot_pca_accuracies(classifier_class, pca_lengths, pca_accuracies, pca_training_times, pca_testing_times)
 
 
 if __name__ == "__main__":
-    classifiers = [SvmAlgorithm, RandomForestAlgorithm, NeuralNetworkAlgorithm]
     classifier_class = choose_classifier()
     visualize_pca(classifier_class, n_jobs=-1)
 

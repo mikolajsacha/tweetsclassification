@@ -26,7 +26,7 @@ def visualize_sentence_embeddings(word_emb, sentence_embeddings):
     fig = plt.figure(figsize=(20, 10))
     fig.suptitle("Example of several sentence embeddings in action")
     gs = gridspec.GridSpec(1, len(sentence_embeddings))
-    colors = ['r', 'g', 'b', 'yellow', 'magenta', 'cyan']
+    colors = ['r', 'g', 'b', 'yellow', 'magenta', 'cyan', 'gray', 'white']
     legend_handles = []
 
     for i, sen_emb_class in enumerate(sentence_embeddings):

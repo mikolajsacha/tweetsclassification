@@ -1,264 +1,104 @@
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 1};46.31
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 1};46.31
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 2};35.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 2};35.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 3};31.20
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 3};31.20
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 1};45.79
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 1};46.31
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 2};35.82
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 2};35.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 3};31.27
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 3};31.20
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 1};37.45
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 1};38.27
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 2};28.00
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 2};28.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 3};23.08
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 3};23.45
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 1};39.31
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 1};38.94
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 2};30.98
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 2};28.97
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 3};28.22
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 3};25.76
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 1};36.78
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 1};36.56
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 2};31.35
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 2};29.56
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 3};28.89
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 3};26.43
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 1};35.29
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 1};35.07
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 2};31.50
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 2};30.75
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 3};28.97
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 3};27.48
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 1};31.87
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 1};32.17
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 2};30.08
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 2};30.01
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 3};30.01
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 3};29.11
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 1};30.75
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 1};31.65
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 2};30.83
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 2};30.45
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 3};32.32
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 3};32.54
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 1};30.68
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 1};31.42
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 2};32.09
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 2};32.61
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 3};33.13
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 3};33.88
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 1};30.83
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 1};31.79
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 2};32.02
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 2};32.91
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 3};32.99
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 3};33.73
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 1};30.45
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 1};31.87
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 2};31.87
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 2};33.28
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 3};31.79
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 3};33.95
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 1};76.40
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 1};76.40
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 2};77.29
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 2};77.29
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 3};77.51
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 3};77.51
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 1};75.65
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 1};76.40
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 2};74.91
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 2};77.29
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 3};75.06
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 3};77.51
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 1};77.44
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 1};79.52
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 2};76.25
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 2};77.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 3};76.99
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 3};78.26
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 1};77.89
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 1};79.60
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 2};78.33
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 2};79.23
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 3};78.33
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 3};79.30
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 1};78.56
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 1};79.45
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 2};78.18
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 2};79.97
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 3};78.18
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 3};79.30
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 1};78.18
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 1};78.63
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 2};78.70
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 2};79.60
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 3};77.22
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 3};78.26
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 1};74.83
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 1};75.58
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 2};75.13
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 2};76.17
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 3};74.39
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 3};76.10
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 1};72.38
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 1};73.42
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 2};72.15
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 2};72.97
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 3};72.38
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 3};72.97
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 1};70.36
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 1};71.03
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 2};70.14
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 2};71.41
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 3};69.84
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 3};70.74
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 1};67.16
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 1};68.73
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 2};67.83
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 2};69.17
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 3};67.68
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 3};68.88
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 1};63.66
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 1};65.52
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 2};62.92
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 2};65.30
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 3};62.32
-Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 3};64.71
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 1};54.95
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 1};54.95
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 2};56.59
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 2};56.59
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 3};49.81
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 3};49.81
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 1};53.91
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 1};54.95
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 2};57.04
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 2};56.59
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 3};46.54
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 3};49.81
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 1};51.90
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 1};54.28
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 2};54.28
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 2};55.92
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 3};48.32
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 3};52.12
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 1};49.96
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 1};50.71
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 2};55.99
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 2};56.29
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 3};50.34
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 3};53.69
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 1};46.24
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 1};45.87
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 2};54.06
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 2};54.88
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 3};48.03
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 3};52.42
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 1};40.73
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 1};40.51
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 2};49.96
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 2};50.63
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 3};48.18
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 3};51.97
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 1};35.22
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 1};35.37
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 2};46.76
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 2};47.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 3};43.93
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 3};46.31
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 1};31.12
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 1};32.69
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 2};42.14
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 2};42.96
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 3};41.62
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 3};43.86
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 1};30.90
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 1};32.39
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 2};37.97
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 2};39.69
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 3};39.61
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 3};41.25
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 1};30.53
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 1};31.94
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 2};35.15
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 2};36.63
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 3};38.94
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 3};39.84
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 1};27.48
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 1};28.67
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 2};32.91
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 2};34.18
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 3};38.05
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 3};39.24
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 1};81.09
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 1};81.09
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 2};77.66
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 2};77.66
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform', 'p': 3};75.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance', 'p': 3};75.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 1};80.86
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 1};81.09
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 2};74.91
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 2};77.66
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform', 'p': 3};71.93
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance', 'p': 3};75.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 1};82.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 1};83.32
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 2};78.26
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 2};79.90
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform', 'p': 3};76.10
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance', 'p': 3};78.26
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 1};83.77
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 1};83.84
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 2};79.67
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 2};81.46
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform', 'p': 3};76.99
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance', 'p': 3};79.00
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 1};83.47
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 1};84.59
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 2};79.60
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 2};81.16
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform', 'p': 3};76.10
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance', 'p': 3};78.26
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 1};83.77
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 1};84.29
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 2};80.12
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 2};80.57
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform', 'p': 3};74.83
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance', 'p': 3};77.07
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 1};81.16
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 1};82.20
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 2};77.44
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 2};78.18
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform', 'p': 3};72.97
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance', 'p': 3};74.16
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 1};78.78
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 1};79.82
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 2};75.65
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 2};77.07
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform', 'p': 3};70.22
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance', 'p': 3};71.63
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 1};77.14
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 1};78.33
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 2};74.16
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 2};75.50
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform', 'p': 3};67.01
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance', 'p': 3};69.40
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 1};75.58
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 1};76.55
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 2};72.00
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 2};73.42
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform', 'p': 3};64.41
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance', 'p': 3};66.79
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 1};72.75
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 1};74.46
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 2};68.13
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 2};70.36
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform', 'p': 3};57.33
-GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance', 'p': 3};62.40
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform'};39.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance'};39.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform'};40.09
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance'};39.50
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform'};32.87
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance'};33.53
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform'};33.66
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance'};33.86
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform'};31.89
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance'};31.76
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 10, 'weights': 'uniform'};32.61
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 10, 'weights': 'distance'};31.56
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 12, 'weights': 'uniform'};31.89
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 12, 'weights': 'distance'};31.30
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform'};30.77
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance'};30.38
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform'};24.93
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance'};25.26
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform'};19.82
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance'};20.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform'};17.45
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance'};18.04
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform'};17.06
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance'};17.52
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform'};16.80
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance'};17.26
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform'};74.74
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance'};74.74
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform'};72.57
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance'};74.74
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform'};75.98
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance'};77.03
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform'};77.56
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance'};78.02
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform'};77.43
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance'};78.67
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 10, 'weights': 'uniform'};76.90
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 10, 'weights': 'distance'};78.22
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 12, 'weights': 'uniform'};76.97
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 12, 'weights': 'distance'};77.82
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform'};76.38
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance'};77.17
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform'};73.82
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance'};74.08
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform'};70.54
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance'};71.72
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform'};68.31
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance'};69.23
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform'};65.88
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance'};67.06
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform'};61.22
+Word2VecEmbedding;google/GoogleNews-vectors-negative300.bin,300;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance'};63.58
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'uniform'};54.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 1, 'weights': 'distance'};54.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'uniform'};56.76
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 2, 'weights': 'distance'};54.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'uniform'};51.51
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 3, 'weights': 'distance'};53.02
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'uniform'};54.46
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 4, 'weights': 'distance'};53.28
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'uniform'};50.00
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 7, 'weights': 'distance'};49.87
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 10, 'weights': 'uniform'};48.49
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 10, 'weights': 'distance'};48.03
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 12, 'weights': 'uniform'};46.65
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 12, 'weights': 'distance'};46.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'uniform'};44.95
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 15, 'weights': 'distance'};45.08
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'uniform'};38.32
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 30, 'weights': 'distance'};38.65
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'uniform'};33.40
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 50, 'weights': 'distance'};34.32
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'uniform'};29.07
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 75, 'weights': 'distance'};29.79
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'uniform'};26.31
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 100, 'weights': 'distance'};26.84
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'uniform'};23.75
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;ConcatenationEmbedding;{'n_neighbors': 150, 'weights': 'distance'};24.15
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'uniform'};77.82
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 1, 'weights': 'distance'};77.82
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'uniform'};73.69
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 2, 'weights': 'distance'};77.82
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'uniform'};77.43
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 3, 'weights': 'distance'};79.33
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'uniform'};79.13
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 4, 'weights': 'distance'};80.84
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'uniform'};79.53
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 7, 'weights': 'distance'};80.77
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 10, 'weights': 'uniform'};79.66
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 10, 'weights': 'distance'};80.77
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 12, 'weights': 'uniform'};79.79
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 12, 'weights': 'distance'};80.97
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'uniform'};78.74
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 15, 'weights': 'distance'};79.92
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'uniform'};76.84
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 30, 'weights': 'distance'};78.22
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'uniform'};74.61
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 50, 'weights': 'distance'};76.05
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'uniform'};71.59
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 75, 'weights': 'distance'};72.77
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'uniform'};69.42
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 100, 'weights': 'distance'};71.39
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'uniform'};64.37
+GloveEmbedding;glove_twitter/glove.twitter.27B.200d.txt,200;SumEmbedding;{'n_neighbors': 150, 'weights': 'distance'};66.54

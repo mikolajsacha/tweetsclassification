@@ -114,7 +114,7 @@ def grid_search(data_folder, folds_count, **kwargs):
                 combs = reduce(operator.mul, map(len,tested_params.itervalues()) , 1)
                 print("Testing {0} hyperparameters ({1} combinations)...".format(classifier_class.__name__, combs))
 
-                clf = GridSearchCV(classifier_class(), tested_params, n_jobs=n_jobs)
+                clf = GridSearchCV(classifier_class(), tested_params, n_jobs=n_jobs, cv=folds_count)
                 clf.fit(feature_builder.features, feature_builder.labels)
 
                 with open(output_path, 'a') as output_file:

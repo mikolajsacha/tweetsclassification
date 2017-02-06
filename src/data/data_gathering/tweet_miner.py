@@ -27,8 +27,6 @@ consumer_secret = "pkdaCqfr4Qve8ewqYopYSv8PHdYDo98Sue9JmHNuxIq0RORppd"
 
 tweets_queue = Queue.Queue()
 clf = None
-classifier_threshold = 0.8
-include_unclassified = False
 lock = multiprocessing.Lock()
 
 
@@ -62,7 +60,7 @@ class FileListener(StreamListener):
         print status
 
 
-def tweets_filter():
+def tweets_filter(classifier_threshold, include_unclassified):
     tweets_file_path = get_mined_tweets_path()
     while True:
         try:
@@ -79,7 +77,8 @@ def tweets_filter():
                 with open(tweets_file_path, 'a')  as f:
                    f.write(tweet + '\n')
 
-def mine_tweets():
+
+def mine_tweets(classifier_threshold, include_unclassified):
     global clf
 
     # building estimator with possibly best performance on already gathered tweets
@@ -112,7 +111,8 @@ def mine_tweets():
     auth.set_access_token(access_token, access_token_secret)
     stream = Stream(auth, l)
 
-    threads = [Thread(target=tweets_filter) for _ in xrange(max(1, multiprocessing.cpu_count() - 1))]
+    threads = [Thread(target=tweets_filter, args=(classifier_threshold, include_unclassified))
+               for _ in xrange(max(1, multiprocessing.cpu_count() - 1))]
     for t in threads:
         t.start()
 
@@ -125,4 +125,4 @@ def mine_tweets():
 
 
 if __name__ == "__main__":
-    mine_tweets()
+    mine_tweets(0.7, False)

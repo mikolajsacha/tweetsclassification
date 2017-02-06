@@ -6,7 +6,10 @@ def get_figures_path():
     """
     :return: absolute path to the location where figures are stored (as images/pdfs etc)
     """
-    return os.path.join(os.path.dirname(__file__), '../../reports/figures')
+    path = os.path.join(os.path.dirname(__file__), '../../reports/figures')
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path
 
 
 def save_current_plot(filename):

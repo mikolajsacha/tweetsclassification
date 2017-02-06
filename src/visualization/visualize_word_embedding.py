@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from mpl_toolkits.mplot3d import Axes3D  # do not remove this import
 from sklearn.decomposition import PCA
-import numpy as np
 
 from src.data.dataset import get_unique_words
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
@@ -23,7 +22,6 @@ def mix_colors(weighted_color_list, colors):
 
 def visualize_word_embedding(word_emb):
     print ("Training PCA on words from dataset...")
-
 
     dataset_words = get_unique_words(PROCESSED_DATA_PATH)
     dataset_words_with_emb = [word_emb[w] for w in dataset_words if word_emb[w] is not None]
@@ -60,11 +58,12 @@ def visualize_word_embedding(word_emb):
 
     words = list(map(lambda x: x[0], trimmed_words))
 
-    colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (1, 0, 1), (0, 1, 1)]  # colors in RGB [0,1]
+    colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0),
+              (1, 0, 1), (0, 1, 1), (0.3, 0.3, 0.3), (1, 1, 1)]  # colors in RGB [0,1]
     words_colors = list(map(lambda x: mix_colors(x[1], colors), trimmed_words))
 
     fig = plt.figure(figsize=(10, 10))
-    fig.suptitle("Example of word embedding in action")
+    fig.suptitle("Example of word embedding reduced by PCA to 3 dimensions")
     legend_handles = []
 
     ax = plt.subplot(projection='3d')
