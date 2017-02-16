@@ -2,15 +2,33 @@
 import ast
 import os
 import operator
+
+from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 from src.common import DATA_FOLDER, CLASSIFIERS_PARAMS, SENTENCE_EMBEDDINGS, FOLDS_COUNT, LABELS, SENTENCES, \
-    CLASSIFIERS_WRAPPERS, WORD_EMBEDDINGS, CLASSIFIERS
+    CLASSIFIERS_WRAPPERS, WORD_EMBEDDINGS, CLASSIFIERS, KerasNeuralNetworkClassifier
 from src.features.build_features import FeatureBuilder
 
 # don't remove this imports, they are needed to do eval() on string read from grid search result file
 from src.features.word_embeddings.glove_embedding import GloveEmbedding
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.sentence_embeddings.sentence_embeddings import SumEmbedding, ConcatenationEmbedding
+from src.models.algorithms.keras_neural_network import KerasNeuralNetworkAlgorithm, create_keras_model
+
+#---------------------------------------------------------------------------------------------------------------------
+# this is a fix for a bug in the current version of keras
+# the bug occurs when using GridSearchCV with KerasClassifier
+# source: http://stackoverflow.com/questions/41796618/python-keras-cross-val-score-error
+from keras.wrappers.scikit_learn import BaseWrapper
+import copy
+
+def custom_get_params(self, **params):
+    res = copy.deepcopy(self.sk_params)
+    res.update({'build_fn': self.build_fn})
+    return res
+
+BaseWrapper.get_params = custom_get_params
+#---------------------------------------------------------------------------------------------------------------------
 
 
 def get_grid_search_results_path(data_folder, classifier):
@@ -114,7 +132,15 @@ def grid_search(data_folder, folds_count, **kwargs):
                 combs = reduce(operator.mul, map(len,tested_params.itervalues()) , 1)
                 print("Testing {0} hyperparameters ({1} combinations)...".format(classifier_class.__name__, combs))
 
-                clf = GridSearchCV(classifier_class(), tested_params, n_jobs=n_jobs, cv=folds_count)
+                # for keras we need to create a sklearn wrapper to use GridSearchCV
+                if classifier_class == KerasNeuralNetworkClassifier:
+                    model = KerasClassifier(build_fn=create_keras_model,
+                                            features_count=feature_builder.features.shape[1],
+                                            verbose=0)
+                else:
+                    model = classifier_class()
+
+                clf = GridSearchCV(estimator=model, param_grid=tested_params, n_jobs=n_jobs, cv=folds_count)
                 clf.fit(feature_builder.features, feature_builder.labels)
 
                 with open(output_path, 'a') as output_file:
@@ -134,6 +160,10 @@ if __name__ == "__main__":
             classifiers_to_check.append((classifier_class, params))
 
     print("*" * 20 + "\n")
+    if not classifiers_to_check:
+        print "No classifiers selected"
+        exit(0)
+
     grid_search(DATA_FOLDER, FOLDS_COUNT,
                 word_embeddings=WORD_EMBEDDINGS,
                 sentence_embeddings=SENTENCE_EMBEDDINGS,

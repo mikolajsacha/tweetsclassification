@@ -3,7 +3,7 @@ from src.features import build_features
 from src.features.word_embeddings.word2vec_embedding import *
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features.word_embeddings.glove_embedding import GloveEmbedding
-from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
+from src.models.algorithms.sklearn_neural_network import MLPAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.common import choose_classifier, LABELS, SENTENCES, CATEGORIES
@@ -15,6 +15,7 @@ def interactive_test(clf):
         if command.lower() == "quit" or command.lower() == "exit":
             break
         sentence = dataset.string_to_words_list(command)
+        print clf.predict_proba(sentence)
         print map(lambda (i, prob): "{:s}: {:4.2f}%".format(CATEGORIES[i], 100.0*prob),
                   enumerate(clf.predict_proba(sentence)))
 

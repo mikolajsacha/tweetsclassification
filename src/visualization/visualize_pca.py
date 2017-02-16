@@ -3,7 +3,7 @@ import os
 from src.features.sentence_embeddings.sentence_embeddings import *
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding
 from src.features.word_embeddings.glove_embedding import GloveEmbedding
-from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
+from src.models.algorithms.sklearn_neural_network import MLPAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.models.model_testing.grid_search import get_best_from_grid_search_results

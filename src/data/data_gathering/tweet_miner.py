@@ -12,7 +12,7 @@ import os
 from src.common import LABELS, SENTENCES
 from src.features import build_features
 from src.models.algorithms.nearest_neighbors_algorithm import NearestNeighborsAlgorithm
-from src.models.algorithms.neural_network import NeuralNetworkAlgorithm
+from src.models.algorithms.sklearn_neural_network import MLPAlgorithm
 from src.models.algorithms.random_forest_algorithm import RandomForestAlgorithm
 from src.models.algorithms.svm_algorithm import SvmAlgorithm
 from src.features.word_embeddings.word2vec_embedding import Word2VecEmbedding

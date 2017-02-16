@@ -8,7 +8,7 @@ from src.models.algorithms.iclassification_algorithm import IClassificationAlgor
 import numpy as np
 
 
-class NeuralNetworkAlgorithm(IClassificationAlgorithm):
+class MLPAlgorithm(IClassificationAlgorithm):
     """
     Class for building model using Neural Network method
     """
