@@ -38,8 +38,8 @@ CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-1, 8)), "gamma": list(log_rang
                                                 "hidden_layer_sizes": [(100,), (100, 50)]}),
                       (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 10, 12, 15, 30, 50, 75, 100, 150],
                                               'weights': ['uniform', 'distance']}),
-                      (KerasNeuralNetworkClassifier, {'nb_epoch': [50, 100, 150],
-                                                      'batch_size': [5, 10, 20]})
+                      (KerasNeuralNetworkClassifier, {'nb_epoch': [4, 8, 16, 32, 64, 128, 256, 512, 1024],
+                                                      'batch_size':  [4, 8, 16, 32, 64, 128, 256, 512, 1024]})
                       ]
 
 CLASSIFIERS_WRAPPERS = {

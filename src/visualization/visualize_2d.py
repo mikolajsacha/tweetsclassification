@@ -75,8 +75,6 @@ def visualize_2d(word_emb, classifier_classes):
         xx, yy = np.meshgrid(np.linspace(x_min - 0.1, x_max + 0.1, MESHGRID_SIZE),
                              np.linspace(y_min - 0.1, y_max + 0.1, MESHGRID_SIZE))
 
-        colors_gen = itertools.cycle(colors)
-
         ax = fig.add_subplot(gs[classifier_index])
         ax.text(.5, .92, Classifier.__name__, horizontalalignment='center', transform=ax.transAxes)
         subplots.append(ax)

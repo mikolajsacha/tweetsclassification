@@ -3,6 +3,7 @@ import ast
 import os
 import operator
 
+from keras.utils.np_utils import to_categorical
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 from src.common import DATA_FOLDER, CLASSIFIERS_PARAMS, SENTENCE_EMBEDDINGS, FOLDS_COUNT, LABELS, SENTENCES, \
@@ -136,12 +137,15 @@ def grid_search(data_folder, folds_count, **kwargs):
                 if classifier_class == KerasNeuralNetworkClassifier:
                     model = KerasClassifier(build_fn=create_keras_model,
                                             features_count=feature_builder.features.shape[1],
-                                            verbose=0)
+                                            verbose=1)
+                    # unfortunately i had to use only 1 job because GridSearchCV hanged otherwise
+                    clf = GridSearchCV(estimator=model, param_grid=tested_params, n_jobs=1, cv=folds_count)
+                    clf.fit(feature_builder.features, to_categorical(feature_builder.labels))
                 else:
                     model = classifier_class()
+                    clf = GridSearchCV(estimator=model, param_grid=tested_params, n_jobs=n_jobs, cv=folds_count)
+                    clf.fit(feature_builder.features, feature_builder.labels)
 
-                clf = GridSearchCV(estimator=model, param_grid=tested_params, n_jobs=n_jobs, cv=folds_count)
-                clf.fit(feature_builder.features, feature_builder.labels)
 
                 with open(output_path, 'a') as output_file:
                     for mean_score, params in zip(clf.cv_results_['mean_test_score'], clf.cv_results_['params']):
