@@ -5,8 +5,7 @@ import matplotlib.patches as mpatches
 import os
 
 from src.common import CLASSIFIERS_WRAPPERS, CLASSIFIERS, DATA_FOLDER, SENTENCE_EMBEDDINGS
-from src.models.model_testing.grid_search import get_best_from_grid_search_results_for_classifier, \
-    get_grid_search_results_path
+from src.models.model_testing.grid_search import get_grid_search_results_path
 from src.visualization.save_visualization import save_current_plot
 
 
