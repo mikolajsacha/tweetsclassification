@@ -15,7 +15,6 @@ def interactive_test(clf):
         if command.lower() == "quit" or command.lower() == "exit":
             break
         sentence = dataset.string_to_words_list(command)
-        print clf.predict_proba(sentence)
         print map(lambda (i, prob): "{:s}: {:4.2f}%".format(CATEGORIES[i], 100.0*prob),
                   enumerate(clf.predict_proba(sentence)))
 
