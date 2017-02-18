@@ -1,4 +1,3 @@
-import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
@@ -71,13 +70,7 @@ DATA_SIZE = DATA_INFO['Size']
 CATEGORIES_COUNT = len(CATEGORIES)
 KerasNeuralNetworkAlgorithm.categories_count = CATEGORIES_COUNT
 
-if not os.path.isfile(EXTERNAL_DATA_PATH):
-    print "Chosen dataset path {0} does not exist".format(EXTERNAL_DATA_PATH)
-    exit(-1)
-else:
-    dataset.make(EXTERNAL_DATA_PATH, PROCESSED_DATA_PATH)
 LABELS, SENTENCES = dataset.read(EXTERNAL_DATA_PATH, DATA_INFO)
-
 
 def choose_multiple_classifiers():
     print("Choose classifiers by typing a list of their indices (e.g: '0,2'):")

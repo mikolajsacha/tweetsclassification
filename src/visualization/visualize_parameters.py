@@ -191,12 +191,12 @@ def analyze_two_parameters(parameter1, parameter2, classifier_class, all_paramet
     use_log_answer = raw_input("Use logarithmic scale for {0}? [y/n] ".format(parameter1)).lower()
     use_log_scale1 = use_log_answer == 'y' or use_log_answer == 'yes'
     if use_log_scale1:
-        param1_points = np.log10(param1_values)
+        param1_points = np.log2(param1_values)
 
     use_log_answer = raw_input("Use logarithmic scale for {0}? [y/n] ".format(parameter2)).lower()
     use_log_scale2 = use_log_answer == 'y' or use_log_answer == 'yes'
     if use_log_scale2:
-        param2_points = np.log10(param2_values)
+        param2_points = np.log2(param2_values)
 
 
     # interpolate for better visual effect
@@ -226,21 +226,24 @@ def analyze_two_parameters(parameter1, parameter2, classifier_class, all_paramet
     ys = [y for x, y in xs_and_ys]
     zs = [max_performances[(x,y)] for (x, y) in itertools.product(param1_values, param2_values)]
 
-    ax.scatter(xs, ys, zs, c='blue', s=20)
+    ax.scatter(xs, ys, zs, s=5)
 
 
     plt.title('{0} performance for different values of {1} and {2}'
               .format(classifier_class.__name__, parameter1, parameter2))
 
     if use_log_scale1:
-        plt.xlabel('Values of {0} (logarithmic scale: 10^))'.format(parameter1))
+        ax.set_xlabel('Values of {0} (logarithmic scale: 2^))'.format(parameter1))
     else:
-        plt.xlabel('Values of {0}'.format(parameter1))
+        ax.set_xlabel('Values of {0}'.format(parameter1))
 
     if use_log_scale2:
-        plt.ylabel('Values of {0} (logarithmic scale: 10^))'.format(parameter2))
+        ax.set_ylabel('Values of {0} (logarithmic scale: 2^))'.format(parameter2))
     else:
-        plt.ylabel('Values of {0}'.format(parameter2))
+        ax.set_ylabel('Values of {0}'.format(parameter2))
+
+
+    ax.set_zlabel('Cross-validation results')
 
     save_current_plot('parameters_{0}_{1}_and_{2}.svg'.format(classifier_class.__name__, parameter1, parameter2))
     plt.show()
