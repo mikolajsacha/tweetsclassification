@@ -42,15 +42,6 @@ def get_processed_data_path(data_folder):
     return os.path.join(os.path.dirname(__file__), '../../data/{0}/processed/training_set.txt'.format(data_folder))
 
 
-while True:
-    try:
-        cached_stopwords = set(nltk.corpus.stopwords.words("english"))
-        break
-    except LookupError:
-        print ("Please download 'stopwords' using NTLK download manager")
-        nltk.download()
-
-
 def preprocess_sentence(sentence):
     """Adjusts sentence by filtering words and correcting some common issues """
 
@@ -67,8 +58,6 @@ def preprocess_sentence(sentence):
             continue
         if w.isdigit() and int(w) <= 21:  # convert small numbers to words using inflect package
             new_sentence.append(inflect_eng.number_to_words(int(w)))
-        elif not w.isalpha() or w in cached_stopwords:
-            continue
         else:
             new_sentence.append(w)
 

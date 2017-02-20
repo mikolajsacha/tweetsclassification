@@ -33,13 +33,12 @@ def get_average_grid_search_result_for_classifier(classifier):
     return round(results_sum/results_count, 2)
 
 
-
 def get_available_grid_search_results():
     # returns best and average results for each classifier with existing grid search result file
     results_for_classifiers = []
     classifier_wrappers = [CLASSIFIERS_WRAPPERS[classifier] for classifier in CLASSIFIERS]
     for classifier_class in classifier_wrappers:
-        results = get_best_from_grid_search_results_for_classifier(classifier_class, include_result=True)
+        results = get_best_from_grid_search_results_for_classifier(classifier_class, include_evaluation=True)
         if results is not None:
             average = get_average_grid_search_result_for_classifier(classifier_class)
             results_for_classifiers.append((classifier_class, results + (average,)))
@@ -50,31 +49,38 @@ def get_available_grid_search_results():
 def compare_models_bar_chart(best_results_for_models):
     # best_results = [(cls_class, (word_emb_class, word_emb_params, sen_emb_class, params, best_result, avg_result)]
 
-    # sort results by performance
-    best_results_for_models.sort(key=lambda (cls, params): params[4])
+    # sort results by evaluation on test set
+    best_results_for_models.sort(key=lambda (cls, params): params[-3])
 
     fig, ax = plt.subplots()
-    N , width = len(best_results_for_models), 0.35
+    N , width = len(best_results_for_models), 0.15
     ind = np.arange(N)
 
     classifier_classes = [clf.__name__ for clf, _ in best_results_for_models]
-    average_performances = [params[5] for _, params in best_results_for_models]
-    max_performances = [params[4] for _, params in best_results_for_models]
+    average_cv_results = [params[-1] for _, params in best_results_for_models]
+    train_evaluations = [params[-2] for _, params in best_results_for_models]
+    test_evaluations = [params[-3] for _, params in best_results_for_models]
+    max_cv_results = [params[-4] for _, params in best_results_for_models]
 
-    rects1 = ax.bar(ind, max_performances, width, color='b')
-    rects2 = ax.bar(ind, average_performances, width, color='g')
-    plt.xticks(ind, classifier_classes)
+    rects1 = ax.bar(ind, test_evaluations, width, color='b')
+    rects2 = ax.bar(ind + width, train_evaluations, width, color='g')
+    rects3 = ax.bar(ind + 2*width, max_cv_results, width, color='orange')
+    rects4 = ax.bar(ind + 3*width, average_cv_results, width, color='r')
 
-    avg_legend = mpatches.Patch(color='g', label="Average performance")
-    max_legend = mpatches.Patch(color='b', label="Maximum performance")
+    plt.xticks(ind + (1.5 * width), classifier_classes)
 
-    plt.legend(handles=[avg_legend, max_legend])
+    eval_leg = mpatches.Patch(color='b', label="Model Evaluation on test set")
+    t_eval_leg = mpatches.Patch(color='g', label="Model Evaluation on training set")
+    max_cv_leg = mpatches.Patch(color='orange', label="Max CV result")
+    avg_cv_leg = mpatches.Patch(color='r', label="Average CV result")
+
+    plt.legend(handles=[eval_leg, t_eval_leg, avg_cv_leg, max_cv_leg])
 
     plt.title('Comparison of performance of tested models')
     plt.ylabel('Cross-validation results')
 
     # Attach a text label above each bar displaying its value
-    for rects in [rects1, rects2]:
+    for rects in [rects1, rects2, rects3, rects4]:
         for rect in rects:
             height = rect.get_height()
             ax.text(rect.get_x() + rect.get_width()/2., height, "{:4.2f}%".format(height),
@@ -87,14 +93,14 @@ if __name__ == "__main__":
     best_results_for_models =  get_available_grid_search_results()
 
     for classifier_class, parameters in best_results_for_models:
-        word_emb_class, word_emb_params, sen_emb_class, params, best_result, avg_result = parameters
+        word_emb_class, word_emb_params, sen_emb_class, params, max_cv_r, evaluation, t_eval, avg_cv_r = parameters
 
-        print ("\n{0}: Best result: {1}%, Average result: {2}%".
-               format(classifier_class.__name__, best_result, avg_result))
-        print ("For embeddings: {0}({1}), {2}".format(word_emb_class.__name__,
+        print (("\n{0}:\n Max CV Result: {1}%\n Evaluation on test set: {2}%\n Evaluation on training set: {3}%\n" +
+               " Average CV result: {4}%").format(classifier_class.__name__, max_cv_r, evaluation, t_eval, avg_cv_r))
+        print (" For embeddings: {0}({1}), {2}".format(word_emb_class.__name__,
                                                       ', '.join(map(str, word_emb_params)),
                                                       sen_emb_class.__name__))
-        print ("And for parameters: {0}".format(str(params)))
+        print (" And with best parameters: {0}".format(str(params)))
 
     compare_models_bar_chart(best_results_for_models)
 

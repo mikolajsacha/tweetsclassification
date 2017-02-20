@@ -26,19 +26,37 @@ TRAINING_SET_SIZE = 0.80
 class KerasNeuralNetworkClassifier(object):
     pass
 
-CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-1, 8)), "gamma": list(log_range(-7, 1))}),
-                      (RandomForestClassifier, {"criterion": ["gini", "entropy"],
-                                               "min_samples_split": [2, 5, 10, 15],
-                                               "min_samples_leaf": [1, 5, 10, 15],
-                                               "max_features": [None, "sqrt"]}),
-                      (MLPClassifier, {"alpha": list(log_range(-5, -2)),
-                                                "learning_rate": ["constant", "adaptive"],
-                                                "activation": ["identity", "logistic", "tanh", "relu"],
-                                                "hidden_layer_sizes": [(100,), (100, 50)]}),
-                      (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 10, 12, 15, 30, 50, 75, 100, 150],
+# CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(-1, 8)), "gamma": list(log_range(-10, 1))}),
+#                       (RandomForestClassifier, {"criterion": ["gini", "entropy"],
+#                                                "min_samples_split": [2, 5, 10, 15],
+#                                                "min_samples_leaf": [1, 5, 10, 15],
+#                                                 "n_estimators": [1, 5, 10, 15, 20, 35, 50, 100],
+#                                                "max_features": [None, "sqrt"]}),
+#                       (MLPClassifier, {"alpha": list(log_range(-5, -2)),
+#                                                 "learning_rate": ["constant", "adaptive"],
+#                                                 "activation": ["identity", "logistic", "tanh", "relu"],
+#                                                 "hidden_layer_sizes": [(100,), (100, 50)]}),
+#                       (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 10, 12, 15, 30, 50, 75, 100, 150, 200],
+#                                               'weights': ['uniform', 'distance']}),
+#                       (KerasNeuralNetworkClassifier, {'nb_epoch': [64, 128, 256, 512, 1024, 2048, 4096, 8192],
+#                                                       'batch_size':  [1, 2, 3, 4, 8]})
+#                       ]
+
+CLASSIFIERS_PARAMS = [(SVC, {"C": list(log_range(3, 12)), "gamma": list(log_range(-7, -2))}),
+                       (RandomForestClassifier, {"max_depth": [None, 1, 5, 10, 20, 50],
+                                                 "criterion": ["gini", "entropy"],
+                                                 "max_features": ["auto", "sqrt", "log2"],
+                                                 "n_estimators": [1000]}),
+                      (MLPClassifier, {"alpha": list(log_range(-4, -2)),
+                                       "learning_rate": ["constant", "adaptive"],
+                                       "activation": ["logistic", "relu"],
+                                       "hidden_layer_sizes": [(100, 50)]}),
+                      (KNeighborsClassifier, {'n_neighbors': [1, 2, 3, 4, 7, 10, 12, 14, 16, 18,
+                                                              20, 25, 30, 50, 75, 100, 150, 200],
+                                              'p' : [1, 2, 3, 4, 5],
                                               'weights': ['uniform', 'distance']}),
-                      (KerasNeuralNetworkClassifier, {'nb_epoch': [4, 8, 16, 32, 64, 128, 256, 512, 1024],
-                                                      'batch_size':  [4, 8, 16, 32, 64, 128, 256, 512, 1024]})
+                      # (KerasNeuralNetworkClassifier, {'nb_epoch': [4048],
+                      #                                'batch_size':  [4]})
                       ]
 
 CLASSIFIERS_WRAPPERS = {
@@ -52,12 +70,13 @@ CLASSIFIERS_WRAPPERS = {
 CLASSIFIERS = [c[0] for c in CLASSIFIERS_PARAMS]
 
 SENTENCE_EMBEDDINGS = [
-    sentence_embeddings.ConcatenationEmbedding,
+    # sentence_embeddings.ConcatenationEmbedding,
     sentence_embeddings.SumEmbedding
 ]
 
 WORD_EMBEDDINGS = [
-    (Word2VecEmbedding, ['google/GoogleNews-vectors-negative300.bin', 300]),
+    # (Word2VecEmbedding, ['google/GoogleNews-vectors-negative300.bin', 300]),
+    # (GloveEmbedding, ['glove_twitter/glove.twitter.27B.200d.txt', 200]),
     (GloveEmbedding, ['glove_twitter/glove.twitter.27B.200d.txt', 200]),
 ]
 

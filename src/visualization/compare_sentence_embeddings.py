@@ -76,8 +76,8 @@ def compare_sentence_embeddings_bar_chart(results_for_classifiers):
                         ha='center', va='bottom')
 
         # Add description to legend
-        legend_handles.append(mpatches.Patch(color=max_colors[i], label=sen_embedding + " maximum performance"))
-        legend_handles.append(mpatches.Patch(color=avg_colors[i], label=sen_embedding + " average performance"))
+        legend_handles.append(mpatches.Patch(color=max_colors[i], label=sen_embedding + " best CV result"))
+        legend_handles.append(mpatches.Patch(color=avg_colors[i], label=sen_embedding + " average CV result"))
 
 
     plt.xticks(ind + width * (len(sen_embeddings) - 1) / 2.0, classifier_classes)
